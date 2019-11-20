@@ -12,13 +12,14 @@ namespace EnergyMonitoring
     using System;
     using System.Collections.Generic;
     
-    public partial class record
+    public partial class Record
     {
-        public int id { get; set; }
-        public float value { get; set; }
-        public int sensor_id { get; set; }
-        public System.DateTime createdOn { get; set; }
+        public int RecordID { get; set; }
+        public float Value { get; set; }
+        public int SensorID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime UpdateDate { get; set; }
     
-        public virtual sensor sensor { get; set; }
+        public virtual Sensor Sensor { get; set; }
     }
 }

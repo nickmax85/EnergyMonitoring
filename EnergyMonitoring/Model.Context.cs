@@ -13,10 +13,10 @@ namespace EnergyMonitoring
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class EnergyMonitoringEntities : DbContext
+    public partial class Entities : DbContext
     {
-        public EnergyMonitoringEntities()
-            : base("name=EnergyMonitoringEntities")
+        public Entities()
+            : base("name=Entities")
         {
         }
     
@@ -25,11 +25,11 @@ namespace EnergyMonitoring
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<device> device { get; set; }
-        public virtual DbSet<equipment> equipment { get; set; }
-        public virtual DbSet<location> location { get; set; }
-        public virtual DbSet<record> record { get; set; }
-        public virtual DbSet<sensor> sensor { get; set; }
-        public virtual DbSet<unit> unit { get; set; }
+        public virtual DbSet<Device> Device { get; set; }
+        public virtual DbSet<Equipment> Equipment { get; set; }
+        public virtual DbSet<Location> Location { get; set; }
+        public virtual DbSet<Record> Record { get; set; }
+        public virtual DbSet<Sensor> Sensor { get; set; }
+        public virtual DbSet<Unit> Unit { get; set; }
     }
 }

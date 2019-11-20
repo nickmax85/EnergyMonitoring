@@ -12,25 +12,23 @@ namespace EnergyMonitoring
     using System;
     using System.Collections.Generic;
     
-    public partial class equipment
+    public partial class Equipment
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public equipment()
+        public Equipment()
         {
-            this.device = new HashSet<device>();
+            this.Device = new HashSet<Device>();
         }
     
-        public int id { get; set; }
-        public string nr { get; set; }
-        public string name { get; set; }
-        public Nullable<int> location_id { get; set; }
-        public string lastModifiedBy { get; set; }
-        public System.DateTime lastModifiedOn { get; set; }
-        public string createdBy { get; set; }
-        public byte[] createdOn { get; set; }
+        public int EquipmentID { get; set; }
+        public string Number { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> LocationID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<device> device { get; set; }
-        public virtual location location { get; set; }
+        public virtual ICollection<Device> Device { get; set; }
+        public virtual Location Location { get; set; }
     }
 }

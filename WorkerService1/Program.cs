@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.EventLog;
 
-namespace EnergyMonitoringService
+namespace WorkerService1
 {
     public class Program
     {
@@ -18,8 +16,6 @@ namespace EnergyMonitoringService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseWindowsService()
-                .ConfigureLogging(loggerFactory => loggerFactory.AddEventLog())
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();

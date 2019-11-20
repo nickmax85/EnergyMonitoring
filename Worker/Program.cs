@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.EventLog;
 
-namespace EnergyMonitoringService
+namespace Worker
 {
     public class Program
     {
@@ -22,7 +22,13 @@ namespace EnergyMonitoringService
                 .ConfigureLogging(loggerFactory => loggerFactory.AddEventLog())
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                     services.AddHostedService<Worker>();
+                    //services.AddHostedService<Worker>().Configure<EventLogSettings>(config =>
+                    //{
+                    //    config.LogName = "Sample Service";
+                    //    config.SourceName = "Sample Service Source";
+                    //});
+
                 });
     }
 }

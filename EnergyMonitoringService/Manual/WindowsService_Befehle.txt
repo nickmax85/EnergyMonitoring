@@ -1,0 +1,10 @@
+sc create EnergyMonitoringService binPath="C:\Users\thalerm\Source\Repos\EnergyMonitoring\EnergyMonitoringService\bin\Release\netcoreapp3.0\publish\EnergyMonitoringService.exe"
+
+
+sc start Worker
+sc stop Worker
+
+To check the state of your service use the following command.
+sc query Worker
+
+sc delete Worker
