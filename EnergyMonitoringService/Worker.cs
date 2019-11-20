@@ -22,52 +22,30 @@ namespace EnergyMonitoringService
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
 
-
-            using (var context = new EnergyMonitoringContext())
-            {
-                //var devices = _context.Device
-                // .Include(device => device.Equipment)
-                // .ToList();
-
-                //foreach (var item in devices)
-                //{
-                //    Console.WriteLine(item.Ip);
-                //    Console.WriteLine(item.Equipment.Name);
-                //}
-
-
-
-                var devices = context.Device
-               .Include(device => device.Sensor)
-               .ToList();
-
-                foreach (var item in devices)
-                {
-                    Console.WriteLine(item.Ip);
-                    foreach (var sensor in item.Sensor)
-                    {
-                        Console.WriteLine(sensor.SensorId);
-                    }
-
-                }
-            }
-
-
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
+                using (var context = new EnergyMonitoringContext())
+                {
+                    var devices = context.Device
+                   .Include(device => device.Sensor)
+                   .Include(device => device.Equipment)
+                   .Include(device => device.Equipment.Location)
+                   .ToList();
 
-                //foreach (var item in items)
-                //{
-                //    Console.WriteLine(item.Ip);
-                //    Console.WriteLine(item.Equipment.Name);
+                    foreach (var item in devices)
+                    {
+                        Console.WriteLine($"Device: ip={item.Ip}; name={item.Name}");
+                        Console.WriteLine($"Location: name={item.Equipment.Location.Name}");
+                        Console.WriteLine($"Equipment: number={item.Equipment.Number}; name={item.Equipment.Name}");
+                        foreach (var sensor in item.Sensor)
+                        {
+                            Console.WriteLine($"Sensor: id={sensor.SensorId}");
+                        }
 
-                //}
-
-
-
-
+                    }
+                }
 
                 await Task.Delay(10000, stoppingToken);
             }
