@@ -1,0 +1,18 @@
+{
+  "iostate": {
+    "input": [
+      {
+        "name": "pressure",
+        "number": 0,
+        "unit": "bar",
+        "value": 6.7
+      },
+      {
+        "name": "flow",
+        "number": 1,
+        "unit": "l/min",
+        "value": 3.4
+      }
+    ]
+  }
+}
