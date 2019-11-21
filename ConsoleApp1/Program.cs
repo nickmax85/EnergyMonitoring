@@ -8,14 +8,16 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             getJSON();
+
+            while (true) ;
         }
 
 
-        private static void getJSON()
+        private async static void getJSON()
         {
             var url = "http://10.187.136.15/rest/json/iostate";
             HttpClient request = new HttpClient();
-            var json = request.GetStringAsync(url);
+            var json = await request.GetStringAsync(url);
 
             Console.WriteLine(json);
         }
