@@ -11,7 +11,7 @@
         "name": "pressure",
         "number": 0,
         "unit": "bar",
-        "value": 6.9
+        "value": 6.954567
       },
       {
         "name": "flow",

@@ -23,16 +23,14 @@ namespace EnergyMonitoringService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
-
-            InitData();
-
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                await Task.Delay(1000, stoppingToken);
-                return;
+                InitData();
+                // return;
+                await Task.Delay(5000, stoppingToken);
+
             }
         }
 
@@ -46,7 +44,7 @@ namespace EnergyMonitoringService
                .Include(device => device.Sensor)
                .ThenInclude(sensor => sensor.Unit)
                .Include(device => device.Equipment)
-               .Include(device => device.Equipment.Location)
+               .Include(device => device.Equipment.Location).Where(x => (bool)x.Active)
                .ToList();
 
 
@@ -55,15 +53,13 @@ namespace EnergyMonitoringService
                 {
                     Console.WriteLine($"Device: ip={device.Ip}; name={device.Name}");
                     Console.WriteLine($"Location: name={device.Equipment.Location.Name}");
-                    Console.WriteLine($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}");
+                    Console.WriteLine($"Equipment: name={device.Equipment.Name}; number={device.Equipment.Number}");
 
                     // read json
                     var url = "http://" + device.Ip + "/rest/json";
                     HttpClient request = new HttpClient();
                     var json = await request.GetStringAsync(url);
-
                     WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
-                    Console.WriteLine(obj.info.devicename);
 
                     // iterate over sensor list                
                     foreach (var sensor in device.Sensor)
@@ -73,13 +69,21 @@ namespace EnergyMonitoringService
                         {
                             if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
                             {
-                                Console.WriteLine($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}");
                                 Console.WriteLine($"Sensor: id={sensor.SensorId};");
+                                Console.WriteLine($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}");
                                 Console.WriteLine($"Value: id={item.value};");
+
+                                Record rec = new Record();
+                                rec.Sensor = sensor;
+                                rec.Value = (decimal)Math.Round(item.value, 1);
+                                rec.CreateDate = DateTime.Now;
+
+                                if (rec.RecordId == 0)
+                                    context.Record.Add(rec);
+
+                                context.SaveChanges();
                             }
                         }
-
-
 
                     }
                     Console.WriteLine();

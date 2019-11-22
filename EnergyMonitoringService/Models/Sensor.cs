@@ -11,10 +11,12 @@ namespace EnergyMonitoringService.Models
         }
 
         public int SensorId { get; set; }
+        public decimal? Warning { get; set; }
+        public decimal? Alarm { get; set; }
         public int UnitId { get; set; }
         public int DeviceId { get; set; }
         public DateTime? CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public virtual Device Device { get; set; }
         public virtual Unit Unit { get; set; }

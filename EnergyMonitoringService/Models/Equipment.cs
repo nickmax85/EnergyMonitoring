@@ -15,7 +15,7 @@ namespace EnergyMonitoringService.Models
         public string Name { get; set; }
         public int? LocationId { get; set; }
         public DateTime? CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public virtual Location Location { get; set; }
         public virtual ICollection<Device> Device { get; set; }

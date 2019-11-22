@@ -14,7 +14,7 @@ namespace EnergyMonitoringService.Models
         public string Name { get; set; }
         public string Sign { get; set; }
         public DateTime? CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public virtual ICollection<Sensor> Sensor { get; set; }
     }

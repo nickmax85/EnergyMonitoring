@@ -11,8 +11,8 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            GetJSON();
-
+            //GetJSON();
+            FileRead();
             while (true) ;
         }
 
@@ -26,6 +26,15 @@ namespace ConsoleApp1
 
             WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
             Console.WriteLine(obj.iostate.input[0].name);
+
+        }
+
+        private static void FileRead()
+        {
+            var content = File.ReadAllText("data/webio.json");
+            WebIO obj = JsonConvert.DeserializeObject<WebIO>(content);
+            Console.WriteLine(obj.iostate.input[0].value);
+            Console.WriteLine(Math.Round(obj.iostate.input[0].value, 2));
 
         }
     }

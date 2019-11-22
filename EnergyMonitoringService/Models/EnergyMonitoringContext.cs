@@ -37,22 +37,19 @@ namespace EnergyMonitoringService.Models
             {
                 entity.Property(e => e.DeviceId).HasColumnName("DeviceID");
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.EquipmentId).HasColumnName("EquipmentID");
 
                 entity.Property(e => e.Ip)
                     .HasColumnName("IP")
-                    .HasMaxLength(20)
-                    .IsFixedLength();
+                    .HasMaxLength(50);
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.Property(e => e.Name).HasMaxLength(50);
 
-                entity.Property(e => e.UpdateDate)
-                    .HasColumnType("datetime")
-                    .HasComputedColumnSql("(getdate())");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Equipment)
                     .WithMany(p => p.Device)
@@ -70,16 +67,11 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(50)
-                    .IsFixedLength();
+                    .HasMaxLength(50);
 
-                entity.Property(e => e.Number)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.Property(e => e.Number).HasMaxLength(50);
 
-                entity.Property(e => e.UpdateDate)
-                    .HasColumnType("datetime")
-                    .HasComputedColumnSql("(getdate())");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Equipment)
@@ -95,12 +87,9 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(50)
-                    .IsFixedLength();
+                    .HasMaxLength(50);
 
-                entity.Property(e => e.UpdateDate)
-                    .HasColumnType("datetime")
-                    .HasComputedColumnSql("(getdate())");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Record>(entity =>
@@ -111,9 +100,9 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.SensorId).HasColumnName("SensorID");
 
-                entity.Property(e => e.UpdateDate)
-                    .HasColumnType("datetime")
-                    .HasComputedColumnSql("(getdate())");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Value).HasColumnType("decimal(6, 1)");
 
                 entity.HasOne(d => d.Sensor)
                     .WithMany(p => p.Record)
@@ -124,7 +113,11 @@ namespace EnergyMonitoringService.Models
 
             modelBuilder.Entity<Sensor>(entity =>
             {
-                entity.Property(e => e.SensorId).HasColumnName("SensorID");
+                entity.Property(e => e.SensorId)
+                    .HasColumnName("SensorID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Alarm).HasColumnType("decimal(18, 1)");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
@@ -132,9 +125,9 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.UnitId).HasColumnName("UnitID");
 
-                entity.Property(e => e.UpdateDate)
-                    .HasColumnType("datetime")
-                    .HasComputedColumnSql("(getdate())");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Warning).HasColumnType("decimal(18, 1)");
 
                 entity.HasOne(d => d.Device)
                     .WithMany(p => p.Sensor)
@@ -157,16 +150,11 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasMaxLength(50);
 
-                entity.Property(e => e.Sign)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.Property(e => e.Sign).HasMaxLength(50);
 
-                entity.Property(e => e.UpdateDate)
-                    .HasColumnType("datetime")
-                    .HasComputedColumnSql("(getdate())");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);
