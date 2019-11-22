@@ -57,47 +57,36 @@ namespace EnergyMonitoringService
                     Console.WriteLine($"Location: name={device.Equipment.Location.Name}");
                     Console.WriteLine($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}");
 
-                    // read iostate from device
-                    var url = "http://" + device.Ip + "/rest/json/iostate";
+                    // read json
+                    var url = "http://" + device.Ip + "/rest/json";
                     HttpClient request = new HttpClient();
                     var json = await request.GetStringAsync(url);
 
-                    WebIOState deserialized = JsonConvert.DeserializeObject<WebIOState>(json);
-                    Console.WriteLine(deserialized);
+                    WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
+                    Console.WriteLine(obj.info.devicename);
 
-                    // iterate over sensor list
+                    // iterate over sensor list                
                     foreach (var sensor in device.Sensor)
                     {
-                        if (sensor.Unit.Name.Equals("Pressure"))
+                        // iterate over inputs
+                        foreach (var item in obj.iostate.input)
                         {
-                            Console.WriteLine($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}");
-                            Console.WriteLine($"Sensor: id={sensor.SensorId};");
+                            if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
+                            {
+                                Console.WriteLine($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}");
+                                Console.WriteLine($"Sensor: id={sensor.SensorId};");
+                                Console.WriteLine($"Value: id={item.value};");
+                            }
                         }
-                    }
 
+
+
+                    }
+                    Console.WriteLine();
                 }
             }
         }
 
-
-
-        public class Input
-        {
-            public string name { get; set; }
-            public int number { get; set; }
-            public string unit { get; set; }
-            public double value { get; set; }
-        }
-
-        public class Iostate
-        {
-            public List<Input> input { get; set; }
-        }
-
-        public class RootObject
-        {
-            public Iostate iostate { get; set; }
-        }
 
     }
 }
