@@ -13,7 +13,8 @@ namespace ConsoleApp1
         {
             //GetJSON();
             FileRead();
-            while (true) ;
+            while (true)
+                Console.WriteLine();
         }
 
 

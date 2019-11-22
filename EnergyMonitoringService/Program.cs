@@ -19,7 +19,7 @@ namespace EnergyMonitoringService
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseWindowsService()
-                .ConfigureLogging(loggerFactory => loggerFactory.AddEventLog())
+                //.ConfigureLogging(loggerFactory => loggerFactory.AddEventLog())
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();

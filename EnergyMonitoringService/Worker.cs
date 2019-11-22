@@ -28,8 +28,8 @@ namespace EnergyMonitoringService
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
                 InitData();
-                // return;
-                await Task.Delay(5000, stoppingToken);
+                return;
+                //await Task.Delay(5000, stoppingToken);
 
             }
         }
@@ -51,9 +51,9 @@ namespace EnergyMonitoringService
                 // iterate over device list
                 foreach (var device in devices)
                 {
-                    Console.WriteLine($"Device: ip={device.Ip}; name={device.Name}");
                     Console.WriteLine($"Location: name={device.Equipment.Location.Name}");
-                    Console.WriteLine($"Equipment: name={device.Equipment.Name}; number={device.Equipment.Number}");
+                    Console.WriteLine($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
+                    Console.WriteLine($"Device: ip={device.Ip}; name={device.Name}");
 
                     // read json
                     var url = "http://" + device.Ip + "/rest/json";
@@ -86,7 +86,7 @@ namespace EnergyMonitoringService
                         }
 
                     }
-                    Console.WriteLine();
+
                 }
             }
         }
