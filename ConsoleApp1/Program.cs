@@ -36,11 +36,7 @@ namespace ConsoleApp1
             WebIO obj = JsonConvert.DeserializeObject<WebIO>(content);
             Console.WriteLine(obj.iostate.input[0].value);
             Console.WriteLine(Math.Round(obj.iostate.input[0].value, 2));
-
         }
     }
-
-
-
 
 }

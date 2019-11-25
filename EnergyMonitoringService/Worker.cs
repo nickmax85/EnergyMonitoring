@@ -28,8 +28,8 @@ namespace EnergyMonitoringService
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
                 InitData();
-                return;
-                //await Task.Delay(5000, stoppingToken);
+
+                await Task.Delay(5000, stoppingToken);
 
             }
         }
