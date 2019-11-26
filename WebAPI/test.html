@@ -8,7 +8,7 @@
     <link href="Content/bootstrap.css" rel="stylesheet" />
 </head>
 <body class="container">
-    <h1>EnergyMonitoring</h1>
+    <h1>test</h1>
 
     <ul id="devices" class="list-group">
     </ul>
@@ -23,11 +23,13 @@
         $(document).ready(function () {
 
 
+            test();
+
             getJQuery();
 
             $('#refreshButton').click(function () {
 
-                getJQuery();
+                //getJQuery();
 
             });
 
@@ -47,6 +49,22 @@
 
         });
 
+
+        function test() {
+            let container = $('#devices');
+            container.empty();
+
+            let label = $('<label>').html('Label 1');
+            let label2 = $('<label>').html('Label 2');
+            let button = $('<button>');
+
+
+            container.append(label);
+            container.append(label2);
+            container.append(button);
+
+        }
+
         function getJQuery() {
 
 
@@ -55,7 +73,7 @@
                 .done(function (data) {
                     // let data = JSON.parse(ddata.d);
                     //debugger;
-                    showData(data);
+                    //showData(data);
 
                 })
                 .fail(function (error) {
