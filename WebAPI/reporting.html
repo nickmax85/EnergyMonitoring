@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <link href="Content/custom.css" rel="stylesheet" />
+
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <!--<link href="Content/cerulean.bootstrap.css" rel="stylesheet" />-->
+    <!--<link href="Content/cyborg.bootstrap.css" rel="stylesheet" />-->
+    <!--<link href="Content/minty.bootstrap.css" rel="stylesheet" />-->
+
+    <script src="Scripts/jquery-3.4.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+
+    <script src="Scripts/highcharts/7.1.2/highcharts.js"></script>
+    <script src="Scripts/highcharts/7.1.2/highcharts-more.js"></script>
+    <script src="Scripts/highcharts/7.1.2/modules/solid-gauge.js"></script>
+
+
+
+    <script src="Scripts/highcharts/7.1.2/themes/sand-signika.js"></script>
+
+
+</head>
+<body class="container">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">EnergyMonitoring</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <!--<li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>-->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dashboard
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="live.html">Live</a>
+                        <a class="dropdown-item" href="reporting.html">Reporting</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Live</h1>
+    </header>
+
+
+    <ul id="devices" class="list-group">
+    </ul>
+
+    <footer>
+        <hr />
+        &copy; 2019 Markus Thaler
+    </footer>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            getDevices();
+        });
+
+
+        var gaugeOptions = {
+            chart: {
+                type: 'solidgauge'
+            },
+
+            title: null,
+
+            pane: {
+                center: ['50%', '85%'],
+                size: '140%',
+                startAngle: -90,
+                endAngle: 90,
+                background: {
+                    backgroundColor:
+                        Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+                    innerRadius: '60%',
+                    outerRadius: '100%',
+                    shape: 'arc'
+                }
+            },
+
+            tooltip: {
+                enabled: false
+            },
+
+            // the value axis
+            yAxis: {
+                stops: [
+                    [0.1, '#55BF3B'], // green
+                    [0.5, '#DDDF0D'], // yellow
+                    [0.9, '#DF5353'] // red
+                ],
+                lineWidth: 0,
+                minorTickInterval: null,
+                tickAmount: 2,
+                title: {
+                    y: -70
+                },
+                labels: {
+                    y: 16
+                }
+            },
+
+            plotOptions: {
+                solidgauge: {
+                    dataLabels: {
+                        y: 5,
+                        borderWidth: 0,
+                        useHTML: true
+                    }
+                }
+            }
+        };
+
+
+        function getDevices() {
+
+            let url = '/api/devices';
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    showDevices(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function showDevices(data) {
+
+            let container = $('#devices');
+            container.empty();
+
+
+
+            if (!Array.isArray(data))
+                return;
+
+            let i = 0;
+            data.forEach(function (item, i) {
+
+                let li = $('<li class="list-group-item">');
+                let label = $('<label>').html(item.Equipment.Location.Name + "; " + item.Equipment.Name + "; " +
+                    item.Name + ";");
+                let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a>');
+
+                let button = $('<button class="btn btn-info">').click(function () {
+                    window.location = "http://" + item.IP;
+                }).html('Dashboard');
+
+
+                let outer = $(' <div class="outer">');
+
+                let gaugeChart1 = $('<div id="containerGauge1_' + i + '" class="chart-container"</div>');
+                let gaugeChart2 = $('<div id="containerGauge2_' + i + '" class="chart-container"</div>');
+
+
+                li.append(label);
+                li.append(ipLink);
+                li.append(outer);
+                outer.append(gaugeChart1, gaugeChart2);
+
+                container.append(li);
+
+
+                addGauge1(gaugeChart1.get(0).id, item);
+                addGauge2(gaugeChart2.get(0).id, item);
+
+            });
+        }
+
+        function addGauge1(container, item) {
+
+            var pressureGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
+                yAxis: {
+                    min: 0,
+                    max: 20,
+                    title: {
+                        text: 'Druck'
+                    }
+                },
+
+                credits: {
+                    enabled: false
+                },
+
+                series: [{
+                    name: 'Druck',
+                    data: [0],
+                    dataLabels: {
+                        format:
+                            '<div style="text-align:center">' +
+                            '<span style="font-size:25px">{y}</span><br/>' +
+                            '<span style="font-size:12px;opacity:0.4">bar</span>' +
+                            '</div>'
+                    },
+                    tooltip: {
+                        valueSuffix: ' bar'
+                    }
+                }]
+
+            }));
+
+
+            setInterval(function () {
+
+                var point;
+
+                // url = 'http://10.187.136.29/rest/json';
+                url = 'http://' + item.IP + '/rest/json';
+
+                $.getJSON(url)
+                    .done(function (data) {
+
+                        if (pressureGauge) {
+                            point = pressureGauge.series[0].points[0];
+                            point.update(data.iostate.input[0].value);
+                        }
+
+                    })
+                    .fail(function (error) {
+                        // alert("ERROR: " + error.status + ' ' + error.statusText);
+                    });
+
+
+            }, 2000);
+
+
+        }
+
+
+
+
+        function addGauge2(container, item) {
+
+            //The flow gauge
+            var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
+                yAxis: {
+                    min: 0,
+                    max: 5000,
+                    title: {
+                        text: 'Durchfluss'
+                    }
+                },
+
+                series: [{
+                    name: 'Durchfluss',
+                    data: [0],
+                    dataLabels: {
+                        format:
+                            '<div style="text-align:center">' +
+                            '<span style="font-size:25px">{y:.1f}</span><br/>' +
+                            '<span style="font-size:12px;opacity:0.4">' +
+                            ' l / min' +
+                            '</span>' +
+                            '</div>'
+                    },
+                    tooltip: {
+                        valueSuffix: ' revolutions/min'
+                    }
+                }]
+
+            }));
+
+
+
+
+            setInterval(function () {
+
+                var point;
+
+                //url = 'http://10.187.136.29/rest/json';
+                url = 'http://' + item.IP + '/rest/json';
+                $.getJSON(url)
+                    .done(function (data) {
+
+                        if (flowGauge) {
+                            point = flowGauge.series[0].points[0];
+                            point.update(data.iostate.input[1].value);
+                        }
+
+                    })
+                    .fail(function (error) {
+                        //  alert("ERROR: " + error.status + ' ' + error.statusText);
+                    });
+
+
+            }, 2000);
+
+
+        }
+
+
+
+
+    </script>
+
+</body>
+</html>

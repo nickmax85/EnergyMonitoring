@@ -55,37 +55,57 @@ namespace EnergyMonitoringService
                     Console.WriteLine($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
                     Console.WriteLine($"Device: ip={device.Ip}; name={device.Name}");
 
-                    // read json
-                    var url = "http://" + device.Ip + "/rest/json";
-                    HttpClient request = new HttpClient();
-                    var json = await request.GetStringAsync(url);
-                    WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
 
-                    // iterate over sensor list                
-                    foreach (var sensor in device.Sensor)
+
+                    try
                     {
-                        // iterate over inputs
-                        foreach (var item in obj.iostate.input)
+                        // read json
+                        var url = "http://" + device.Ip + "/rest/json";
+
+                        HttpClient request = new HttpClient();
+                        var json = await request.GetStringAsync(url);
+
+                        WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
+                        // iterate over sensor list                
+                        foreach (var sensor in device.Sensor)
                         {
-                            if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
+                            // iterate over inputs
+                            foreach (var item in obj.iostate.input)
                             {
-                                Console.WriteLine($"Sensor: id={sensor.SensorId};");
-                                Console.WriteLine($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}");
-                                Console.WriteLine($"Value: id={item.value};");
+                                if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
+                                {
+                                    Console.WriteLine($"Sensor: id={sensor.SensorId};");
+                                    Console.WriteLine($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}");
+                                    Console.WriteLine($"Value: id={item.value};");
 
-                                Record rec = new Record();
-                                rec.Sensor = sensor;
-                                rec.Value = (decimal)Math.Round(item.value, 1);
-                                rec.CreateDate = DateTime.Now;
+                                    Record rec = new Record();
+                                    rec.Sensor = sensor;
+                                    rec.Value = (decimal)Math.Round(item.value, 1);
+                                    rec.CreateDate = DateTime.Now;
 
-                                if (rec.RecordId == 0)
-                                    context.Record.Add(rec);
+                                    if (rec.RecordId == 0)
+                                        context.Record.Add(rec);
 
-                                context.SaveChanges();
+                                    context.SaveChanges();
+                                }
                             }
-                        }
 
+                        }
                     }
+                    catch (JsonSerializationException)
+                    {
+
+                      
+                    }
+
+                    catch (HttpRequestException)
+                    {
+
+                      
+                    }
+
+
+
 
                 }
             }
