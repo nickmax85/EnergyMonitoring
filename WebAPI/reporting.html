@@ -90,12 +90,12 @@
             data.forEach(function (item, i) {
 
                 let li = $('<li class="list-group-item">');
-                let label = $('<label>').html(item.Value + "; <br/>" + item.Equipment.Name + "; <br/>" +
-                    item.Name + ";");
+                let label = $('<label>').html(item.Value + "; <br/>" + item.CreateDate + "; <br/>" +
+                    item.Sensor.Unit.Name + ";");
 
                 li.append(label);
-                li.append(outer);
-                outer.append(gaugeChart1, gaugeChart2);
+
+
 
                 container.append(li);
 
