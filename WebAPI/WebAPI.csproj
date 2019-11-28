@@ -166,6 +166,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Common\DbHelper.cs" />
+    <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\DevicesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -210,6 +211,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Chartjs\Chart.bundle.js" />
+    <Content Include="Chartjs\Chart.bundle.min.js" />
+    <Content Include="Chartjs\Chart.css" />
+    <Content Include="Chartjs\Chart.js" />
+    <Content Include="Chartjs\Chart.min.css" />
+    <Content Include="Chartjs\Chart.min.js" />
+    <Content Include="Chartjs\utils.js" />
     <Content Include="Content\cerulean.bootstrap.css" />
     <Content Include="Content\custom.css" />
     <Content Include="Content\cyborg.bootstrap.css" />

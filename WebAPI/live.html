@@ -2,14 +2,14 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Live</title>
 
     <link href="Content/custom.css" rel="stylesheet" />
 
-    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <!--<link href="Content/bootstrap.css" rel="stylesheet" />-->
     <!--<link href="Content/cerulean.bootstrap.css" rel="stylesheet" />-->
     <!--<link href="Content/cyborg.bootstrap.css" rel="stylesheet" />-->
-    <!--<link href="Content/minty.bootstrap.css" rel="stylesheet" />-->
+    <link href="Content/minty.bootstrap.css" rel="stylesheet" />
 
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/bootstrap.js"></script>
@@ -20,7 +20,7 @@
 
 
 
-    <script src="Scripts/highcharts/7.1.2/themes/sand-signika.js"></script>
+    <script src="Scripts/highcharts/7.1.2/themes/dark-unica.js"></script>
 
 
 </head>
@@ -56,10 +56,7 @@
     <ul id="devices" class="list-group">
     </ul>
 
-    <footer>
-        <hr />
-        &copy; 2019 Markus Thaler
-    </footer>
+
 
 
     <script>
@@ -144,8 +141,6 @@
             let container = $('#devices');
             container.empty();
 
-
-
             if (!Array.isArray(data))
                 return;
 
@@ -153,7 +148,7 @@
             data.forEach(function (item, i) {
 
                 let li = $('<li class="list-group-item">');
-                let label = $('<label>').html(item.Equipment.Location.Name + "; " + item.Equipment.Name + "; " +
+                let label = $('<label>').html(item.Equipment.Location.Name + "; <br/>" + item.Equipment.Name + "; <br/>" +
                     item.Name + ";");
                 let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a>');
 
@@ -169,7 +164,7 @@
 
 
                 li.append(label);
-                li.append(ipLink);
+                label.append(ipLink);
                 li.append(outer);
                 outer.append(gaugeChart1, gaugeChart2);
 
@@ -307,6 +302,12 @@
 
 
     </script>
+
+    <footer>
+        <hr />
+        &copy; 2019 Markus Thaler
+    </footer>
+
 
 </body>
 </html>

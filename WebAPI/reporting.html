@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-
-    <link href="Content/custom.css" rel="stylesheet" />
+    <title>Reporting</title>
 
     <link href="Content/bootstrap.css" rel="stylesheet" />
     <!--<link href="Content/cerulean.bootstrap.css" rel="stylesheet" />-->
@@ -14,14 +12,8 @@
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/bootstrap.js"></script>
 
-    <script src="Scripts/highcharts/7.1.2/highcharts.js"></script>
-    <script src="Scripts/highcharts/7.1.2/highcharts-more.js"></script>
-    <script src="Scripts/highcharts/7.1.2/modules/solid-gauge.js"></script>
-
-
-
-    <script src="Scripts/highcharts/7.1.2/themes/sand-signika.js"></script>
-
+    <script src="Chartjs/Chart.min.js"></script>
+    <script src="Chartjs/utils.js"></script>
 
 </head>
 <body class="container">
@@ -34,7 +26,6 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                <!--<li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>-->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dashboard
@@ -49,102 +40,48 @@
     </nav>
 
     <header>
-        <h1>Live</h1>
+        <h1>Reporting</h1>
     </header>
 
 
     <ul id="devices" class="list-group">
     </ul>
 
-    <footer>
-        <hr />
-        &copy; 2019 Markus Thaler
-    </footer>
+    <div style="width:75%;">
+        <canvas id="canvas"></canvas>
+    </div>
 
+    <br>
+    <br>
+    <button id="randomizeData">Randomize Data</button>
+    <button id="addDataset">Add Dataset</button>
+    <button id="removeDataset">Remove Dataset</button>
+    <button id="addData">Add Data</button>
+    <button id="removeData">Remove Data</button>
 
     <script>
 
         $(document).ready(function () {
-
-            getDevices();
+            getRecords();
         });
 
+        function getRecords() {
 
-        var gaugeOptions = {
-            chart: {
-                type: 'solidgauge'
-            },
-
-            title: null,
-
-            pane: {
-                center: ['50%', '85%'],
-                size: '140%',
-                startAngle: -90,
-                endAngle: 90,
-                background: {
-                    backgroundColor:
-                        Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
-                    innerRadius: '60%',
-                    outerRadius: '100%',
-                    shape: 'arc'
-                }
-            },
-
-            tooltip: {
-                enabled: false
-            },
-
-            // the value axis
-            yAxis: {
-                stops: [
-                    [0.1, '#55BF3B'], // green
-                    [0.5, '#DDDF0D'], // yellow
-                    [0.9, '#DF5353'] // red
-                ],
-                lineWidth: 0,
-                minorTickInterval: null,
-                tickAmount: 2,
-                title: {
-                    y: -70
-                },
-                labels: {
-                    y: 16
-                }
-            },
-
-            plotOptions: {
-                solidgauge: {
-                    dataLabels: {
-                        y: 5,
-                        borderWidth: 0,
-                        useHTML: true
-                    }
-                }
-            }
-        };
-
-
-        function getDevices() {
-
-            let url = '/api/devices';
+            let url = '/api/records';
             $.getJSON(url)
                 .done(function (data) {
                     // let data = JSON.parse(ddata.d);
-                    showDevices(data);
+                    showData(data);
                 })
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
-
         }
 
-        function showDevices(data) {
+        function showData(data) {
 
             let container = $('#devices');
             container.empty();
-
-
 
             if (!Array.isArray(data))
                 return;
@@ -153,160 +90,151 @@
             data.forEach(function (item, i) {
 
                 let li = $('<li class="list-group-item">');
-                let label = $('<label>').html(item.Equipment.Location.Name + "; " + item.Equipment.Name + "; " +
+                let label = $('<label>').html(item.Value + "; <br/>" + item.Equipment.Name + "; <br/>" +
                     item.Name + ";");
-                let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a>');
-
-                let button = $('<button class="btn btn-info">').click(function () {
-                    window.location = "http://" + item.IP;
-                }).html('Dashboard');
-
-
-                let outer = $(' <div class="outer">');
-
-                let gaugeChart1 = $('<div id="containerGauge1_' + i + '" class="chart-container"</div>');
-                let gaugeChart2 = $('<div id="containerGauge2_' + i + '" class="chart-container"</div>');
-
 
                 li.append(label);
-                li.append(ipLink);
                 li.append(outer);
                 outer.append(gaugeChart1, gaugeChart2);
 
                 container.append(li);
 
-
-                addGauge1(gaugeChart1.get(0).id, item);
-                addGauge2(gaugeChart2.get(0).id, item);
-
             });
         }
 
-        function addGauge1(container, item) {
+        var myData1 = [10, 20, 30, 40, 50, 60, 70];
 
-            var pressureGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
-                yAxis: {
-                    min: 0,
-                    max: 20,
-                    title: {
-                        text: 'Druck'
-                    }
-                },
+        var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-                credits: {
-                    enabled: false
-                },
-
-                series: [{
-                    name: 'Druck',
-                    data: [0],
-                    dataLabels: {
-                        format:
-                            '<div style="text-align:center">' +
-                            '<span style="font-size:25px">{y}</span><br/>' +
-                            '<span style="font-size:12px;opacity:0.4">bar</span>' +
-                            '</div>'
-                    },
-                    tooltip: {
-                        valueSuffix: ' bar'
-                    }
+        var config = {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: window.chartColors.red,
+                    borderColor: window.chartColors.red,
+                    data: myData1,
+                    fill: false,
+                }, {
+                    label: 'My Second dataset',
+                    fill: false,
+                    backgroundColor: window.chartColors.blue,
+                    borderColor: window.chartColors.blue,
+                    data: [
+                        randomScalingFactor(),
+                        randomScalingFactor(),
+                        randomScalingFactor(),
+                        randomScalingFactor(),
+                        randomScalingFactor(),
+                        randomScalingFactor(),
+                        randomScalingFactor()
+                    ],
                 }]
-
-            }));
-
-
-            setInterval(function () {
-
-                var point;
-
-                // url = 'http://10.187.136.29/rest/json';
-                url = 'http://' + item.IP + '/rest/json';
-
-                $.getJSON(url)
-                    .done(function (data) {
-
-                        if (pressureGauge) {
-                            point = pressureGauge.series[0].points[0];
-                            point.update(data.iostate.input[0].value);
-                        }
-
-                    })
-                    .fail(function (error) {
-                        // alert("ERROR: " + error.status + ' ' + error.statusText);
-                    });
-
-
-            }, 2000);
-
-
-        }
-
-
-
-
-        function addGauge2(container, item) {
-
-            //The flow gauge
-            var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
-                yAxis: {
-                    min: 0,
-                    max: 5000,
-                    title: {
-                        text: 'Durchfluss'
-                    }
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Chart.js Line Chart'
                 },
-
-                series: [{
-                    name: 'Durchfluss',
-                    data: [0],
-                    dataLabels: {
-                        format:
-                            '<div style="text-align:center">' +
-                            '<span style="font-size:25px">{y:.1f}</span><br/>' +
-                            '<span style="font-size:12px;opacity:0.4">' +
-                            ' l / min' +
-                            '</span>' +
-                            '</div>'
-                    },
-                    tooltip: {
-                        valueSuffix: ' revolutions/min'
-                    }
-                }]
-
-            }));
-
-
-
-
-            setInterval(function () {
-
-                var point;
-
-                //url = 'http://10.187.136.29/rest/json';
-                url = 'http://' + item.IP + '/rest/json';
-                $.getJSON(url)
-                    .done(function (data) {
-
-                        if (flowGauge) {
-                            point = flowGauge.series[0].points[0];
-                            point.update(data.iostate.input[1].value);
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Month'
                         }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        }
+                    }]
+                }
+            }
+        };
 
-                    })
-                    .fail(function (error) {
-                        //  alert("ERROR: " + error.status + ' ' + error.statusText);
-                    });
+        window.onload = function () {
+            var ctx = document.getElementById('canvas').getContext('2d');
+            window.myLine = new Chart(ctx, config);
+        };
 
+        document.getElementById('randomizeData').addEventListener('click', function () {
+            config.data.datasets.forEach(function (dataset) {
+                dataset.data = dataset.data.map(function () {
+                    return randomScalingFactor();
+                });
 
-            }, 2000);
+            });
 
+            window.myLine.update();
+        });
 
-        }
+        var colorNames = Object.keys(window.chartColors);
+        document.getElementById('addDataset').addEventListener('click', function () {
+            var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = window.chartColors[colorName];
+            var newDataset = {
+                label: 'Dataset ' + config.data.datasets.length,
+                backgroundColor: newColor,
+                borderColor: newColor,
+                data: [],
+                fill: false
+            };
 
+            for (var index = 0; index < config.data.labels.length; ++index) {
+                newDataset.data.push(randomScalingFactor());
+            }
 
+            config.data.datasets.push(newDataset);
+            window.myLine.update();
+        });
 
+        document.getElementById('addData').addEventListener('click', function () {
+            if (config.data.datasets.length > 0) {
+                var month = MONTHS[config.data.labels.length % MONTHS.length];
+                config.data.labels.push(month);
 
+                config.data.datasets.forEach(function (dataset) {
+                    dataset.data.push(randomScalingFactor());
+                });
+
+                window.myLine.update();
+            }
+        });
+
+        document.getElementById('removeDataset').addEventListener('click', function () {
+            config.data.datasets.splice(0, 1);
+            window.myLine.update();
+        });
+
+        document.getElementById('removeData').addEventListener('click', function () {
+            config.data.labels.splice(-1, 1); // remove the label first
+
+            config.data.datasets.forEach(function (dataset) {
+                dataset.data.pop();
+            });
+
+            window.myLine.update();
+        });
     </script>
+
+
+    <footer>
+        <hr />
+        &copy; 2019 Markus Thaler
+    </footer>
 
 </body>
 </html>
