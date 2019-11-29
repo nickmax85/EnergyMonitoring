@@ -26,9 +26,15 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/Default/5
-        public string Get(int id)
+        public IEnumerable<Device> Get(int id)
         {
-            return "value";
+            using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+
+                return context.Device.Where(x => x.DeviceID == id).ToList();
+            }
+
         }
 
         // POST: api/Default

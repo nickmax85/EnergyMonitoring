@@ -39,7 +39,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="live.html">Live</a>
-                        <a class="dropdown-item" href="reporting.html">Reporting</a>
+                        <a class="dropdown-item" href="records.html">Aufzeichnungen</a>
                     </div>
                 </li>
             </ul>
@@ -53,9 +53,6 @@
 
     <ul id="devices" class="list-group">
     </ul>
-
-
-
 
     <script>
 
@@ -119,7 +116,6 @@
             }
         };
 
-
         function getDevices() {
 
             let url = '/api/devices';
@@ -133,6 +129,39 @@
                 });
 
         }
+
+
+        function openDevice(id) {
+
+            let url = '/api/devices/' + id;
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    console.info(data);
+                    showDevice(data[0]);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+
+        function showDevice(data) {
+
+            let container = $('#devices');
+            container.empty();
+
+            let li = $('<li class="list-group-item">');
+            let label = $('<label>').html(data.DeviceID + "; <br/>" +
+                data.Name + ";");
+
+            li.append(label);
+
+            container.append(li);
+        }
+
 
         function showDevices(data) {
 
@@ -148,26 +177,32 @@
                 let li = $('<li class="list-group-item">');
                 let label = $('<label>').html(item.Equipment.Location.Name + "; <br/>" + item.Equipment.Name + "; <br/>" +
                     item.Name + ";");
-                let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a>');
+                let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a> <br/>');
 
                 let button = $('<button class="btn btn-info">').click(function () {
-                    window.location = "http://" + item.IP;
-                }).html('Dashboard');
+                    // window.location = "http://" + item.IP;
 
+                    localStorage.setItem("DeviceID", item.DeviceID);
+
+                    window.location.href = "records.html";
+
+
+
+                }).html('Report');
 
                 let outer = $(' <div class="outer">');
 
                 let gaugeChart1 = $('<div id="containerGauge1_' + i + '" class="chart-container"</div>');
                 let gaugeChart2 = $('<div id="containerGauge2_' + i + '" class="chart-container"</div>');
 
-
-                li.append(label);
                 label.append(ipLink);
+                li.append(label);
                 li.append(outer);
+
                 outer.append(gaugeChart1, gaugeChart2);
+                outer.append(button);
 
                 container.append(li);
-
 
                 addGauge1(gaugeChart1.get(0).id, item);
                 addGauge2(gaugeChart2.get(0).id, item);
@@ -234,9 +269,6 @@
 
         }
 
-
-
-
         function addGauge2(container, item) {
 
             //The flow gauge
@@ -268,9 +300,6 @@
 
             }));
 
-
-
-
             setInterval(function () {
 
                 var point;
@@ -290,14 +319,8 @@
                         //  alert("ERROR: " + error.status + ' ' + error.statusText);
                     });
 
-
             }, 2000);
-
-
         }
-
-
-
 
     </script>
 

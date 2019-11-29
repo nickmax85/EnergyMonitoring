@@ -24,24 +24,27 @@ namespace WebAPI.Controllers
                 context.Configuration.ProxyCreationEnabled = false;
                 //var item = context.Record.Where(x => x.Sensor.DeviceID == 2).ToList().AsQueryable();
                 var item = context.Record
-                    .Include(x => x.Sensor.Unit).Where(x => x.Sensor.DeviceID == 2).ToList().AsQueryable();
-
+                    .Include(x => x.Sensor.Unit).Where(x => x.Sensor.DeviceID == 1).ToList().AsQueryable();
 
                 return item;
             }
+
         }
 
         // GET: api/Records/5
-        [ResponseType(typeof(Record))]
-        public IHttpActionResult GetRecord(int id)
+        public IEnumerable<Record> Get(int id)
         {
-            Record record = db.Record.Find(id);
-            if (record == null)
+            using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
             {
-                return NotFound();
-            }
+                context.Configuration.ProxyCreationEnabled = false;
+                var item = context.Record
+                     .Where(x => x.Sensor.DeviceID == id)
+                     .Include(x => x.Sensor.Device)
+                    .Include(x => x.Sensor.Unit)
+                    .ToList();
 
-            return Ok(record);
+                return item;
+            }
         }
 
         // PUT: api/Records/5

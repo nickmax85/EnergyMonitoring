@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aufzeichnungen</title>
+
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <!--<link href="Content/cerulean.bootstrap.css" rel="stylesheet" />-->
+    <!--<link href="Content/cyborg.bootstrap.css" rel="stylesheet" />-->
+    <!--<link href="Content/minty.bootstrap.css" rel="stylesheet" />-->
+
+    <script src="Scripts/jquery-3.4.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+
+    <script src="Chartjs/Chart.min.js"></script>
+    <script src="Chartjs/utils.js"></script>
+
+</head>
+<body class="container">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">EnergyMonitoring</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dashboard
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="live.html">Live</a>
+                        <a class="dropdown-item" href="records.html">Aufzeichnungen</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Aufzeichnungen</h1>
+    </header>
+
+
+    <ul id="devices" class="list-group">
+    </ul>
+
+    <script>
+
+        $(document).ready(function () {
+
+            var deviceId = localStorage.getItem("DeviceID");
+
+            getRecords(deviceId);
+        });
+
+        function getRecords(deviceId) {
+            console.info(deviceId);
+            let url = '/api/records/' + deviceId;
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    //debugger;
+                    console.info(data);
+                    showData(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+        }
+
+        function showData(data) {
+
+            let container = $('#devices');
+            container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+            let i = 0;
+            data.forEach(function (item, i) {
+
+                let li = $('<li class="list-group-item">');
+                let label = $('<label>').html(item.Sensor.Unit.Name + "= " + item.Value + item.Sensor.Unit.Sign + "; <br/>"
+                    + 'DeviceID=' + item.Sensor.DeviceID + "<br/>"
+                    + 'CreateDate=' + item.CreateDate + "; <br/>");
+
+                li.append(label);
+
+                container.append(li);
+
+            });
+        }
+
+    </script>
+
+
+    <footer>
+        <hr />
+        &copy; 2019 Markus Thaler
+    </footer>
+
+</body>
+</html>
