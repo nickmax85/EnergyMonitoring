@@ -5,17 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="f300ca7d59994d16b735fe233bd6ee7a" Name="Diagram1">
-        <EntityTypeShape EntityType="EnergyMonitoringModel.Device" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnergyMonitoringModel.Equipment" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnergyMonitoringModel.Location" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnergyMonitoringModel.Record" Width="1.5" PointX="9.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnergyMonitoringModel.Sensor" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnergyMonitoringModel.Unit" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Device_Equipment" ManuallyRouted="false" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Device" ManuallyRouted="false" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Equipment_Location" ManuallyRouted="false" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Sensor" ManuallyRouted="false" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Unit" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Area" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Config" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Device" Width="1.5" PointX="5.25" PointY="1.125" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Equipment" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Record" Width="1.5" PointX="9.75" PointY="1.375" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Sensor" Width="1.5" PointX="7.5" PointY="1" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Unit" Width="1.5" PointX="5.25" PointY="5.375" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.User" Width="1.5" PointX="0.75" PointY="7.75" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Equipment_Area" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Device_Equipment" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Device" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Sensor" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Unit" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

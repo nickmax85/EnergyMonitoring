@@ -5,20 +5,19 @@
     <title>Live</title>
 
     <link href="Content/custom.css" rel="stylesheet" />
-
-    <!--<link href="Content/bootstrap.css" rel="stylesheet" />-->
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <!--<link href="Content/cerulean.bootstrap.css" rel="stylesheet" />-->
     <!--<link href="Content/cyborg.bootstrap.css" rel="stylesheet" />-->
-    <link href="Content/minty.bootstrap.css" rel="stylesheet" />
+    <!--<link href="Content/minty.bootstrap.css" rel="stylesheet" />-->
 
     <script src="Scripts/jquery-3.4.1.js"></script>
-    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
 
     <script src="Scripts/highcharts/7.1.2/highcharts.js"></script>
     <script src="Scripts/highcharts/7.1.2/highcharts-more.js"></script>
     <script src="Scripts/highcharts/7.1.2/modules/solid-gauge.js"></script>
 
-    <script src="Scripts/highcharts/7.1.2/themes/dark-unica.js"></script>
+    <!-- <script src="Scripts/highcharts/7.1.2/themes/dark-unica.js"></script>-->
 
 
 </head>
@@ -32,7 +31,6 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                <!--<li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>-->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dashboard
@@ -42,6 +40,7 @@
                         <a class="dropdown-item" href="records.html">Aufzeichnungen</a>
                     </div>
                 </li>
+                <li class="nav-item"><a class="nav-link" href="manage.html">Verwaltung</a></li>
             </ul>
         </div>
     </nav>
@@ -50,6 +49,13 @@
         <h1>Live</h1>
     </header>
 
+    <div class="form-group">
+        <label for="selectArea">Bereich</label>
+        <select class="form-control" id="selectArea" onchange="getDevices(this.value)">
+            <option>auswählen ...</option>
+        </select>
+    </div>
+
 
     <ul id="devices" class="list-group">
     </ul>
@@ -57,12 +63,11 @@
     <script>
 
         $(document).ready(function () {
-
-            getDevices();
+            getAreas();
         });
 
 
-        var gaugeOptions = {
+        var solidGaugeOptions = {
             chart: {
                 type: 'solidgauge'
             },
@@ -116,13 +121,124 @@
             }
         };
 
-        function getDevices() {
+        var gaugeOptions = {
+            chart: {
+                type: 'gauge',
+                plotBackgroundColor: null,
+                plotBackgroundImage: null,
+                plotBorderWidth: 0,
+                plotShadow: false
+            },
 
+            title: {
+                text: 'Speedometer'
+            },
+
+            pane: {
+                startAngle: -150,
+                endAngle: 150,
+                background: [{
+                    backgroundColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0, '#FFF'],
+                            [1, '#333']
+                        ]
+                    },
+                    borderWidth: 0,
+                    outerRadius: '109%'
+                }, {
+                    backgroundColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0, '#333'],
+                            [1, '#FFF']
+                        ]
+                    },
+                    borderWidth: 1,
+                    outerRadius: '107%'
+                }, {
+                    // default background
+                }, {
+                    backgroundColor: '#DDD',
+                    borderWidth: 0,
+                    outerRadius: '105%',
+                    innerRadius: '103%'
+                }]
+            },
+
+            // the value axis
+            yAxis: {
+                min: 0,
+                max: 200,
+
+                minorTickInterval: 'auto',
+                minorTickWidth: 1,
+                minorTickLength: 10,
+                minorTickPosition: 'inside',
+                minorTickColor: '#666',
+
+                tickPixelInterval: 30,
+                tickWidth: 2,
+                tickPosition: 'inside',
+                tickLength: 10,
+                tickColor: '#666',
+                labels: {
+                    step: 2,
+                    rotation: 'auto'
+                },
+                title: {
+                    text: 'km/h'
+                },
+                plotBands: [{
+                    from: 0,
+                    to: 120,
+                    color: '#55BF3B' // green
+                }, {
+                    from: 120,
+                    to: 160,
+                    color: '#DDDF0D' // yellow
+                }, {
+                    from: 160,
+                    to: 200,
+                    color: '#DF5353' // red
+                }]
+            },
+
+            series: [{
+                name: 'Speed',
+                data: [80],
+                tooltip: {
+                    valueSuffix: ' km/h'
+                }
+            }]
+
+
+        };
+
+        function getDevices(value) {
+            debugger;
+            console.log(value);
             let url = '/api/devices';
             $.getJSON(url)
                 .done(function (data) {
                     // let data = JSON.parse(ddata.d);
                     showDevices(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+
+        function getAreas() {
+
+            let url = '/api/areas';
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    showAreas(data);
                 })
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
@@ -175,7 +291,7 @@
             data.forEach(function (item, i) {
 
                 let li = $('<li class="list-group-item">');
-                let label = $('<label>').html(item.Equipment.Location.Name + "; <br/>" + item.Equipment.Name + "; <br/>" +
+                let label = $('<label>').html(item.Equipment.Area.Name + "; <br/>" + item.Equipment.Name + "; <br/>" +
                     item.Name + ";");
                 let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a> <br/>');
 
@@ -185,8 +301,6 @@
                     localStorage.setItem("DeviceID", item.DeviceID);
 
                     window.location.href = "records.html";
-
-
 
                 }).html('Report');
 
@@ -210,12 +324,25 @@
             });
         }
 
+        function showAreas(data) {
+
+            let container = $('#selectArea');
+            // container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+            data.forEach(function (item, i) {
+                $('#selectArea').append($('<option></option>').val(item).html(item.Name));
+            });
+        }
+
         function addGauge1(container, item) {
 
             var pressureGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
                 yAxis: {
                     min: 0,
-                    max: 20,
+                    max: 10,
                     title: {
                         text: 'Druck'
                     }
@@ -272,7 +399,7 @@
         function addGauge2(container, item) {
 
             //The flow gauge
-            var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
+            var flowGauge = Highcharts.chart(container, Highcharts.merge(solidGaugeOptions, {
                 yAxis: {
                     min: 0,
                     max: 5000,

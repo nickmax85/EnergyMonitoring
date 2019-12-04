@@ -15,12 +15,14 @@ namespace EnergyMonitoringService.Models
         {
         }
 
+        public virtual DbSet<Area> Area { get; set; }
+        public virtual DbSet<Config> Config { get; set; }
         public virtual DbSet<Device> Device { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
-        public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<Record> Record { get; set; }
         public virtual DbSet<Sensor> Sensor { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +35,32 @@ namespace EnergyMonitoringService.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Area>(entity =>
+            {
+                entity.Property(e => e.AreaId).HasColumnName("AreaID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Config>(entity =>
+            {
+                entity.Property(e => e.ConfigId).HasColumnName("ConfigID");
+
+                entity.Property(e => e.AuditTime).HasColumnType("datetime");
+
+                entity.Property(e => e.CostPerUnit).HasColumnType("decimal(6, 1)");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<Device>(entity =>
             {
                 entity.Property(e => e.DeviceId).HasColumnName("DeviceID");
@@ -61,35 +89,22 @@ namespace EnergyMonitoringService.Models
             {
                 entity.Property(e => e.EquipmentId).HasColumnName("EquipmentID");
 
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+                entity.Property(e => e.AreaId).HasColumnName("AreaID");
 
-                entity.Property(e => e.LocationId).HasColumnName("LocationID");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Number).HasMaxLength(50);
+                entity.Property(e => e.Number).HasMaxLength(10);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Location)
+                entity.HasOne(d => d.Area)
                     .WithMany(p => p.Equipment)
-                    .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK_Equipment_Location");
-            });
-
-            modelBuilder.Entity<Location>(entity =>
-            {
-                entity.Property(e => e.LocationId).HasColumnName("LocationID");
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+                    .HasForeignKey(d => d.AreaId)
+                    .HasConstraintName("FK_Equipment_Area");
             });
 
             modelBuilder.Entity<Record>(entity =>
@@ -117,17 +132,17 @@ namespace EnergyMonitoringService.Models
                     .HasColumnName("SensorID")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Alarm).HasColumnType("decimal(18, 1)");
-
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DeviceId).HasColumnName("DeviceID");
+
+                entity.Property(e => e.LowerLimit).HasColumnType("decimal(18, 1)");
 
                 entity.Property(e => e.UnitId).HasColumnName("UnitID");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Warning).HasColumnType("decimal(18, 1)");
+                entity.Property(e => e.UpperLimit).HasColumnType("decimal(18, 1)");
 
                 entity.HasOne(d => d.Device)
                     .WithMany(p => p.Sensor)
@@ -153,6 +168,20 @@ namespace EnergyMonitoringService.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Sign).HasMaxLength(50);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Mail)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsFixedLength();
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });

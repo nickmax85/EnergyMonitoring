@@ -11,8 +11,8 @@ namespace EnergyMonitoringService.Models
         }
 
         public int SensorId { get; set; }
-        public decimal? Warning { get; set; }
-        public decimal? Alarm { get; set; }
+        public decimal? LowerLimit { get; set; }
+        public decimal? UpperLimit { get; set; }
         public int UnitId { get; set; }
         public int DeviceId { get; set; }
         public DateTime? CreateDate { get; set; }

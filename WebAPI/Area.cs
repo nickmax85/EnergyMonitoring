@@ -12,15 +12,15 @@ namespace WebAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class Location
+    public partial class Area
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Location()
+        public Area()
         {
             this.Equipment = new HashSet<Equipment>();
         }
     
-        public int LocationID { get; set; }
+        public int AreaID { get; set; }
         public string Name { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

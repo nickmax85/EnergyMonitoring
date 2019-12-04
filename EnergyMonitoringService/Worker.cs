@@ -44,14 +44,14 @@ namespace EnergyMonitoringService
                .Include(device => device.Sensor)
                .ThenInclude(sensor => sensor.Unit)
                .Include(device => device.Equipment)
-               .Include(device => device.Equipment.Location).Where(x => (bool)x.Active)
+               .Include(device => device.Equipment.Area).Where(x => (bool)x.Active)
                .ToList();
 
 
                 // iterate over device list
                 foreach (var device in devices)
                 {
-                    Console.WriteLine($"Location: name={device.Equipment.Location.Name}");
+                    Console.WriteLine($"Location: name={device.Equipment.Area.Name}");
                     Console.WriteLine($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
                     Console.WriteLine($"Device: ip={device.Ip}; name={device.Name}");
 
@@ -95,13 +95,13 @@ namespace EnergyMonitoringService
                     catch (JsonSerializationException)
                     {
 
-                      
+
                     }
 
                     catch (HttpRequestException)
                     {
 
-                      
+
                     }
 
 

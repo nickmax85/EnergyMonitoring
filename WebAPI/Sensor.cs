@@ -21,8 +21,8 @@ namespace WebAPI
         }
     
         public int SensorID { get; set; }
-        public Nullable<decimal> Warning { get; set; }
-        public Nullable<decimal> Alarm { get; set; }
+        public Nullable<decimal> LowerLimit { get; set; }
+        public Nullable<decimal> UpperLimit { get; set; }
         public int UnitID { get; set; }
         public int DeviceID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }

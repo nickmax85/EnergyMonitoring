@@ -19,7 +19,7 @@ namespace WebAPI.Controllers
                 // context.Database.Log = Console.WriteLine;
                 context.Configuration.ProxyCreationEnabled = false;
                 items = context.Device.
-                    Include(x => x.Equipment.Location).Where(x => (bool)x.Active).ToList();
+                    Include(x => x.Equipment.Area).Where(x => (bool)x.Active).ToList();
 
             }
             return items;

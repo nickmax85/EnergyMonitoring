@@ -35,6 +35,7 @@
                         <a class="dropdown-item" href="records.html">Aufzeichnungen</a>
                     </div>
                 </li>
+                <li class="nav-item"><a class="nav-link" href="manage.html">Verwaltung</a></li>
             </ul>
         </div>
     </nav>
@@ -42,8 +43,6 @@
     <header>
         <h1>Aufzeichnungen</h1>
     </header>
-
-
 
 
     <div style="width:100%;">
@@ -58,15 +57,15 @@
 
     <script>
 
+
+
         $(document).ready(function () {
 
             var deviceId = localStorage.getItem("DeviceID");
 
             getRecords(deviceId);
 
-
         });
-
 
         function getRecords(deviceId) {
 
