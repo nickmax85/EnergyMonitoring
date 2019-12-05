@@ -51,21 +51,165 @@
 
     <div class="form-group">
         <label for="selectArea">Bereich</label>
-        <select class="form-control" id="selectArea" onchange="getDevices(this.value)">
+        <select class="form-control" id="selectArea" onchange="areaSelectionChange(this)">
             <option>auswählen ...</option>
         </select>
     </div>
-
 
     <ul id="devices" class="list-group">
     </ul>
 
     <script>
 
+        function areaSelectionChange(areaId) {
+
+            let sel2 = $("#selectArea option:selected").val();
+
+            getDevices(sel2);
+
+        }
+
         $(document).ready(function () {
             getAreas();
         });
 
+        function getAreas() {
+
+            let url = '/api/areas';
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    showAreas(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+
+        function getDevices() {
+
+            let url = '/api/devices';
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    showDevices(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function getDevices(areaId) {
+
+            let url = '/api/devices' + areaId;
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    console.log(areaId);
+                    showDevices(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function openDevice(id) {
+
+            let url = '/api/devices/' + id;
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    console.info(data);
+                    showDevice(data[0]);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+
+
+
+        function showAreas(data) {
+
+            let container = $('#selectArea');
+            // container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+            data.forEach(function (item, i) {
+
+                $('#selectArea').append($('<option></option>').val(item.AreaID).html(item.Name));
+
+            });
+
+        }
+
+        function showDevices(data) {
+
+            let container = $('#devices');
+            container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+            let i = 0;
+            data.forEach(function (item, i) {
+
+                let li = $('<li class="list-group-item">');
+                let label = $('<label>').html(item.Equipment.Area.Name + "; <br/>" + item.Equipment.Name + "; <br/>" +
+                    item.Name + ";");
+                let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a> <br/>');
+
+                let button = $('<button class="btn btn-info">').click(function () {
+                    // window.location = "http://" + item.IP;
+
+                    localStorage.setItem("DeviceID", item.DeviceID);
+
+                    window.location.href = "records.html";
+
+                }).html('Report');
+
+                let outer = $(' <div class="outer">');
+
+                let gaugeChart1 = $('<div id="containerGauge1_' + i + '" class="chart-container"</div>');
+                let gaugeChart2 = $('<div id="containerGauge2_' + i + '" class="chart-container"</div>');
+
+                label.append(ipLink);
+                li.append(label);
+                li.append(outer);
+
+                outer.append(gaugeChart1, gaugeChart2);
+                outer.append(button);
+
+                container.append(li);
+
+                addGauge1(gaugeChart1.get(0).id, item);
+                addGauge2(gaugeChart2.get(0).id, item);
+
+            });
+        }
+
+        function showDevice(data) {
+
+            let container = $('#devices');
+            container.empty();
+
+            let li = $('<li class="list-group-item">');
+            let label = $('<label>').html(data.DeviceID + "; <br/>" +
+                data.Name + ";");
+
+            li.append(label);
+
+            container.append(li);
+        }
 
         var solidGaugeOptions = {
             chart: {
@@ -216,130 +360,9 @@
 
         };
 
-        function getDevices(value) {
-            debugger;
-            console.log(value);
-            let url = '/api/devices';
-            $.getJSON(url)
-                .done(function (data) {
-                    // let data = JSON.parse(ddata.d);
-                    showDevices(data);
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-        }
-
-
-        function getAreas() {
-
-            let url = '/api/areas';
-            $.getJSON(url)
-                .done(function (data) {
-                    // let data = JSON.parse(ddata.d);
-                    showAreas(data);
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-        }
-
-
-        function openDevice(id) {
-
-            let url = '/api/devices/' + id;
-            $.getJSON(url)
-                .done(function (data) {
-                    // let data = JSON.parse(ddata.d);
-                    console.info(data);
-                    showDevice(data[0]);
-
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-        }
-
-
-        function showDevice(data) {
-
-            let container = $('#devices');
-            container.empty();
-
-            let li = $('<li class="list-group-item">');
-            let label = $('<label>').html(data.DeviceID + "; <br/>" +
-                data.Name + ";");
-
-            li.append(label);
-
-            container.append(li);
-        }
-
-
-        function showDevices(data) {
-
-            let container = $('#devices');
-            container.empty();
-
-            if (!Array.isArray(data))
-                return;
-
-            let i = 0;
-            data.forEach(function (item, i) {
-
-                let li = $('<li class="list-group-item">');
-                let label = $('<label>').html(item.Equipment.Area.Name + "; <br/>" + item.Equipment.Name + "; <br/>" +
-                    item.Name + ";");
-                let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a> <br/>');
-
-                let button = $('<button class="btn btn-info">').click(function () {
-                    // window.location = "http://" + item.IP;
-
-                    localStorage.setItem("DeviceID", item.DeviceID);
-
-                    window.location.href = "records.html";
-
-                }).html('Report');
-
-                let outer = $(' <div class="outer">');
-
-                let gaugeChart1 = $('<div id="containerGauge1_' + i + '" class="chart-container"</div>');
-                let gaugeChart2 = $('<div id="containerGauge2_' + i + '" class="chart-container"</div>');
-
-                label.append(ipLink);
-                li.append(label);
-                li.append(outer);
-
-                outer.append(gaugeChart1, gaugeChart2);
-                outer.append(button);
-
-                container.append(li);
-
-                addGauge1(gaugeChart1.get(0).id, item);
-                addGauge2(gaugeChart2.get(0).id, item);
-
-            });
-        }
-
-        function showAreas(data) {
-
-            let container = $('#selectArea');
-            // container.empty();
-
-            if (!Array.isArray(data))
-                return;
-
-            data.forEach(function (item, i) {
-                $('#selectArea').append($('<option></option>').val(item).html(item.Name));
-            });
-        }
-
         function addGauge1(container, item) {
 
-            var pressureGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
+            var pressureGauge = Highcharts.chart(container, Highcharts.merge(solidGaugeOptions, {
                 yAxis: {
                     min: 0,
                     max: 10,

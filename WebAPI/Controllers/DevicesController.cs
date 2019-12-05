@@ -37,6 +37,22 @@ namespace WebAPI.Controllers
 
         }
 
+        // GET: api/Default/5
+        public IEnumerable<Device> GetAreaDevices(int id)
+        {
+            using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+
+                items = context.Device.Include(x => x.Equipment)
+                    .Where(x => x.Equipment.AreaID == id)
+                    .ToList();
+
+                return items;
+            }
+
+        }
+
         // POST: api/Default
         public void Post([FromBody]string value)
         {

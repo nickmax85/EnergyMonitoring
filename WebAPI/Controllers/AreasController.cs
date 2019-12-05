@@ -26,9 +26,18 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/Location/5
-        public string Get(int id)
+        public Area Get(int id)
         {
-            return "value";
+            Area area;
+
+            using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
+            {
+                // context.Database.Log = Console.WriteLine;
+                context.Configuration.ProxyCreationEnabled = false;
+                area = context.Area.Where(x => x.AreaID == id).FirstOrDefault();
+
+            }
+            return area;
         }
 
         // POST: api/Location
