@@ -5,6 +5,7 @@
     <title>Live</title>
 
     <link href="Content/custom.css" rel="stylesheet" />
+    <!--<link href="Content/speedometerGauge.css" rel="stylesheet" />-->
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <!--<link href="Content/cerulean.bootstrap.css" rel="stylesheet" />-->
     <!--<link href="Content/cyborg.bootstrap.css" rel="stylesheet" />-->
@@ -17,7 +18,7 @@
     <script src="Scripts/highcharts/7.1.2/highcharts-more.js"></script>
     <script src="Scripts/highcharts/7.1.2/modules/solid-gauge.js"></script>
 
-    <!-- <script src="Scripts/highcharts/7.1.2/themes/dark-unica.js"></script>-->
+    <!--<script src="Scripts/highcharts/7.1.2/themes/dark-unica.js"></script>-->
 
 
 </head>
@@ -104,11 +105,13 @@
 
         function getDevices(areaId) {
 
-            let url = '/api/devices' + areaId;
+            let url = '/api/areas/' + areaId + '/devices';
+            console.log(url);
+
             $.getJSON(url)
                 .done(function (data) {
                     // let data = JSON.parse(ddata.d);
-                    console.log(areaId);
+
                     showDevices(data);
                 })
                 .fail(function (error) {
@@ -157,6 +160,8 @@
             let container = $('#devices');
             container.empty();
 
+            console.log(data);
+
             if (!Array.isArray(data))
                 return;
 
@@ -193,6 +198,7 @@
 
                 addGauge1(gaugeChart1.get(0).id, item);
                 addGauge2(gaugeChart2.get(0).id, item);
+
 
             });
         }
@@ -265,7 +271,10 @@
             }
         };
 
+
+
         var gaugeOptions = {
+
             chart: {
                 type: 'gauge',
                 plotBackgroundColor: null,
@@ -275,7 +284,7 @@
             },
 
             title: {
-                text: 'Speedometer'
+                text: null
             },
 
             pane: {
@@ -339,8 +348,8 @@
                     to: 120,
                     color: '#55BF3B' // green
                 }, {
-                    from: 120,
-                    to: 160,
+                    from: 7,
+                    to: 8,
                     color: '#DDDF0D' // yellow
                 }, {
                     from: 160,
@@ -349,26 +358,30 @@
                 }]
             },
 
-            series: [{
-                name: 'Speed',
-                data: [80],
-                tooltip: {
-                    valueSuffix: ' km/h'
-                }
-            }]
-
-
         };
 
         function addGauge1(container, item) {
 
-            var pressureGauge = Highcharts.chart(container, Highcharts.merge(solidGaugeOptions, {
+            var pressureGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
                 yAxis: {
                     min: 0,
                     max: 10,
                     title: {
                         text: 'Druck'
-                    }
+                    },
+                    plotBands: [{
+                        from: 0,
+                        to: 7,
+                        color: '#55BF3B' // green
+                    }, {
+                        from: 7,
+                        to: 8,
+                        color: '#DDDF0D' // yellow
+                    }, {
+                        from: 8,
+                        to: 10,
+                        color: '#DF5353' // red
+                    }]
                 },
 
                 credits: {
@@ -389,6 +402,7 @@
                         valueSuffix: ' bar'
                     }
                 }]
+
 
             }));
 
@@ -422,13 +436,26 @@
         function addGauge2(container, item) {
 
             //The flow gauge
-            var flowGauge = Highcharts.chart(container, Highcharts.merge(solidGaugeOptions, {
+            var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
                 yAxis: {
                     min: 0,
                     max: 5000,
                     title: {
                         text: 'Durchfluss'
-                    }
+                    },
+                    plotBands: [{
+                        from: 0,
+                        to: 200,
+                        color: '#55BF3B' // green
+                    }, {
+                        from: 200,
+                        to: 300,
+                        color: '#DDDF0D' // yellow
+                    }, {
+                        from: 300,
+                        to: 5000,
+                        color: '#DF5353' // red
+                    }]
                 },
 
                 series: [{
@@ -470,6 +497,66 @@
                     });
 
             }, 2000);
+        }
+
+
+        function addGauge3(container, item) {
+
+            var gauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
+                yAxis: {
+                    min: 0,
+                    max: 20,
+                    title: {
+                        text: 'Druck'
+                    }
+                },
+
+                credits: {
+                    enabled: false
+                },
+
+                series: [{
+                    name: 'Druck',
+                    data: [0],
+                    dataLabels: {
+                        format:
+                            '<div style="text-align:center">' +
+                            '<span style="font-size:25px">{y}</span><br/>' +
+                            '<span style="font-size:12px;opacity:0.4">bar</span>' +
+                            '</div>'
+                    },
+                    tooltip: {
+                        valueSuffix: ' bar'
+                    }
+                }]
+
+            }));
+
+
+            setInterval(function () {
+
+                var point;
+
+                // url = 'http://10.187.136.29/rest/json';
+                url = 'http://' + item.IP + '/rest/json';
+
+                $.getJSON(url)
+                    .done(function (data) {
+
+                        if (gauge) {
+                            point = gauge.series[0].points[0];
+                            point.update(data.iostate.input[1].value);
+                        }
+
+                    })
+                    .fail(function (error) {
+                        // alert("ERROR: " + error.status + ' ' + error.statusText);
+                    });
+
+
+            }, 2000);
+
+
         }
 
     </script>

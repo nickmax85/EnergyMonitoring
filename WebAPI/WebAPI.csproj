@@ -865,6 +865,7 @@
     <Content Include="Scripts\highcharts\7.1.2\css\stocktools\gui.scss" />
     <Content Include="Scripts\highcharts\7.1.2\css\highcharts.scss" />
     <Content Include="Scripts\highcharts\7.1.2\css\annotations\popup.scss" />
+    <Content Include="Database\EnergyMonitoring.bak" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -879,6 +880,8 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Content\speedometerGauge.css" />
+    <Content Include="test.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

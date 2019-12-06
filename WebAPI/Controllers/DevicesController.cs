@@ -26,26 +26,29 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/Default/5
-        public IEnumerable<Device> Get(int id)
+        public Device Get(int id)
         {
             using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
             {
                 context.Configuration.ProxyCreationEnabled = false;
 
-                return context.Device.Where(x => x.DeviceID == id).ToList();
+                return context.Device.Where(x => x.DeviceID == id).FirstOrDefault();
             }
 
         }
 
-        // GET: api/Default/5
-        public IEnumerable<Device> GetAreaDevices(int id)
+        //GET: api/Default/5
+        [Route("api/areas/{areaId}/devices")]
+        public IEnumerable<Device> GetDevicesbyArea(int areaId)
         {
+            List<Device> items;
+
             using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
             {
                 context.Configuration.ProxyCreationEnabled = false;
 
-                items = context.Device.Include(x => x.Equipment)
-                    .Where(x => x.Equipment.AreaID == id)
+                items = context.Device.Include(x => x.Equipment).Include(x => x.Equipment.Area)
+                    .Where(x => x.Equipment.AreaID == areaId)
                     .ToList();
 
                 return items;
