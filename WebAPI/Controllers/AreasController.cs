@@ -41,12 +41,17 @@ namespace WebAPI.Controllers
         }
 
 
-        
-
-
-        // POST: api/Location
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public IEnumerable<Area> Post([FromBody] Area area)
         {
+            using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
+            {
+                // context.Database.Log = Console.WriteLine;
+                context.Configuration.ProxyCreationEnabled = false;
+                context.Area.Add(area);
+            }
+
+            return Get();
         }
 
         // PUT: api/Location/5

@@ -4,15 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verwaltung</title>
 
-    <!--<link href="Content/bootstrap.css" rel="stylesheet" />-->
-    <!--<link href="Content/cerulean.bootstrap.css" rel="stylesheet" />-->
+    <link href="Content/bootstrap.css" rel="stylesheet" />
     <!--<link href="Content/cyborg.bootstrap.css" rel="stylesheet" />-->
-    <link href="Content/minty.bootstrap.css" rel="stylesheet" />
 
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/bootstrap.js"></script>
 
 </head>
+
 <body class="container">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -41,17 +40,119 @@
         <h1>Verwaltung</h1>
     </header>
 
-    <h3>Geräte</h3>
-    <h3>Sensoren</h3>
-    <h4>Grenzen</h4>
+    <button id="addButton" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Hinzufügen</button>
+
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bereich</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label for='areaName'>Name:</label>
+                        <input type="text" class="form-control" id="areaName" placeholder="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="row" id="areas">
+
+    </div>
 
 
-
-    <h2>Mailverteiler</h2>
 
     <footer>
         <hr />
         &copy; 2019 Markus Thaler
     </footer>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#addButton').click(function () {
+
+                alert(message);
+                // postJQuery1();
+
+            });
+
+        });
+
+
+        function postArea() {
+
+            let url = '/api/areas';
+
+            let area = { Title: 'NEW', Room: 'C' };
+
+            $.post(url, area)
+                .done(function (data) {
+                    showAreas(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+
+        getAreas();
+
+        function getAreas() {
+            let url = '/api/areas';
+            $.getJSON(url)
+                .done(function (data) {
+                    showAreas(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function showAreas(data) {
+
+            let container = $('#areas');
+            container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+            data.forEach(function (item, i) {
+
+                let grid = $('<div class="col-sm-4">');
+
+                let card = $('<div class="card">');
+                let header = $('<div class="card-header">header</div>').html(item.Name);
+                let editButton = $('<a href="#" class="btn btn-primary">edit</a>');
+                let body = $('<div class="card-body">');
+                let title = $('<h6 class="card-title">title</h6>').html(item.Equipment.length + " Equipments");
+                let text = $('<p class="card-text"></p>');
+                let button = $('<a href="#" class="btn btn-primary a-btn-slide-text">show</a>');
+
+                body.append(title, text, button);
+                card.append(header, body);
+                grid.append(card);
+
+                container.append(grid);
+            });
+
+        }
+
+    </script>
 </body>
 </html>
