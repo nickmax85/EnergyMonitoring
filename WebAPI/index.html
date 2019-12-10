@@ -2,15 +2,17 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Verwaltung</title>
 
-    <!--<link href="Content/bootstrap.css" rel="stylesheet" />-->
-    <link href="Content/cyborg.bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <!--<link href="Content/cyborg.bootstrap.css" rel="stylesheet" />-->
 
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/bootstrap.js"></script>
-
+    <script src="areas.js"></script>
+    <script src="equipments.js"></script>
 </head>
+
 <body class="container">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -35,18 +37,70 @@
         </div>
     </nav>
 
-    <div is="image" class="text-center">
-        <img class="img-fluid" src="Images/digitalization-future.jpg" />
+    <header>
+        <h1>Bereiche</h1>
+    </header>
+
+    <!--<button id="addButton" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Hinzufügen</button>-->
+
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bereich</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label for='areaName'>Name:</label>
+                        <input type="text" class="form-control" id="areaName" placeholder="Name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button id="saveButton" type="button" class="btn btn-primary" data-dismiss="modal">Speichern</button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <div class="row" id="areas">
 
-    <header>
-        <h1>Home</h1>
+    </div>
+
+    <header id="headerEquipments">
     </header>
+    <div class="row" id="equipments">
+
+    </div>
 
     <footer>
         <hr />
         &copy; 2019 Markus Thaler
     </footer>
+
+    <script>
+
+        getAreas();
+
+        $(document).ready(function () {
+
+            $('#saveButton').click(function () {
+                // let id = $('#areaName').attr('id');
+                let name = $('#areaName').val();
+                let area = { Name: name };
+
+                postArea(area);
+
+            });
+
+        });
+
+
+
+
+    </script>
 </body>
 </html>

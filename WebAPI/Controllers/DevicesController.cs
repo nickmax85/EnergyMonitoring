@@ -10,7 +10,6 @@ namespace WebAPI.Controllers
     {
         private List<Device> items;
 
-
         // GET: api/devices    
         public IEnumerable<Device> Get()
         {
@@ -39,7 +38,7 @@ namespace WebAPI.Controllers
 
         //GET: api/Default/5
         [Route("api/areas/{areaId}/devices")]
-        public IEnumerable<Device> GetDevicesbyArea(int areaId)
+        public IEnumerable<Device> GetDevicesByArea(int areaId)
         {
             List<Device> items;
 
@@ -55,6 +54,8 @@ namespace WebAPI.Controllers
             }
 
         }
+
+
 
         // POST: api/Default
         public void Post([FromBody]string value)

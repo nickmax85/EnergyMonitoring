@@ -41,6 +41,9 @@ namespace WebAPI.Controllers
         }
 
 
+        
+
+
         [HttpPost]
         public IEnumerable<Area> Post([FromBody] Area area)
         {
@@ -48,7 +51,16 @@ namespace WebAPI.Controllers
             {
                 // context.Database.Log = Console.WriteLine;
                 context.Configuration.ProxyCreationEnabled = false;
-                context.Area.Add(area);
+                if (area.AreaID == 0)
+                {
+                    area.CreateDate = System.DateTime.Now;
+                    context.Area.Add(area);
+                }
+                else
+                {
+                    area.UpdateDate = System.DateTime.Now;
+                }
+                context.SaveChanges();
             }
 
             return Get();
