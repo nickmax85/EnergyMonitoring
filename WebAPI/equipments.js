@@ -1,4 +1,6 @@
-﻿function getEquipments(areaId) {
+﻿
+
+function getEquipments(areaId) {
 
     let url = '/api/areas/' + areaId + '/equipments';
 
@@ -32,7 +34,8 @@ function showEquipments(data) {
 
     let head = $('#headerEquipments');
     head.empty();
-    let h1 = $('<h1>Equipments</h1>');
+
+    let h1 = $('<h1>Equipments</h1>').html(data[0].Area.Name);
     head.append(h1);
 
     let container = $('#equipments');
@@ -40,9 +43,6 @@ function showEquipments(data) {
 
     if (!Array.isArray(data))
         return;
-
-
-
 
     data.forEach(function (item, i) {
 
@@ -52,11 +52,26 @@ function showEquipments(data) {
         let header = $('<div class="card-header">header</div>').html(item.Name);
         //let editButton = $('<a href="#" class="btn btn-primary">edit</a>');
         let body = $('<div class="card-body">');
-        let title = $('<h6 class="card-title">title</h6>');
-        let text = $('<p class="card-text"></p>');
-        let button = $('<a href="#" class="btn btn-link">show</a>');
+        //let title = $('<h6 class="card-title">title</h6>');
 
-        body.append(title, text, button);
+        let text = $('<p class="card-text"></p>');
+
+        let buttonLive = $('<a href="#" class="btn btn-link">Live</a>').click(function () {
+
+            localStorage.setItem('Area', JSON.stringify(item));
+            window.location.href = "equipments.html";
+
+        });
+
+        let buttonReport = $('<a href="#" class="btn btn-link">Auswertungen</a>').click(function () {
+
+            localStorage.setItem('Equipment', JSON.stringify(item));
+            debugger;
+            window.location.href = "records.html";
+
+        });
+
+        body.append(text, buttonLive, buttonReport);
         card.append(header, body);
         grid.append(card);
 

@@ -56,6 +56,23 @@ namespace WebAPI.Controllers
         }
 
 
+        //GET: api/Default/5
+        [Route("api/equipments/{equipmentId}/devices")]
+        public IEnumerable<Device> GetDevicesByEquipment(int equipmentId)
+        {
+            List<Device> items;
+
+            using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+                items = context.Device.Where(x => x.EquipmentID == equipmentId).Include(x => x.Sensor).ToList();
+
+                return items;
+            }
+
+        }
+
+
 
         // POST: api/Default
         public void Post([FromBody]string value)

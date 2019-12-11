@@ -218,6 +218,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="devices.js" />
     <Content Include="equipments.js" />
     <Content Include="areas.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -234,6 +235,7 @@
     <Content Include="Content\minty.bootstrap.css" />
     <Content Include="Images\digitalization-future.jpg" />
     <Content Include="Images\pneumatik.jpg" />
+    <Content Include="equipments.html" />
     <Content Include="records.html" />
     <Content Include="live.html" />
     <Content Include="Scripts\chartjs\Chart.bundle.js" />

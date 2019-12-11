@@ -5,9 +5,6 @@
     <title>Aufzeichnungen</title>
 
     <link href="Content/bootstrap.css" rel="stylesheet" />
-    <!--<link href="Content/cerulean.bootstrap.css" rel="stylesheet" />-->
-    <!--<link href="Content/cyborg.bootstrap.css" rel="stylesheet" />-->
-    <!--<link href="Content/minty.bootstrap.css" rel="stylesheet" />-->
 
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/bootstrap.js"></script>
@@ -15,6 +12,11 @@
     <script src="Chartjs/Chart.min.js"></script>
     <script src="Chartjs/utils.js"></script>
 
+    <script src="Scripts/highcharts/7.1.2/highcharts.js"></script>
+    <script src="Scripts/highcharts/7.1.2/highcharts-more.js"></script>
+    <script src="Scripts/highcharts/7.1.2/modules/solid-gauge.js"></script>
+
+   
 </head>
 <body class="container">
 
@@ -56,8 +58,6 @@
 
 
     <script>
-
-
 
         $(document).ready(function () {
 
@@ -207,13 +207,6 @@
             var ctx = document.getElementById('canvas').getContext('2d');
             window.myLine = new Chart(ctx, config);
         };
-
-
-
-
-
-
-
 
     </script>
 

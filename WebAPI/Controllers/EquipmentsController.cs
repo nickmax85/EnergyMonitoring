@@ -32,7 +32,10 @@ namespace WebAPI.Controllers
             using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
             {
                 context.Configuration.ProxyCreationEnabled = false;
-                items = context.Equipment.Where(x => x.AreaID == areaId).Include(x => x.Device.Select(d => d.Sensor)).ToList();
+                items = context.Equipment.Where(x => x.AreaID == areaId)
+                    .Include(x => x.Area)
+                    .Include(x => x.Device.Select(d => d.Sensor))
+                    .ToList();
 
                 return items;
             }

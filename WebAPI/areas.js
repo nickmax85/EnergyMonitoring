@@ -56,9 +56,10 @@ function showAreas(data) {
             li.append(text);
         }
 
-        let button = $('<a href="#" class="btn btn-link">show</a>').click(function () {
+        let button = $('<a href="#" class="btn btn-link">Öffnen</a>').click(function () {
 
-            getEquipments(item.AreaID);
+            localStorage.setItem('Area', JSON.stringify(item));
+            window.location.href = "equipments.html";
 
         });
 
