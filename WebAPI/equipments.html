@@ -44,23 +44,25 @@
         </div>
     </nav>
 
-    <header id="headerEquipments">
+    <header>
+        <h1></h1>
     </header>
 
     <div class="row" id="equipments">
 
-
     </div>
+
 
     <ul id="devices" class="list-group">
     </ul>
 
 
     <script>
-
         $(document).ready(function () {
 
             let area = JSON.parse(localStorage.getItem('Area'))
+
+            $('h1').html(area.Name);
 
             getEquipments(area.AreaID);
 

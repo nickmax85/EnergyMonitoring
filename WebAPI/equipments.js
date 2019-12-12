@@ -31,12 +31,12 @@ function postEquipment(equipment) {
 
 function showEquipments(data) {
 
+    showCard(data);
 
-    let head = $('#headerEquipments');
-    head.empty();
+}
 
-    let h1 = $('<h1>Equipments</h1>').html(data[0].Area.Name);
-    head.append(h1);
+
+function showCard(data) {
 
     let container = $('#equipments');
     container.empty();
@@ -52,26 +52,25 @@ function showEquipments(data) {
         let header = $('<div class="card-header">header</div>').html(item.Name);
         //let editButton = $('<a href="#" class="btn btn-primary">edit</a>');
         let body = $('<div class="card-body">');
-        //let title = $('<h6 class="card-title">title</h6>');
+        //let title = $('<h6 class="card-title">title</h6>').html(item.Equipment.length + " Equipments");
 
         let text = $('<p class="card-text"></p>');
 
-        let buttonLive = $('<a href="#" class="btn btn-link">Live</a>').click(function () {
+        let buttonDevices = $('<a href="#" class="btn btn-link">Sensoren</a>').click(function () {
 
-            localStorage.setItem('Area', JSON.stringify(item));
-            window.location.href = "equipments.html";
+            localStorage.setItem('Equipment', JSON.stringify(item));
+            window.location.href = "devices.html";
 
         });
 
         let buttonReport = $('<a href="#" class="btn btn-link">Auswertungen</a>').click(function () {
 
             localStorage.setItem('Equipment', JSON.stringify(item));
-            debugger;
             window.location.href = "records.html";
 
         });
 
-        body.append(text, buttonLive, buttonReport);
+        body.append(text, buttonDevices, buttonReport);
         card.append(header, body);
         grid.append(card);
 
@@ -79,3 +78,5 @@ function showEquipments(data) {
     });
 
 }
+
+

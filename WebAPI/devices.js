@@ -1,11 +1,11 @@
 ﻿
- function getDevices(equipmentId) {
+function getDevices(equipmentId) {
 
     let url = '/api/equipments/' + equipmentId + '/devices';
 
     $.getJSON(url)
         .done(function (data) {
-            console.log(data);
+
             showDevices(data);
 
         })
@@ -18,7 +18,7 @@
 function showDevices(data) {
 
     let container = $('#devices');
-   
+
     container.empty();
 
     if (!Array.isArray(data))

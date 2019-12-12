@@ -40,30 +40,48 @@ function showAreas(data) {
 
         let grid = $('<div class="col-sm-4">');
 
-        let card = $('<div class="card mb-3">');
+        let card = $('<div class="card text-dark bg-light mb-3">');
+
         let header = $('<div class="card-header">header</div>').html(item.Name);
+        header.click(function () {
+            localStorage.setItem('Area', JSON.stringify(item));
+            window.location.href = "equipments.html";
+        });
+        header.hover(function () {
+            $(this).attr('class', "card-header text-dark bg-primary")
+            $(this).css("cursor", "pointer");
+        }, function () {
+            $(this).attr('class', "card-header text-dark bg-light")
+            $(this).css("cursor", "default");
+        });
+
         let body = $('<div class="card-body">');
-        //let title = $('<h6 class="card-title">title</h6>').html(item.Equipment.length + " Equipments");
-
-
-        let li = $('<li class="list-group-item">');
-        let text = $('<p class="card-text"></p>');
+        let title = $('<h6 class="card-title">title</h6>').html(item.Equipment.length + " Equipments");
+        body.append(title);
 
         for (var i = 0; i < item.Equipment.length; i++) {
 
+            let li = $('<li class="list-group-item">').attr('id', i);
+            li.click(function () {
+
+                localStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
+                localStorage.setItem('Area', JSON.stringify(item));
+                window.location.href = "devices.html";
+            });
+            li.hover(function () {
+
+                $(this).attr('class', "list-group-item text-dark bg-info")
+                $(this).css("cursor", "pointer");
+            }, function () {
+                $(this).attr('class', "list-group-item")
+                $(this).css("cursor", "default");
+            });
             let text = $('<p class="card-text"></p>').html(item.Equipment[i].Name);
 
             li.append(text);
+            body.append(li);
         }
 
-        let button = $('<a href="#" class="btn btn-link">Öffnen</a>').click(function () {
-
-            localStorage.setItem('Area', JSON.stringify(item));
-            window.location.href = "equipments.html";
-
-        });
-
-        body.append(li, button);
         card.append(header, body);
         grid.append(card);
 
