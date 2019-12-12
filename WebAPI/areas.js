@@ -6,7 +6,7 @@ function getAreas() {
 
     $.getJSON(url)
         .done(function (data) {
-            showAreas(data);
+            showAreas2(data);
         })
         .fail(function (error) {
             alert("ERROR: " + error.status + ' ' + error.statusText);
@@ -27,6 +27,72 @@ function postArea(area) {
         });
 
 }
+
+function showAreas2(data) {
+
+    let container = $('#areas');
+    container.empty();
+
+    if (!Array.isArray(data))
+        return;
+
+    data.forEach(function (item, i) {
+
+        let card = $('<div class="card">');
+        let header = $('<div class="card-header">').attr('id', 'heading' + i);
+        let h2 = $('<h2 class="mb-0">');
+
+        let btn = $('<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true"></button>')
+            .html(item.Name)
+            .attr('data-target', '#collapse' + i)
+            .attr('aria-controls', 'collapse' + i);
+        h2.append(btn);
+        header.append(h2);
+
+        let collapse = $('<div class="collapse show">')
+            .attr('id', 'collapse' + i)
+            .attr('aria-labelledby', 'heading' + i)
+            .attr('data-parent', '#' + container.attr('id'));
+
+        let cardbody = $('<div class="card-body">');
+
+        for (var i = 0; i < item.Equipment.length; i++) {
+
+            let li = $('<li class="list-group-item">').attr('data-target', JSON.stringify(item.Equipment[i]));
+
+            li.click(function () {
+
+                let d = JSON.parse(li.attr('data-target'));
+                getDevices(d.EquipmentID);
+
+                //localStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
+                //localStorage.setItem('Area', JSON.stringify(item));
+                //window.location.href = "devices.html";
+            });
+            li.hover(function () {
+
+                $(this).attr('class', "list-group-item text-dark bg-primary")
+                $(this).css("cursor", "pointer");
+            }, function () {
+                $(this).attr('class', "list-group-item")
+                $(this).css("cursor", "default");
+            });
+            let text = $('<p class="card-text"></p>').html(item.Equipment[i].Number + "-" + item.Equipment[i].Name);
+
+            li.append(text);
+            cardbody.append(li);
+
+        }
+
+
+        collapse.append(cardbody);
+        card.append(header, collapse);
+
+
+        container.append(card);
+    });
+}
+
 
 function showAreas(data) {
 
@@ -66,6 +132,9 @@ function showAreas(data) {
 
                 localStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
                 localStorage.setItem('Area', JSON.stringify(item));
+
+
+
                 window.location.href = "devices.html";
             });
             li.hover(function () {

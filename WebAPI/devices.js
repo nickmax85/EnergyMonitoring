@@ -38,7 +38,7 @@ function showDevices(data) {
 
         }).html('Report');
 
-        let outer = $(' <div class="outer">');
+        let outer = $('<div class="outer">');
 
         let gaugeChart1 = $('<div id="containerGauge1_' + i + '" class="chart-container"</div>');
         let gaugeChart2 = $('<div id="containerGauge2_' + i + '" class="chart-container"</div>');
