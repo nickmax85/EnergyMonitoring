@@ -4,6 +4,7 @@ function getEquipments(areaId) {
 
     let url = '/api/areas/' + areaId + '/equipments';
 
+
     $.getJSON(url)
         .done(function (data) {
 
@@ -47,9 +48,8 @@ function showCard(data) {
     data.forEach(function (item, i) {
 
         let grid = $('<div class="col-sm-4">');
-
         let card = $('<div class="card mb-3">');
-        let header = $('<div class="card-header">header</div>').html(item.Name);
+        let header = $('<div class="card-header">header</div>').html(item.Number + '-' + item.Name);
         //let editButton = $('<a href="#" class="btn btn-primary">edit</a>');
         let body = $('<div class="card-body">');
         //let title = $('<h6 class="card-title">title</h6>').html(item.Equipment.length + " Equipments");

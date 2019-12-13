@@ -6,7 +6,7 @@ function getAreas() {
 
     $.getJSON(url)
         .done(function (data) {
-            showAreas2(data);
+            showSelectAreas(data);
         })
         .fail(function (error) {
             alert("ERROR: " + error.status + ' ' + error.statusText);
@@ -28,6 +28,47 @@ function postArea(area) {
 
 }
 
+
+
+function showSelectAreas(data) {
+
+    let container = $('#selectArea');
+
+    if (!Array.isArray(data))
+        return;
+
+    data.forEach(function (item, i) {
+
+        $('#selectArea').append($('<option></option>').val(item.AreaID).html(item.Name));
+
+    });
+
+    let id = localStorage.getItem('area');
+
+    if ($("#selectArea").prop('selectedIndex') > 0 || id > 0) {
+
+        $('#selectArea').val(id);
+
+        getEquipments(id);
+
+    }
+
+}
+
+function areaSelectionChange(areaId) {
+
+    $('#equipments').empty();
+
+    let sel = $("#selectArea option:selected").val();
+    localStorage.setItem('area', sel);
+
+    if ($("#selectArea").prop('selectedIndex') != 0) {
+        getEquipments(sel);
+    }
+
+
+}
+
 function showAreas2(data) {
 
     let container = $('#areas');
@@ -42,17 +83,27 @@ function showAreas2(data) {
         let header = $('<div class="card-header">').attr('id', 'heading' + i);
         let h2 = $('<h2 class="mb-0">');
 
-        let btn = $('<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true"></button>')
+        let btn = $('<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="false"></button>')
             .html(item.Name)
             .attr('data-target', '#collapse' + i)
-            .attr('aria-controls', 'collapse' + i);
+            .attr('aria-controls', 'collapse' + i)
+            .attr('id', item.Equipment[i].EquipmentID);
+        btn.click(function () {
+
+            let id = btn.attr('id');
+
+
+        });
+
         h2.append(btn);
         header.append(h2);
 
-        let collapse = $('<div class="collapse show">')
+        let collapse = $('<div class="collapse hide">')
             .attr('id', 'collapse' + i)
             .attr('aria-labelledby', 'heading' + i)
             .attr('data-parent', '#' + container.attr('id'));
+
+
 
         let cardbody = $('<div class="card-body">');
 
@@ -83,7 +134,6 @@ function showAreas2(data) {
             cardbody.append(li);
 
         }
-
 
         collapse.append(cardbody);
         card.append(header, collapse);
