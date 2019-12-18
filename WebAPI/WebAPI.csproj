@@ -882,6 +882,7 @@
     <Content Include="Scripts\highcharts\7.1.2\css\highcharts.scss" />
     <Content Include="Scripts\highcharts\7.1.2\css\annotations\popup.scss" />
     <Content Include="Database\EnergyMonitoring.bak" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
