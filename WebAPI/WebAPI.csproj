@@ -218,6 +218,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="charts.html" />
     <Content Include="css\sb-admin.css" />
     <Content Include="css\sb-admin.min.css" />
     <Content Include="devices.js" />
@@ -235,7 +236,7 @@
     <Content Include="Content\custom.css" />
     <Content Include="Content\cyborg.bootstrap.css" />
     <Content Include="Content\minty.bootstrap.css" />
-    <Content Include="home.html" />
+    <Content Include="index.html" />
     <Content Include="Images\digitalization-future.jpg" />
     <Content Include="Images\pneumatik.jpg" />
     <Content Include="equipments.html" />
@@ -248,6 +249,7 @@
     <Content Include="js\demo\datatables-demo.js" />
     <Content Include="js\sb-admin.js" />
     <Content Include="js\sb-admin.min.js" />
+    <Content Include="login.html" />
     <Content Include="records.html" />
     <Content Include="live.html" />
     <Content Include="Scripts\chartjs\Chart.bundle.js" />
@@ -752,7 +754,7 @@
     <Content Include="Scripts\highcharts\7.1.2\themes\skies.src.js" />
     <Content Include="Scripts\highcharts\7.1.2\themes\sunset.js" />
     <Content Include="Scripts\highcharts\7.1.2\themes\sunset.src.js" />
-    <Content Include="index.html" />
+    <Content Include="index_old.html" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
