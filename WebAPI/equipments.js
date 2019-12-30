@@ -135,7 +135,7 @@ function showCard(data) {
 
         let grid = $('<div class="col-sm-6 mb-3">');
         let card = $('<div class="card">');
-        let header = $('<div class="card-header">header</div>').html(item.Number + '-' + item.Name);
+        let header = $('<div class="card-header">header</div>').html(item.Number + ' - ' + item.Name);
         //let editButton = $('<a href="#" class="btn btn-primary">edit</a>');
         let body = $('<div class="card-body">');
         //let title = $('<h6 class="card-title">title</h6>').html(item.Equipment.length + " Equipments");

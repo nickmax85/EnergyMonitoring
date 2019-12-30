@@ -236,6 +236,8 @@
     <Content Include="Content\custom.css" />
     <Content Include="Content\cyborg.bootstrap.css" />
     <Content Include="Content\minty.bootstrap.css" />
+    <Content Include="Images\industry40.png" />
+    <Content Include="Images\industry50.jpg" />
     <Content Include="index.html" />
     <Content Include="Images\digitalization-future.jpg" />
     <Content Include="Images\pneumatik.jpg" />
@@ -884,7 +886,7 @@
     <Content Include="Scripts\highcharts\7.1.2\css\highcharts.scss" />
     <Content Include="Scripts\highcharts\7.1.2\css\annotations\popup.scss" />
     <Content Include="Database\EnergyMonitoring.bak" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

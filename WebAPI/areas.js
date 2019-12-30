@@ -59,11 +59,17 @@ function areaSelectionChange(areaId) {
 
     $('#equipments').empty();
 
+
     let sel = $("#selectArea option:selected").val();
     localStorage.setItem('area', sel);
 
     if ($("#selectArea").prop('selectedIndex') != 0) {
+        $('#background').hide();
         getEquipments(sel);
+
+    }
+    else {
+        $('#background').show();
     }
 
 
