@@ -47,6 +47,25 @@ namespace WebAPI.Controllers
             }
         }
 
+        // GET: api/Records/5
+        [Route("api/records/{deviceId}/{startDate}/{endDate}")]
+        public IEnumerable<Record> GetByDate(int deviceId, DateTime startDate, DateTime endDate)
+        {
+            using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+                var item = context.Record
+                     .Where(x => x.Sensor.DeviceID == deviceId)
+                     .Include(x => x.Sensor.Device)
+                    .Include(x => x.Sensor.Unit)
+                    .Where(x => DbFunctions.TruncateTime(x.CreateDate) >= DbFunctions.TruncateTime(startDate)
+                    && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate))
+                    .ToList();
+
+                return item;
+            }
+        }
+
         // PUT: api/Records/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutRecord(int id, Record record)

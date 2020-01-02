@@ -48,9 +48,13 @@ function showSelectAreas(data) {
     if ($("#selectArea").prop('selectedIndex') > 0 || id > 0) {
 
         $('#selectArea').val(id);
-
+        $('#background').hide();
         getEquipments(id);
 
+    }
+
+    else {
+        $('#background').show();
     }
 
 }

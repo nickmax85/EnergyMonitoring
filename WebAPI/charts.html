@@ -33,9 +33,12 @@
 
 <body id="page-top">
 
-    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+    <nav class="navbar navbar-expand navbar-dark bg-info static-top">
 
-        <a class="navbar-brand mr-1" href="index.html">EnergyMonitoring</a>
+        <a class="navbar-brand mr-1" href="index.html">
+            <i class="fas fa-fw fa-globe-europe"></i>
+            EnergyMonitoring
+        </a>
 
         <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
@@ -104,6 +107,18 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="charts.html">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Charts</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Tabellen</span>
+                </a>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-fw fa-folder"></i>
@@ -120,18 +135,7 @@
                     <a class="dropdown-item" href="blank.html">Blank Page</a>
                 </div>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span>
-                </a>
-            </li>
+
         </ul>
 
         <div id="content-wrapper">
@@ -141,25 +145,65 @@
                 <!-- Breadcrumbs-->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="#">Dashboard</a>
+                        <a href="index.html">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item">Charts</li>
-                    <li class="breadcrumb-item active" id="area">Charts</li>
+                    <li class="breadcrumb-item" id="area">Bereich</li>
+                    <li class="breadcrumb-item active" id="equipment">Equipment</li>
                 </ol>
 
 
                 <!--  -->
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fas fa-chart-area"></i>
-                        <a id="header"></a>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="canvas" width="100%" height="30"></canvas>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area"></i>
+                                Kennlinie
+                            </div>
+                            <div class="card-body">
+                                <canvas id="canvas" width="100%" height="50"></canvas>
+                            </div>
+                        </div>
                     </div>
 
+
+                    <div class="col-lg-3">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fas fa-calendar-day"></i>
+                                Datum
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <!-- Date input -->
+                                    <div class="row">
+                                        <div class="col">
+                                            <label class="control-label" for="start">Start</label>
+                                            <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control" value="2019-12-01">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <!-- Date input -->
+                                    <div class="row">
+                                        <div class="col">
+                                            <label class="control-label" for="end">Ende</label>
+                                            <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control" value="2019-12-03">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <!-- Submit button -->
+                                    <button class="btn btn-primary btn-block " name="submit" type="submit" onclick="getRecordsByDate()">Suche</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
 
                 <!-- Chart Example-->
                 <div class="row">
@@ -175,18 +219,7 @@
                             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <i class="fas fa-chart-pie"></i>
-                                Pie Chart Example
-                            </div>
-                            <div class="card-body">
-                                <canvas id="myPieChart" width="100%" height="100"></canvas>
-                            </div>
-                            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-                        </div>
-                    </div>
+
                 </div>
 
                 <p class="small text-center text-muted my-5">
@@ -247,24 +280,48 @@
     <script src="js/sb-admin.min.js"></script>
 
     <!-- Demo scripts for this page-->
-    <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-bar-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+
 
 
 
     <script>
 
+        let equipment;
+
         $(document).ready(function () {
 
-            let equipment = JSON.parse(localStorage.getItem('Equipment'));
+            equipment = JSON.parse(localStorage.getItem('Equipment'));
+
             $('#area').html(equipment.Area.Name);
+            $('#equipment').html(equipment.Name);
             $('#header').html(equipment.Number + " - " + equipment.Name);
 
-
-            getRecords(equipment.Device[0].DeviceID);
+            // getRecords(equipment.Device[0].DeviceID);
 
         });
+
+        function getRecordsByDate() {
+
+            let url = '/api/records/' + equipment.Device[0].DeviceID + '/' + $('#start').val() + '/' + $('#end').val();
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    data1.length = 0;
+                    data2.length = 0;
+                    labels1.length = 0;
+                    labels2.length = 0;
+
+                    showData(data);
+                    updateChart();
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+
+        }
 
         function getRecords(deviceId) {
 
@@ -284,8 +341,11 @@
 
         function showData(data) {
 
+
+
             if (!Array.isArray(data))
                 return;
+
 
             data.forEach(function (item, i) {
 
