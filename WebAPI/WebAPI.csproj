@@ -237,6 +237,7 @@
     <Content Include="Content\cyborg.bootstrap.css" />
     <Content Include="Content\minty.bootstrap.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Images\icons8-geschwindigkeit-80.png" />
     <Content Include="Images\industry40.png" />
     <Content Include="Images\industry50.jpg" />
     <Content Include="index.html" />
@@ -277,7 +278,6 @@
       <DependentUpon>EnergyMonitoring.edmx</DependentUpon>
       <LastGenOutput>EnergyMonitoring.cs</LastGenOutput>
     </Content>
-    <Content Include="favicon_ori.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\digitalization.jpg" />
     <Content Include="Images\electronic.jpg" />

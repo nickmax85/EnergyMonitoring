@@ -157,7 +157,7 @@ function showCard(data) {
 
         });
 
-        let buttonReport = $('<div class="row"><a href="#" class="btn btn-primary col-sm-3 mb-0">Charts</a>').click(function () {
+        let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Charts</a>').click(function () {
 
             localStorage.setItem('Equipment', JSON.stringify(item));
 
@@ -165,7 +165,7 @@ function showCard(data) {
 
         });
 
-        body.append(row, buttonReport);
+        body.append(row, buttonCharts);
         card.append(header, body);
         grid.append(card);
 
