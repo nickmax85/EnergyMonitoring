@@ -18,6 +18,7 @@ namespace WebAPI
         public Equipment()
         {
             this.Device = new HashSet<Device>();
+            this.Record = new HashSet<Record>();
         }
     
         public int EquipmentID { get; set; }
@@ -30,5 +31,7 @@ namespace WebAPI
         public virtual Area Area { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Device> Device { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Record> Record { get; set; }
     }
 }

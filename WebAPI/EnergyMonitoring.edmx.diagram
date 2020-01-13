@@ -18,6 +18,7 @@
         <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Device" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Sensor" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Unit" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Equipment" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

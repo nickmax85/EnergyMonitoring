@@ -757,7 +757,7 @@
     <Content Include="Scripts\highcharts\7.1.2\themes\skies.src.js" />
     <Content Include="Scripts\highcharts\7.1.2\themes\sunset.js" />
     <Content Include="Scripts\highcharts\7.1.2\themes\sunset.src.js" />
-    <Content Include="index_old.html" />
+    <Content Include="test\index_old.html" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />

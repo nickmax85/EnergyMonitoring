@@ -4,8 +4,12 @@ function getAreas() {
 
     let url = '/api/areas';
 
+
+
+
     $.getJSON(url)
         .done(function (data) {
+
             showSelectAreas(data);
         })
         .fail(function (error) {
@@ -43,12 +47,14 @@ function showSelectAreas(data) {
 
     });
 
-    let id = localStorage.getItem('area');
 
+   // let id = localStorage.getItem('area');
+    let id = 0;
     if ($("#selectArea").prop('selectedIndex') > 0 || id > 0) {
 
         $('#selectArea').val(id);
         $('#background').hide();
+
         getEquipments(id);
 
     }
@@ -59,7 +65,7 @@ function showSelectAreas(data) {
 
 }
 
-function areaSelectionChange(areaId) {
+function areaSelectionChange(area) {
 
     $('#equipments').empty();
 

@@ -19,7 +19,9 @@ namespace WebAPI
         public int SensorID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public Nullable<int> EquipmentID { get; set; }
     
         public virtual Sensor Sensor { get; set; }
+        public virtual Equipment Equipment { get; set; }
     }
 }
