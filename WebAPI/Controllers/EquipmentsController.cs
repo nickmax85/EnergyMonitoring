@@ -24,16 +24,16 @@ namespace WebAPI.Controllers
         }
 
         //GET: api/Default/5
-        [Route("api/areas/{areaId}/equipments")]
-        public IEnumerable<Equipment> GetEquipmentsByArea(int areaId)
+        [Route("api/Groups/{GroupId}/equipments")]
+        public IEnumerable<Equipment> GetEquipmentsByGroup(int GroupId)
         {
             List<Equipment> items;
 
             using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
             {
                 context.Configuration.ProxyCreationEnabled = false;
-                items = context.Equipment.Where(x => x.AreaID == areaId)
-                    .Include(x => x.Area)
+                items = context.Equipment.Where(x => x.GroupID == GroupId)
+                    .Include(x => x.Group)
                     .Include(x => x.Device.Select(d => d.Sensor))
                     .ToList();
 

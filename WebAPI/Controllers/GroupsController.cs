@@ -8,36 +8,36 @@ using System.Data.Entity;
 
 namespace WebAPI.Controllers
 {
-    public class AreasController : ApiController
+    public class GroupsController : ApiController
     {
         // GET: api/Location
-        public IEnumerable<Area> Get()
+        public IEnumerable<Group> Get()
         {
-            List<Area> items;
+            List<Group> items;
 
             using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
             {
                 // context.Database.Log = Console.WriteLine;
                 context.Configuration.ProxyCreationEnabled = false;
-                items = context.Area.Include(x => x.Equipment).OrderBy(x => x.Name).ToList();
+                items = context.Group.Include(x => x.Equipment).OrderBy(x => x.Name).ToList();
 
             }
             return items;
         }
 
         // GET: api/Location/5
-        public Area Get(int id)
+        public Group Get(int id)
         {
-            Area area;
+            Group Group;
 
             using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
             {
                 // context.Database.Log = Console.WriteLine;
                 context.Configuration.ProxyCreationEnabled = false;
-                area = context.Area.Where(x => x.AreaID == id).FirstOrDefault();
+                Group = context.Group.Where(x => x.GroupID == id).FirstOrDefault();
 
             }
-            return area;
+            return Group;
         }
 
 
@@ -45,20 +45,20 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public IEnumerable<Area> Post([FromBody] Area area)
+        public IEnumerable<Group> Post([FromBody] Group Group)
         {
             using (EnergyMonitoringEntities context = new EnergyMonitoringEntities())
             {
                 // context.Database.Log = Console.WriteLine;
                 context.Configuration.ProxyCreationEnabled = false;
-                if (area.AreaID == 0)
+                if (Group.GroupID == 0)
                 {
-                    area.CreateDate = System.DateTime.Now;
-                    context.Area.Add(area);
+                    Group.CreateDate = System.DateTime.Now;
+                    context.Group.Add(Group);
                 }
                 else
                 {
-                    area.UpdateDate = System.DateTime.Now;
+                    Group.UpdateDate = System.DateTime.Now;
                 }
                 context.SaveChanges();
             }

@@ -5,15 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="EnergyMonitoringModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Area">
-          <Key>
-            <PropertyRef Name="AreaID" />
-          </Key>
-          <Property Name="AreaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="UpdateDate" Type="datetime" />
-        </EntityType>
         <EntityType Name="Config">
           <Key>
             <PropertyRef Name="ConfigID" />
@@ -44,7 +35,16 @@
           <Property Name="EquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Number" Type="nvarchar" MaxLength="10" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="AreaID" Type="int" />
+          <Property Name="GroupID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UpdateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
@@ -103,14 +103,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Equipment_Area">
-          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
           <End Role="Equipment" Type="Self.Equipment" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Area">
-              <PropertyRef Name="AreaID" />
+            <Principal Role="Group">
+              <PropertyRef Name="GroupID" />
             </Principal>
             <Dependent Role="Equipment">
-              <PropertyRef Name="AreaID" />
+              <PropertyRef Name="GroupID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -163,10 +163,10 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="EnergyMonitoringModelStoreContainer">
-          <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Device" EntityType="Self.Device" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Record" EntityType="Self.Record" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sensor" EntityType="Self.Sensor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
@@ -176,7 +176,7 @@
             <End Role="Device" EntitySet="Device" />
           </AssociationSet>
           <AssociationSet Name="FK_Equipment_Area" Association="Self.FK_Equipment_Area">
-            <End Role="Area" EntitySet="Area" />
+            <End Role="Group" EntitySet="Group" />
             <End Role="Equipment" EntitySet="Equipment" />
           </AssociationSet>
           <AssociationSet Name="FK_Record_Equipment" Association="Self.FK_Record_Equipment">
@@ -201,7 +201,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="EnergyMonitoringModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="EnergyMonitoringEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Area" EntityType="EnergyMonitoringModel.Area" />
           <EntitySet Name="Config" EntityType="EnergyMonitoringModel.Config" />
           <EntitySet Name="Device" EntityType="EnergyMonitoringModel.Device" />
           <EntitySet Name="Equipment" EntityType="EnergyMonitoringModel.Equipment" />
@@ -209,10 +208,6 @@
           <EntitySet Name="Sensor" EntityType="EnergyMonitoringModel.Sensor" />
           <EntitySet Name="Unit" EntityType="EnergyMonitoringModel.Unit" />
           <EntitySet Name="User" EntityType="EnergyMonitoringModel.User" />
-          <AssociationSet Name="FK_Equipment_Area" Association="EnergyMonitoringModel.FK_Equipment_Area">
-            <End Role="Area" EntitySet="Area" />
-            <End Role="Equipment" EntitySet="Equipment" />
-          </AssociationSet>
           <AssociationSet Name="FK_Device_Equipment" Association="EnergyMonitoringModel.FK_Device_Equipment">
             <End Role="Equipment" EntitySet="Equipment" />
             <End Role="Device" EntitySet="Device" />
@@ -233,17 +228,12 @@
             <End Role="Equipment" EntitySet="Equipment" />
             <End Role="Record" EntitySet="Record" />
           </AssociationSet>
+          <EntitySet Name="Group" EntityType="EnergyMonitoringModel.Group" />
+          <AssociationSet Name="FK_Equipment_Area1" Association="EnergyMonitoringModel.FK_Equipment_Area1">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Equipment" EntitySet="Equipment" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Area">
-          <Key>
-            <PropertyRef Name="AreaID" />
-          </Key>
-          <Property Name="AreaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Equipment_Area" FromRole="Area" ToRole="Equipment" />
-        </EntityType>
         <EntityType Name="Config">
           <Key>
             <PropertyRef Name="ConfigID" />
@@ -276,12 +266,12 @@
           <Property Name="EquipmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Number" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AreaID" Type="Int32" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Area" Relationship="EnergyMonitoringModel.FK_Equipment_Area" FromRole="Equipment" ToRole="Area" />
           <NavigationProperty Name="Device" Relationship="EnergyMonitoringModel.FK_Device_Equipment" FromRole="Equipment" ToRole="Device" />
           <NavigationProperty Name="Record" Relationship="EnergyMonitoringModel.FK_Record_Equipment" FromRole="Equipment" ToRole="Record" />
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Group" Relationship="EnergyMonitoringModel.FK_Equipment_Area1" FromRole="Equipment" ToRole="Group" />
         </EntityType>
         <EntityType Name="Record">
           <Key>
@@ -331,18 +321,6 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <Association Name="FK_Equipment_Area">
-          <End Type="EnergyMonitoringModel.Area" Role="Area" Multiplicity="0..1" />
-          <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Area">
-              <PropertyRef Name="AreaID" />
-            </Principal>
-            <Dependent Role="Equipment">
-              <PropertyRef Name="AreaID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Device_Equipment">
           <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="0..1" />
           <End Type="EnergyMonitoringModel.Device" Role="Device" Multiplicity="*" />
@@ -403,22 +381,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Equipment_Area1" FromRole="Group" ToRole="Equipment" />
+        </EntityType>
+        <Association Name="FK_Equipment_Area1">
+          <End Type="EnergyMonitoringModel.Group" Role="Group" Multiplicity="1" />
+          <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="Equipment">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="EnergyMonitoringModelStoreContainer" CdmEntityContainer="EnergyMonitoringEntities">
-          <EntitySetMapping Name="Area">
-            <EntityTypeMapping TypeName="EnergyMonitoringModel.Area">
-              <MappingFragment StoreEntitySet="Area">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Config">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Config">
               <MappingFragment StoreEntitySet="Config">
@@ -447,9 +437,9 @@
           <EntitySetMapping Name="Equipment">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Equipment">
               <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
@@ -499,6 +489,16 @@
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="Mail" ColumnName="Mail" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Group">
+            <EntityTypeMapping TypeName="EnergyMonitoringModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

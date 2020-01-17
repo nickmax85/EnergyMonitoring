@@ -148,7 +148,7 @@
                         <a href="index.html">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item">Charts</li>
-                    <li class="breadcrumb-item" id="area">Bereich</li>
+                    <li class="breadcrumb-item" id="group">Group</li>
                     <li class="breadcrumb-item active" id="equipment">Equipment</li>
                 </ol>
 
@@ -278,7 +278,7 @@
 
             equipment = JSON.parse(localStorage.getItem('Equipment'));
 
-            $('#area').html(equipment.Area.Name);
+            $('#group').html(equipment.Group.Name);
             $('#equipment').html(equipment.Name);
             $('#header').html(equipment.Number + " - " + equipment.Name);
 

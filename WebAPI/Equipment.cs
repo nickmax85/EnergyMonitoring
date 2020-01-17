@@ -24,14 +24,14 @@ namespace WebAPI
         public int EquipmentID { get; set; }
         public string Number { get; set; }
         public string Name { get; set; }
-        public Nullable<int> AreaID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public int GroupID { get; set; }
     
-        public virtual Area Area { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Device> Device { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Record> Record { get; set; }
+        public virtual Group Group { get; set; }
     }
 }

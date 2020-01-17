@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
                 // context.Database.Log = Console.WriteLine;
                 context.Configuration.ProxyCreationEnabled = false;
                 items = context.Device.
-                    Include(x => x.Equipment.Area).Where(x => (bool)x.Active).ToList();
+                    Include(x => x.Equipment.Group).Where(x => (bool)x.Active).ToList();
 
             }
             return items;
@@ -37,8 +37,8 @@ namespace WebAPI.Controllers
         }
 
         //GET: api/Default/5
-        [Route("api/areas/{areaId}/devices")]
-        public IEnumerable<Device> GetDevicesByArea(int areaId)
+        [Route("api/Groups/{GroupId}/devices")]
+        public IEnumerable<Device> GetDevicesByGroup(int GroupId)
         {
             List<Device> items;
 
@@ -46,8 +46,8 @@ namespace WebAPI.Controllers
             {
                 context.Configuration.ProxyCreationEnabled = false;
 
-                items = context.Device.Include(x => x.Equipment).Include(x => x.Equipment.Area)
-                    .Where(x => x.Equipment.AreaID == areaId)
+                items = context.Device.Include(x => x.Equipment).Include(x => x.Equipment.Group)
+                    .Where(x => x.Equipment.GroupID == GroupId)
                     .ToList();
 
                 return items;
@@ -68,7 +68,7 @@ namespace WebAPI.Controllers
                 items = context.Device.Where(x => x.EquipmentID == equipmentId)
                     .Include(x => x.Sensor)
                     .Include(x => x.Equipment)
-                    .Include(x => x.Equipment.Area)
+                    .Include(x => x.Equipment.Group)
                     .ToList();
 
                 return items;

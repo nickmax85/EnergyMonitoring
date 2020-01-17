@@ -1,8 +1,8 @@
 ﻿
 
-function getAreas() {
+function getGroups() {
 
-    let url = '/api/areas';
+    let url = '/api/Groups';
 
 
 
@@ -10,7 +10,7 @@ function getAreas() {
     $.getJSON(url)
         .done(function (data) {
 
-            showSelectAreas(data);
+            showSelectGroups(data);
         })
         .fail(function (error) {
             alert("ERROR: " + error.status + ' ' + error.statusText);
@@ -18,13 +18,13 @@ function getAreas() {
 
 }
 
-function postArea(area) {
+function postGroup(group) {
 
-    let url = '/api/areas';
+    let url = '/api/Groups';
 
-    $.post(url, area)
+    $.post(url, group)
         .done(function (data) {
-            showAreas(data);
+            showGroups(data);
         })
         .fail(function (error) {
             alert("ERROR: " + error.status + ' ' + error.statusText);
@@ -34,25 +34,25 @@ function postArea(area) {
 
 
 
-function showSelectAreas(data) {
+function showSelectGroups(data) {
 
-    let container = $('#selectArea');
+    let container = $('#selectGroup');
 
     if (!Array.isArray(data))
         return;
 
     data.forEach(function (item, i) {
 
-        $('#selectArea').append($('<option></option>').val(item.AreaID).html(item.Name));
+        $('#selectGroup').append($('<option></option>').val(item.GroupID).html(item.Name));
 
     });
 
 
-   // let id = localStorage.getItem('area');
+   // let id = localStorage.getItem('Group');
     let id = 0;
-    if ($("#selectArea").prop('selectedIndex') > 0 || id > 0) {
+    if ($("#selectGroup").prop('selectedIndex') > 0 || id > 0) {
 
-        $('#selectArea').val(id);
+        $('#selectGroup').val(id);
         $('#background').hide();
 
         getEquipments(id);
@@ -65,15 +65,15 @@ function showSelectAreas(data) {
 
 }
 
-function areaSelectionChange(area) {
+function groupSelectionChange(Group) {
 
     $('#equipments').empty();
 
 
-    let sel = $("#selectArea option:selected").val();
-    localStorage.setItem('area', sel);
+    let sel = $("#selectGroup option:selected").val();
+    localStorage.setItem('Group', sel);
 
-    if ($("#selectArea").prop('selectedIndex') != 0) {
+    if ($("#selectGroup").prop('selectedIndex') != 0) {
         $('#background').hide();
         getEquipments(sel);
 
@@ -85,9 +85,9 @@ function areaSelectionChange(area) {
 
 }
 
-function showAreas2(data) {
+function showGroups2(data) {
 
-    let container = $('#areas');
+    let container = $('#Groups');
     container.empty();
 
     if (!Array.isArray(data))
@@ -133,7 +133,7 @@ function showAreas2(data) {
                 getDevices(d.EquipmentID);
 
                 //localStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
-                //localStorage.setItem('Area', JSON.stringify(item));
+                //localStorage.setItem('Group', JSON.stringify(item));
                 //window.location.href = "devices.html";
             });
             li.hover(function () {
@@ -160,9 +160,9 @@ function showAreas2(data) {
 }
 
 
-function showAreas(data) {
+function showGroups(data) {
 
-    let container = $('#areas');
+    let container = $('#Groups');
     container.empty();
 
     if (!Array.isArray(data))
@@ -176,7 +176,7 @@ function showAreas(data) {
 
         let header = $('<div class="card-header">header</div>').html(item.Name);
         header.click(function () {
-            localStorage.setItem('Area', JSON.stringify(item));
+            localStorage.setItem('Group', JSON.stringify(item));
             window.location.href = "equipments.html";
         });
         header.hover(function () {
@@ -197,7 +197,7 @@ function showAreas(data) {
             li.click(function () {
 
                 localStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
-                localStorage.setItem('Area', JSON.stringify(item));
+                localStorage.setItem('Group', JSON.stringify(item));
 
 
 

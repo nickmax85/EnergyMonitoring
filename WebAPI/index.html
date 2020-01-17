@@ -30,7 +30,7 @@
     <script src="Scripts/highcharts/7.1.2/highcharts-more.js"></script>
     <script src="Scripts/highcharts/7.1.2/modules/solid-gauge.js"></script>
 
-    <script src="areas.js"></script>
+    <script src="Groups.js"></script>
     <script src="devices.js"></script>
     <script src="equipments.js"></script>
 
@@ -156,10 +156,10 @@
                     <li class="breadcrumb-item active">Overview</li>
                 </ol>
 
-                <!-- Areas -->
+                <!-- Groups -->
                 <div class="form-group">
-                    <label for="selectArea">Bereich</label>
-                    <select class="form-control" id="selectArea" onchange="areaSelectionChange(this)">
+                    <!--<label for="selectArea">Group</label>-->
+                    <select class="form-control" id="selectGroup" onchange="groupSelectionChange(this)">
                         <option>auswählen</option>
                     </select>
                 </div>
@@ -324,7 +324,7 @@
 
         $(document).ready(function () {
 
-            getAreas();
+            getGroups();
 
         });
     </script>

@@ -137,9 +137,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Area.cs">
-      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
-    </Compile>
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
     <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
@@ -172,7 +169,7 @@
     <Compile Include="Config.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AreasController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\EquipmentsController.cs" />
     <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -203,6 +200,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Group.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Record.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
@@ -223,7 +223,7 @@
     <Content Include="css\sb-admin.min.css" />
     <Content Include="devices.js" />
     <Content Include="equipments.js" />
-    <Content Include="areas.js" />
+    <Content Include="groups.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Chartjs\Chart.bundle.js" />
     <Content Include="Chartjs\Chart.bundle.min.js" />
@@ -245,7 +245,7 @@
     <Content Include="Images\pneumatik.jpg" />
     <Content Include="equipments.html" />
     <Content Include="devices.html" />
-    <Content Include="areas.html" />
+    <Content Include="groups.html" />
     <Content Include="img\undraw_posting_photo.svg" />
     <Content Include="js\demo\chart-area-demo.js" />
     <Content Include="js\demo\chart-bar-demo.js" />

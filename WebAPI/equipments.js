@@ -86,9 +86,9 @@
 
 };
 
-function getEquipments(areaId) {
+function getEquipments(groupId) {
 
-    let url = '/api/areas/' + areaId + '/equipments';
+    let url = '/api/groups/' + groupId + '/equipments';
 
 
     $.getJSON(url)
