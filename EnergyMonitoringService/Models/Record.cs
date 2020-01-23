@@ -8,9 +8,11 @@ namespace EnergyMonitoringService.Models
         public int RecordId { get; set; }
         public decimal Value { get; set; }
         public int SensorId { get; set; }
+        public int? EquipmentId { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
 
+        public virtual Equipment Equipment { get; set; }
         public virtual Sensor Sensor { get; set; }
     }
 }

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace EnergyMonitoringService.Models
 {
-    public partial class Area
+    public partial class Group
     {
-        public Area()
+        public Group()
         {
             Equipment = new HashSet<Equipment>();
         }
 
-        public int AreaId { get; set; }
+        public int GroupId { get; set; }
         public string Name { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }

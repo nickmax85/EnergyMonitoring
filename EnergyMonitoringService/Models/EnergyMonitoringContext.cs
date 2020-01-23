@@ -15,10 +15,10 @@ namespace EnergyMonitoringService.Models
         {
         }
 
-        public virtual DbSet<Area> Area { get; set; }
         public virtual DbSet<Config> Config { get; set; }
         public virtual DbSet<Device> Device { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
+        public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Record> Record { get; set; }
         public virtual DbSet<Sensor> Sensor { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
@@ -29,25 +29,12 @@ namespace EnergyMonitoringService.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=EnergyMonitoring;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=localhost;Database=energymonitoring;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Area>(entity =>
-            {
-                entity.Property(e => e.AreaId).HasColumnName("AreaID");
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
-            });
-
             modelBuilder.Entity<Config>(entity =>
             {
                 entity.Property(e => e.ConfigId).HasColumnName("ConfigID");
@@ -89,9 +76,9 @@ namespace EnergyMonitoringService.Models
             {
                 entity.Property(e => e.EquipmentId).HasColumnName("EquipmentID");
 
-                entity.Property(e => e.AreaId).HasColumnName("AreaID");
-
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.GroupId).HasColumnName("GroupID");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -101,10 +88,24 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Area)
+                entity.HasOne(d => d.Group)
                     .WithMany(p => p.Equipment)
-                    .HasForeignKey(d => d.AreaId)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Equipment_Area");
+            });
+
+            modelBuilder.Entity<Group>(entity =>
+            {
+                entity.Property(e => e.GroupId).HasColumnName("GroupID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Record>(entity =>
@@ -113,11 +114,18 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
+                entity.Property(e => e.EquipmentId).HasColumnName("EquipmentID");
+
                 entity.Property(e => e.SensorId).HasColumnName("SensorID");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasColumnType("decimal(6, 1)");
+
+                entity.HasOne(d => d.Equipment)
+                    .WithMany(p => p.Record)
+                    .HasForeignKey(d => d.EquipmentId)
+                    .HasConstraintName("FK_Record_Equipment");
 
                 entity.HasOne(d => d.Sensor)
                     .WithMany(p => p.Record)

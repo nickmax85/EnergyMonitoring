@@ -20,5 +20,7 @@ namespace EnergyMonitoringService.Models
 
         public virtual Equipment Equipment { get; set; }
         public virtual ICollection<Sensor> Sensor { get; set; }
+
+       
     }
 }

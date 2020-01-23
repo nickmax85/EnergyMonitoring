@@ -14,6 +14,8 @@ namespace EnergyMonitoringService
 {
     public class Worker : BackgroundService
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly ILogger<Worker> _logger;
 
         public Worker(ILogger<Worker> logger)
@@ -40,21 +42,15 @@ namespace EnergyMonitoringService
             using (var context = new EnergyMonitoringContext())
             {
                 // read devices with relation entities from database
-                var devices = context.Device
-               .Include(device => device.Sensor)
+                var devices = context.Device.Include(device => device.Sensor)
                .ThenInclude(sensor => sensor.Unit)
                .Include(device => device.Equipment)
-               .Include(device => device.Equipment.Area).Where(x => (bool)x.Active)
+               .Where(x => (bool)x.Active)
                .ToList();
-
 
                 // iterate over device list
                 foreach (var device in devices)
                 {
-                    Console.WriteLine($"Location: name={device.Equipment.Area.Name}");
-                    Console.WriteLine($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
-                    Console.WriteLine($"Device: ip={device.Ip}; name={device.Name}");
-
 
 
                     try
@@ -66,31 +62,35 @@ namespace EnergyMonitoringService
                         var json = await request.GetStringAsync(url);
 
                         WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
+
                         // iterate over sensor list                
                         foreach (var sensor in device.Sensor)
                         {
+
                             // iterate over inputs
                             foreach (var item in obj.iostate.input)
                             {
                                 if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
                                 {
-                                    Console.WriteLine($"Sensor: id={sensor.SensorId};");
-                                    Console.WriteLine($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}");
-                                    Console.WriteLine($"Value: id={item.value};");
+                                    Console.WriteLine(DateTime.Now + ":" + DateTime.Now.Millisecond);
+                                    Console.WriteLine($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
+                                    Console.WriteLine($"Device: ip={device.Ip}; name={device.Name}");
+                                    Console.Write($"Sensor: id={sensor.SensorId}; ");
+                                    Console.Write($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}; ");
+                                    Console.WriteLine($"Input: {item.value};");
 
                                     Record rec = new Record();
                                     rec.Sensor = sensor;
                                     rec.Value = (decimal)Math.Round(item.value, 1);
                                     rec.CreateDate = DateTime.Now;
 
-                                    if (rec.RecordId == 0)
-                                        context.Record.Add(rec);
-
+                                    context.Record.Add(rec);
                                     context.SaveChanges();
                                 }
                             }
 
                         }
+                        Console.WriteLine();
                     }
                     catch (JsonSerializationException)
                     {
