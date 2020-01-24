@@ -5,7 +5,7 @@ namespace EnergyMonitoringService.Models
 {
     public partial class Record
     {
-        public int RecordId { get; set; }
+        public long RecordId { get; set; }
         public decimal Value { get; set; }
         public int SensorId { get; set; }
         public int? EquipmentId { get; set; }

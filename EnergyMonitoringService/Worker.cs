@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EnergyMonitoringService.Models;
@@ -14,7 +15,7 @@ namespace EnergyMonitoringService
 {
     public class Worker : BackgroundService
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly ILogger<Worker> _logger;
 
@@ -45,13 +46,13 @@ namespace EnergyMonitoringService
                 var devices = context.Device.Include(device => device.Sensor)
                .ThenInclude(sensor => sensor.Unit)
                .Include(device => device.Equipment)
+               .Include(device => device.Equipment.Group)
                .Where(x => (bool)x.Active)
                .ToList();
 
                 // iterate over device list
                 foreach (var device in devices)
                 {
-
 
                     try
                     {
@@ -72,35 +73,47 @@ namespace EnergyMonitoringService
                             {
                                 if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
                                 {
-                                    Console.WriteLine(DateTime.Now + ":" + DateTime.Now.Millisecond);
-                                    Console.WriteLine($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
-                                    Console.WriteLine($"Device: ip={device.Ip}; name={device.Name}");
-                                    Console.Write($"Sensor: id={sensor.SensorId}; ");
-                                    Console.Write($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}; ");
-                                    Console.WriteLine($"Input: {item.value};");
+                                    StringBuilder sb = new StringBuilder();
 
-                                    Record rec = new Record();
-                                    rec.Sensor = sensor;
-                                    rec.Value = (decimal)Math.Round(item.value, 1);
-                                    rec.CreateDate = DateTime.Now;
+                                    sb.Append(Environment.NewLine);
+                                    sb.Append($"Group: name={device.Equipment.Group.Name}; ");
+                                    sb.Append(Environment.NewLine);
+                                    sb.Append($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
+                                    sb.Append(Environment.NewLine);
+                                    sb.Append($"Device: ip={device.Ip}; name={device.Name}; ");
+                                    sb.Append(Environment.NewLine);
+                                    sb.Append($"Sensor: id={sensor.SensorId}; ");
+                                    sb.Append(Environment.NewLine);
+                                    sb.Append($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}; ");
+                                    sb.Append($"Input: {item.value}; ");
+                                    sb.Append(Environment.NewLine);
 
-                                    context.Record.Add(rec);
+                                    log.Info(sb);
+
+                                    Record record = new Record();
+                                    record.Equipment = device.Equipment;
+                                    record.Sensor = sensor;
+                                    record.Value = (decimal)Math.Round(item.value, 1);
+                                    record.CreateDate = DateTime.Now;
+
+                                    context.Record.Add(record);
                                     context.SaveChanges();
                                 }
                             }
-
                         }
-                        Console.WriteLine();
-                    }
-                    catch (JsonSerializationException)
-                    {
-
 
                     }
-
-                    catch (HttpRequestException)
+                    catch (JsonSerializationException ex)
                     {
 
+                        log.Error(ex.StackTrace);
+
+                    }
+
+                    catch (HttpRequestException ex)
+                    {
+
+                        log.Error(ex.StackTrace);
 
                     }
 
