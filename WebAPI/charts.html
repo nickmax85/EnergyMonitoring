@@ -190,7 +190,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <label class="control-label" for="end">Ende</label>
-                                            <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control" value="2019-12-03">
+                                            <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -272,6 +272,8 @@
 
     <script>
 
+        getDate();
+
         let equipment;
 
         $(document).ready(function () {
@@ -285,6 +287,21 @@
             // getRecords(equipment.Device[0].DeviceID);
 
         });
+
+
+        function getDate() {
+            let today = new Date();
+
+            let startXdaysBefore = 6;
+
+            let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + (today.getDate() - startXdaysBefore)).slice(-2);
+            let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+            $('#start').val(start);
+            $('#end').val(end);
+
+
+        }
 
         function getRecordsByDate() {
 
@@ -436,6 +453,9 @@
             var ctx = document.getElementById('canvas').getContext('2d');
             window.myLine = new Chart(ctx, config);
         };
+
+
+
 
     </script>
 

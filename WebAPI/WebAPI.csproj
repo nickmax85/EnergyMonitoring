@@ -210,6 +210,9 @@
     <Compile Include="Sensor.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
     <Compile Include="Unit.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>

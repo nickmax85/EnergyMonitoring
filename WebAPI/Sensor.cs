@@ -29,8 +29,8 @@ namespace WebAPI
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual Device Device { get; set; }
+        public virtual Unit Unit { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Record> Record { get; set; }
-        public virtual Unit Unit { get; set; }
     }
 }

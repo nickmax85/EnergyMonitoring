@@ -12,16 +12,12 @@ namespace WebAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class Record
+    public partial class sysdiagrams
     {
-        public long RecordID { get; set; }
-        public decimal Value { get; set; }
-        public int SensorID { get; set; }
-        public Nullable<int> EquipmentID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-    
-        public virtual Equipment Equipment { get; set; }
-        public virtual Sensor Sensor { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

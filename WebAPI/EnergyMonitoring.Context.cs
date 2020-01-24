@@ -28,10 +28,11 @@ namespace WebAPI
         public virtual DbSet<Config> Config { get; set; }
         public virtual DbSet<Device> Device { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
-        public virtual DbSet<Record> Record { get; set; }
         public virtual DbSet<Sensor> Sensor { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Group> Group { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<Record> Record { get; set; }
     }
 }
