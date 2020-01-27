@@ -9,9 +9,8 @@
  * */
 'use strict';
 import H from './Globals.js';
-import U from './Utilities.js';
-var extend = U.extend, pick = U.pick;
-var charts = H.charts, noop = H.noop, Pointer = H.Pointer;
+import './Utilities.js';
+var charts = H.charts, extend = H.extend, noop = H.noop, pick = H.pick, Pointer = H.Pointer;
 /* eslint-disable no-invalid-this, valid-jsdoc */
 // Support for touch devices
 extend(Pointer.prototype, /** @lends Pointer.prototype */ {

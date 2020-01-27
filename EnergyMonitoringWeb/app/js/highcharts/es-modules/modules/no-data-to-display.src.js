@@ -8,37 +8,42 @@
  *
  *  License: www.highcharts.com/license
  *
- *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
- *
  * */
+
 'use strict';
+
 import H from '../parts/Globals.js';
-import U from '../parts/Utilities.js';
-var extend = U.extend;
+import '../parts/Utilities.js';
 import '../parts/Series.js';
 import '../parts/Options.js';
-var chartPrototype = H.Chart.prototype, defaultOptions = H.getOptions();
+
+var chartPrototype = H.Chart.prototype,
+    defaultOptions = H.getOptions(),
+    extend = H.extend;
+
 // Add language option
-extend(defaultOptions.lang, 
-/**
- * @optionparent lang
- */
-{
+extend(
+    defaultOptions.lang,
     /**
-     * The text to display when the chart contains no data.
-     *
-     * @see [noData](#noData)
-     *
-     * @sample highcharts/no-data-to-display/no-data-line
-     *         No-data text
-     *
-     * @since    3.0.8
-     * @product  highcharts highstock
-     * @requires modules/no-data-to-display
+     * @optionparent lang
      */
-    noData: 'No data to display'
-});
+    {
+        /**
+         * The text to display when the chart contains no data. Requires the
+         * no-data module, see [noData](#noData).
+         *
+         * @sample highcharts/no-data-to-display/no-data-line
+         *         No-data text
+         *
+         * @since   3.0.8
+         * @product highcharts highstock
+         */
+        noData: 'No data to display'
+    }
+);
+
 // Add default display options for message
+
 /**
  * Options for displaying a message like "No data to display".
  * This feature requires the file no-data-to-display.js to be loaded in the
@@ -50,10 +55,10 @@ extend(defaultOptions.lang,
  *         Pie chart with no-data module
  *
  * @product      highcharts highstock gantt
- * @requires     modules/no-data-to-display
  * @optionparent noData
  */
 defaultOptions.noData = {
+
     /**
      * An object of additional SVG attributes for the no-data label.
      *
@@ -62,9 +67,7 @@ defaultOptions.noData = {
      * @product   highcharts highstock gantt
      * @apioption noData.attr
      */
-    attr: {
-        zIndex: 1
-    },
+
     /**
      * Whether to insert the label as HTML, or as pseudo-HTML rendered with
      * SVG.
@@ -75,6 +78,7 @@ defaultOptions.noData = {
      * @product   highcharts highstock gantt
      * @apioption noData.useHTML
      */
+
     /**
      * The position of the no-data label, relative to the plot area.
      *
@@ -82,20 +86,24 @@ defaultOptions.noData = {
      * @since 3.0.8
      */
     position: {
+
         /**
          * Horizontal offset of the label, in pixels.
          */
         x: 0,
+
         /**
          * Vertical offset of the label, in pixels.
          */
         y: 0,
+
         /**
          * Horizontal alignment of the label.
          *
          * @type {Highcharts.AlignValue}
          */
         align: 'center',
+
         /**
          * Vertical alignment of the label.
          *
@@ -103,6 +111,7 @@ defaultOptions.noData = {
          */
         verticalAlign: 'middle'
     },
+
     /**
      * CSS styles for the no-data label.
      *
@@ -119,69 +128,93 @@ defaultOptions.noData = {
         /** @ignore */
         color: '#666666'
     }
+
 };
+
 /**
  * Display a no-data message.
+ *
  * @private
  * @function Highcharts.Chart#showNoData
- * @param {string} [str]
- * An optional message to show in place of the default one
- * @return {void}
- * @requires modules/no-data-to-display
+ *
+ * @param {string} str
+ *        An optional message to show in place of the default one
  */
 chartPrototype.showNoData = function (str) {
-    var chart = this, options = chart.options, text = str || (options && options.lang.noData), noDataOptions = options && options.noData;
+    var chart = this,
+        options = chart.options,
+        text = str || (options && options.lang.noData),
+        noDataOptions = options && options.noData;
+
     if (!chart.noDataLabel && chart.renderer) {
         chart.noDataLabel = chart.renderer
-            .label(text, 0, 0, null, null, null, noDataOptions.useHTML, null, 'no-data');
+            .label(
+                text,
+                0,
+                0,
+                null,
+                null,
+                null,
+                noDataOptions.useHTML,
+                null,
+                'no-data'
+            );
+
         if (!chart.styledMode) {
             chart.noDataLabel
                 .attr(noDataOptions.attr)
                 .css(noDataOptions.style);
         }
+
         chart.noDataLabel.add();
-        chart.noDataLabel.align(extend(chart.noDataLabel.getBBox(), noDataOptions.position), false, 'plotBox');
+
+        chart.noDataLabel.align(
+            extend(chart.noDataLabel.getBBox(), noDataOptions.position),
+            false,
+            'plotBox'
+        );
     }
 };
+
 /**
  * Hide no-data message.
  *
  * @private
  * @function Highcharts.Chart#hideNoData
- * @return {void}
- * @requires modules/no-data-to-display
  */
 chartPrototype.hideNoData = function () {
     var chart = this;
+
     if (chart.noDataLabel) {
         chart.noDataLabel = chart.noDataLabel.destroy();
     }
 };
+
 /**
  * Returns true if there are data points within the plot area now.
  *
  * @private
  * @function Highcharts.Chart#hasData
- * @return {boolean|undefined}
- * True, if there are data points.
- * @requires modules/no-data-to-display
  */
 chartPrototype.hasData = function () {
-    var chart = this, series = chart.series || [], i = series.length;
+    var chart = this,
+        series = chart.series || [],
+        i = series.length;
+
     while (i--) {
         if (series[i].hasData() && !series[i].options.isInternal) {
             return true;
         }
     }
+
     return chart.loadingShown; // #4588
 };
-/* eslint-disable no-invalid-this */
+
 // Add event listener to handle automatic show or hide no-data message.
 H.addEvent(H.Chart, 'render', function handleNoData() {
     if (this.hasData()) {
         this.hideNoData();
-    }
-    else {
+    } else {
         this.showNoData();
     }
 });

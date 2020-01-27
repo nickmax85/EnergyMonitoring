@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.0 (2019-12-10)
+ * @license Highcharts JS v7.1.2 (2019-06-03)
  *
  * (c) 2009-2019 Highsoft AS
  *
@@ -38,20 +38,24 @@
          *  Accessible high-contrast theme for Highcharts. Considers colorblindness and
          *  monochrome rendering.
          *
-         *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
-         *
          * */
+
+
+
         Highcharts.theme = {
             colors: ['#F3E796', '#95C471', '#35729E', '#251735'],
+
             colorAxis: {
                 maxColor: '#05426E',
                 minColor: '#F3E796'
             },
+
             plotOptions: {
                 map: {
-                    nullColor: '#FCFEFE'
+                    nullColor: '#fcfefe'
                 }
             },
+
             navigator: {
                 maskFill: 'rgba(170, 205, 170, 0.5)',
                 series: {
@@ -60,6 +64,7 @@
                 }
             }
         };
+
         // Apply the theme
         Highcharts.setOptions(Highcharts.theme);
 

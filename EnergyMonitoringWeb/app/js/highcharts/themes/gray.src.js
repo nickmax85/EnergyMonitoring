@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.0 (2019-12-10)
+ * @license Highcharts JS v7.1.2 (2019-06-03)
  *
  * (c) 2009-2019 Torstein Honsi
  *
@@ -35,9 +35,10 @@
          *
          *  Gray theme for Highcharts JS
          *
-         *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
-         *
          * */
+
+
+
         Highcharts.theme = {
             colors: ['#DDDF0D', '#7798BF', '#55BF3B', '#DF5353', '#aaeeee',
                 '#ff0066', '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
@@ -83,7 +84,7 @@
                     style: {
                         color: '#AAA',
                         font: 'bold 12px Lucida Grande, Lucida Sans Unicode,' +
-                            ' Verdana, Arial, Helvetica, sans-serif'
+                        ' Verdana, Arial, Helvetica, sans-serif'
                     }
                 }
             },
@@ -104,12 +105,11 @@
                     style: {
                         color: '#AAA',
                         font: 'bold 12px Lucida Grande, Lucida Sans Unicode,' +
-                            ' Verdana, Arial, Helvetica, sans-serif'
+                        ' Verdana, Arial, Helvetica, sans-serif'
                     }
                 }
             },
             legend: {
-                backgroundColor: 'rgba(48, 48, 48, 0.8)',
                 itemStyle: {
                     color: '#CCC'
                 },
@@ -118,11 +118,6 @@
                 },
                 itemHiddenStyle: {
                     color: '#333'
-                },
-                title: {
-                    style: {
-                        color: '#E0E0E0'
-                    }
                 }
             },
             labels: {
@@ -143,11 +138,10 @@
                     color: '#FFF'
                 }
             },
+
+
             plotOptions: {
                 series: {
-                    dataLabels: {
-                        color: '#444'
-                    },
                     nullColor: '#444444'
                 },
                 line: {
@@ -172,14 +166,17 @@
                     lineColor: 'white'
                 }
             },
+
             toolbar: {
                 itemStyle: {
                     color: '#CCC'
                 }
             },
+
             navigation: {
                 buttonOptions: {
                     symbolStroke: '#DDDDDD',
+                    hoverSymbolStroke: '#FFFFFF',
                     theme: {
                         fill: {
                             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -192,6 +189,7 @@
                     }
                 }
             },
+
             // scroll charts
             rangeSelector: {
                 buttonTheme: {
@@ -244,6 +242,7 @@
                     color: 'silver'
                 }
             },
+
             navigator: {
                 handles: {
                     backgroundColor: '#666',
@@ -256,6 +255,7 @@
                     lineColor: '#A6C7ED'
                 }
             },
+
             scrollbar: {
                 barBackgroundColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -283,8 +283,16 @@
                     ]
                 },
                 trackBorderColor: '#666'
-            }
+            },
+
+            // special colors for some of the demo examples
+            legendBackgroundColor: 'rgba(48, 48, 48, 0.8)',
+            background2: 'rgb(70, 70, 70)',
+            dataLabelsColor: '#444',
+            textColor: '#E0E0E0',
+            maskColor: 'rgba(255,255,255,0.3)'
         };
+
         // Apply the theme
         Highcharts.setOptions(Highcharts.theme);
 

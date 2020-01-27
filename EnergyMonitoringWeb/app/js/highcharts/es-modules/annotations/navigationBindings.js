@@ -7,23 +7,19 @@
  * */
 'use strict';
 import H from '../parts/Globals.js';
-
-import U from '../parts/Utilities.js';
-var attr = U.attr,
-    extend = U.extend,
-    isArray = U.isArray,
-    isNumber = U.isNumber,
-    isObject = U.isObject,
-    objectEach = U.objectEach,
-    pick = U.pick;
-
 import chartNavigationMixin from '../mixins/navigation.js';
 
 var doc = H.doc,
     win = H.win,
     addEvent = H.addEvent,
+    pick = H.pick,
     merge = H.merge,
+    extend = H.extend,
+    isNumber = H.isNumber,
     fireEvent = H.fireEvent,
+    isArray = H.isArray,
+    isObject = H.isObject,
+    objectEach = H.objectEach,
     PREFIX = 'highcharts-';
 
 // IE 9-11 polyfill for Element.closest():
@@ -69,17 +65,17 @@ var bindingsUtils = {
      *        Annotation to be updated
      */
     updateRectSize: function (event, annotation) {
-        var chart = annotation.chart,
-            options = annotation.options.typeOptions,
-            coords = chart.pointer.getCoordinates(event),
-            width = coords.xAxis[0].value - options.point.x,
-            height = options.point.y - coords.yAxis[0].value;
+        var options = annotation.options.typeOptions,
+            x = this.chart.xAxis[0].toValue(event.chartX),
+            y = this.chart.yAxis[0].toValue(event.chartY),
+            width = x - options.point.x,
+            height = options.point.y - y;
 
         annotation.update({
             typeOptions: {
                 background: {
-                    width: chart.inverted ? height : width,
-                    height: chart.inverted ? width : height
+                    width: width,
+                    height: height
                 }
             }
         });
@@ -690,7 +686,7 @@ extend(H.NavigationBindings.prototype, {
             elemClassName;
 
         while (element) {
-            elemClassName = attr(element, 'class');
+            elemClassName = H.attr(element, 'class');
             if (elemClassName) {
                 classNames = classNames.concat(
                     elemClassName.split(' ').map(
@@ -809,12 +805,6 @@ addEvent(H.NavigationBindings, 'deselectButton', function () {
     this.selectedButtonElement = null;
 });
 
-addEvent(H.Annotation, 'remove', function () {
-    if (this.chart.navigationBindings) {
-        this.chart.navigationBindings.deselectAnnotation();
-    }
-});
-
 
 // Show edit-annotation form:
 function selectableAnnotation(annotationType) {
@@ -895,7 +885,7 @@ if (H.Annotation) {
     selectableAnnotation(H.Annotation);
 
     // Advanced annotations:
-    objectEach(H.Annotation.types, function (annotationType) {
+    H.objectEach(H.Annotation.types, function (annotationType) {
         selectableAnnotation(annotationType);
     });
 }
@@ -994,80 +984,77 @@ H.setOptions({
              * `steps` array.
              *
              * @type    {Highcharts.StockToolsBindingsObject}
-             * @default {"className": "highcharts-circle-annotation", "start": function() {}, "steps": [function() {}], "annotationsOptions": {}}
+             * @default {"className": "highcharts-circle-annotation", "start": function() {}, "steps": [function() {}], "annotationOptions": {}}
              */
             circleAnnotation: {
                 /** @ignore */
                 className: 'highcharts-circle-annotation',
                 /** @ignore */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
+                    var x = this.chart.xAxis[0].toValue(e.chartX),
+                        y = this.chart.yAxis[0].toValue(e.chartY),
+                        type = 'circle',
                         navigation = this.chart.options.navigation,
-                        controlPoints = [{
-                            positioner: function (target) {
-                                var xy = H.Annotation.MockPoint
-                                        .pointToPixels(
-                                            target.points[0]
-                                        ),
-                                    r = target.options.r;
+                        bindings = navigation && navigation.bindings,
+                        annotation;
 
-                                return {
-                                    x: xy.x + r * Math.cos(Math.PI / 4) -
-                                        this.graphic.width / 2,
-                                    y: xy.y + r * Math.sin(Math.PI / 4) -
-                                        this.graphic.height / 2
-                                };
+                    annotation = this.chart.addAnnotation(merge({
+                        langKey: 'circle',
+                        shapes: [{
+                            type: type,
+                            point: {
+                                xAxis: 0,
+                                yAxis: 0,
+                                x: x,
+                                y: y
                             },
-                            events: {
-                                // TRANSFORM RADIUS ACCORDING TO Y
-                                // TRANSLATION
-                                drag: function (e, target) {
-                                    var annotation = target.annotation,
-                                        position = this
-                                            .mouseMoveToTranslation(e);
+                            r: 5,
+                            controlPoints: [{
+                                positioner: function (target) {
+                                    var xy = H.Annotation.MockPoint
+                                            .pointToPixels(
+                                                target.points[0]
+                                            ),
+                                        r = target.options.r;
 
-                                    target.setRadius(
-                                        Math.max(
-                                            target.options.r +
-                                                position.y /
-                                                Math.sin(Math.PI / 4),
-                                            5
-                                        )
-                                    );
+                                    return {
+                                        x: xy.x + r * Math.cos(Math.PI / 4) -
+                                            this.graphic.width / 2,
+                                        y: xy.y + r * Math.sin(Math.PI / 4) -
+                                            this.graphic.height / 2
+                                    };
+                                },
+                                events: {
+                                    // TRANSFORM RADIUS ACCORDING TO Y
+                                    // TRANSLATION
+                                    drag: function (e, target) {
+                                        var annotation = target.annotation,
+                                            position = this
+                                                .mouseMoveToTranslation(e);
 
-                                    annotation.options.shapes[0] =
-                                        annotation.userOptions.shapes[0] =
-                                        target.options;
+                                        target.setRadius(
+                                            Math.max(
+                                                target.options.r +
+                                                    position.y /
+                                                    Math.sin(Math.PI / 4),
+                                                5
+                                            )
+                                        );
 
-                                    target.redraw(false);
+                                        annotation.options.shapes[0] =
+                                            annotation.userOptions.shapes[0] =
+                                            target.options;
+
+                                        target.redraw(false);
+                                    }
                                 }
-                            }
-                        }];
+                            }]
+                        }]
+                    },
+                    navigation.annotationsOptions,
+                    bindings[type] && bindings[type].annotationsOptions));
 
-                    return this.chart.addAnnotation(
-                        merge(
-                            {
-                                langKey: 'circle',
-                                shapes: [{
-                                    type: 'circle',
-                                    point: {
-                                        xAxis: 0,
-                                        yAxis: 0,
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    },
-                                    r: 5,
-                                    controlPoints: controlPoints
-                                }]
-                            },
-                            navigation
-                                .annotationsOptions,
-                            navigation
-                                .bindings
-                                .circleAnnotation
-                                .annotationsOptions
-                        )
-                    );
+                    return annotation;
                 },
                 /** @ignore */
                 steps: [
@@ -1075,17 +1062,10 @@ H.setOptions({
                         var point = annotation.options.shapes[0].point,
                             x = this.chart.xAxis[0].toPixels(point.x),
                             y = this.chart.yAxis[0].toPixels(point.y),
-                            inverted = this.chart.inverted,
                             distance = Math.max(
                                 Math.sqrt(
-                                    Math.pow(
-                                        inverted ? y - e.chartX : x - e.chartX,
-                                        2
-                                    ) +
-                                    Math.pow(
-                                        inverted ? x - e.chartY : y - e.chartY,
-                                        2
-                                    )
+                                    Math.pow(x - e.chartX, 2) +
+                                    Math.pow(y - e.chartY, 2)
                                 ),
                                 5
                             );
@@ -1103,111 +1083,92 @@ H.setOptions({
              * in `steps` array.
              *
              * @type    {Highcharts.StockToolsBindingsObject}
-             * @default {"className": "highcharts-rectangle-annotation", "start": function() {}, "steps": [function() {}], "annotationsOptions": {}}
+             * @default {"className": "highcharts-rectangle-annotation", "start": function() {}, "steps": [function() {}], "annotationOptions": {}}
              */
             rectangleAnnotation: {
                 /** @ignore */
                 className: 'highcharts-rectangle-annotation',
                 /** @ignore */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
+                    var x = this.chart.xAxis[0].toValue(e.chartX),
+                        y = this.chart.yAxis[0].toValue(e.chartY),
+                        type = 'rect',
                         navigation = this.chart.options.navigation,
-                        x = coords.xAxis[0].value,
-                        y = coords.yAxis[0].value,
-                        controlPoints = [{
-                            positioner: function (annotation) {
-                                var xy = H.Annotation.MockPoint
-                                    .pointToPixels(
-                                        annotation.shapes[0].points[2]
-                                    );
+                        bindings = navigation && navigation.bindings;
 
-                                return {
-                                    x: xy.x - 4,
-                                    y: xy.y - 4
-                                };
+                    return this.chart.addAnnotation(merge({
+                        langKey: 'rectangle',
+                        shapes: [{
+                            type: type,
+                            point: {
+                                x: x,
+                                y: y,
+                                xAxis: 0,
+                                yAxis: 0
                             },
-                            events: {
-                                drag: function (e, target) {
-                                    var coords = this.chart.pointer
-                                            .getCoordinates(e),
-                                        x = coords.xAxis[0].value,
-                                        y = coords.yAxis[0].value,
-                                        shape = target.options.shapes[0],
-                                        points = shape.points;
+                            width: 5,
+                            height: 5,
 
-                                    // Top right point
-                                    points[1].x = x;
-                                    // Bottom right point (cursor position)
-                                    points[2].x = x;
-                                    points[2].y = y;
-                                    // Bottom left
-                                    points[3].y = y;
+                            controlPoints: [{
+                                positioner: function (target) {
+                                    var xy = H.Annotation.MockPoint
+                                        .pointToPixels(
+                                            target.points[0]
+                                        );
 
-                                    target.options.shapes[0].points = points;
+                                    return {
+                                        x: xy.x + target.options.width - 4,
+                                        y: xy.y + target.options.height - 4
+                                    };
+                                },
+                                events: {
+                                    drag: function (e, target) {
+                                        var annotation = target.annotation,
+                                            xy = this
+                                                .mouseMoveToTranslation(e);
 
-                                    target.redraw(false);
+                                        target.options.width = Math.max(
+                                            target.options.width + xy.x,
+                                            5
+                                        );
+                                        target.options.height = Math.max(
+                                            target.options.height + xy.y,
+                                            5
+                                        );
+
+                                        annotation.options.shapes[0] =
+                                            target.options;
+                                        annotation.userOptions.shapes[0] =
+                                            target.options;
+
+                                        target.redraw(false);
+                                    }
                                 }
-                            }
-                        }];
-
-                    return this.chart.addAnnotation(
-                        merge(
-                            {
-                                langKey: 'rectangle',
-                                shapes: [{
-                                    type: 'path',
-                                    points: [{
-                                        xAxis: 0,
-                                        yAxis: 0,
-                                        x: x,
-                                        y: y
-                                    }, {
-                                        xAxis: 0,
-                                        yAxis: 0,
-                                        x: x,
-                                        y: y
-                                    }, {
-                                        xAxis: 0,
-                                        yAxis: 0,
-                                        x: x,
-                                        y: y
-                                    }, {
-                                        xAxis: 0,
-                                        yAxis: 0,
-                                        x: x,
-                                        y: y
-                                    }]
-                                }],
-                                controlPoints: controlPoints
-                            },
-                            navigation
-                                .annotationsOptions,
-                            navigation
-                                .bindings
-                                .rectangleAnnotation
-                                .annotationsOptions
-                        )
-                    );
+                            }]
+                        }]
+                    },
+                    navigation.annotationsOptions,
+                    bindings[type] && bindings[type].annotationsOptions));
                 },
                 /** @ignore */
                 steps: [
                     function (e, annotation) {
-                        var points = annotation.options.shapes[0].points,
-                            coords = this.chart.pointer.getCoordinates(e),
-                            x = coords.xAxis[0].value,
-                            y = coords.yAxis[0].value;
-
-                        // Top right point
-                        points[1].x = x;
-                        // Bottom right point (cursor position)
-                        points[2].x = x;
-                        points[2].y = y;
-                        // Bottom left
-                        points[3].y = y;
+                        var xAxis = this.chart.xAxis[0],
+                            yAxis = this.chart.yAxis[0],
+                            point = annotation.options.shapes[0].point,
+                            x = xAxis.toPixels(point.x),
+                            y = yAxis.toPixels(point.y),
+                            width = Math.max(e.chartX - x, 5),
+                            height = Math.max(e.chartY - y, 5);
 
                         annotation.update({
                             shapes: [{
-                                points: points
+                                width: width,
+                                height: height,
+                                point: {
+                                    x: point.x,
+                                    y: point.y
+                                }
                             }]
                         });
                     }
@@ -1217,123 +1178,107 @@ H.setOptions({
              * A label annotation bindings. Includes `start` event only.
              *
              * @type    {Highcharts.StockToolsBindingsObject}
-             * @default {"className": "highcharts-label-annotation", "start": function() {}, "steps": [function() {}], "annotationsOptions": {}}
+             * @default {"className": "highcharts-label-annotation", "start": function() {}, "steps": [function() {}], "annotationOptions": {}}
              */
             labelAnnotation: {
                 /** @ignore */
                 className: 'highcharts-label-annotation',
                 /** @ignore */
                 start: function (e) {
-                    var coords = this.chart.pointer.getCoordinates(e),
+                    var x = this.chart.xAxis[0].toValue(e.chartX),
+                        y = this.chart.yAxis[0].toValue(e.chartY),
+                        type = 'label',
                         navigation = this.chart.options.navigation,
-                        controlPoints = [{
-                            symbol: 'triangle-down',
-                            positioner: function (target) {
-                                if (!target.graphic.placed) {
-                                    return {
-                                        x: 0,
-                                        y: -9e7
-                                    };
-                                }
+                        bindings = navigation && navigation.bindings;
 
-                                var xy = H.Annotation.MockPoint
-                                    .pointToPixels(
-                                        target.points[0]
-                                    );
-
-                                return {
-                                    x: xy.x - this.graphic.width / 2,
-                                    y: xy.y - this.graphic.height / 2
-                                };
+                    this.chart.addAnnotation(merge({
+                        langKey: 'label',
+                        labelOptions: {
+                            format: '{y:.2f}'
+                        },
+                        labels: [{
+                            point: {
+                                x: x,
+                                y: y,
+                                xAxis: 0,
+                                yAxis: 0
                             },
+                            controlPoints: [{
+                                symbol: 'triangle-down',
+                                positioner: function (target) {
+                                    if (!target.graphic.placed) {
+                                        return {
+                                            x: 0,
+                                            y: -9e7
+                                        };
+                                    }
 
-                            // TRANSLATE POINT/ANCHOR
-                            events: {
-                                drag: function (e, target) {
-                                    var xy = this.mouseMoveToTranslation(e);
+                                    var xy = H.Annotation.MockPoint
+                                        .pointToPixels(
+                                            target.points[0]
+                                        );
 
-                                    target.translatePoint(xy.x, xy.y);
-
-                                    target.annotation.labels[0].options =
-                                        target.options;
-
-                                    target.redraw(false);
-                                }
-                            }
-                        }, {
-                            symbol: 'square',
-                            positioner: function (target) {
-                                if (!target.graphic.placed) {
                                     return {
-                                        x: 0,
-                                        y: -9e7
+                                        x: xy.x - this.graphic.width / 2,
+                                        y: xy.y - this.graphic.height / 2
                                     };
-                                }
-
-                                return {
-                                    x: target.graphic.alignAttr.x -
-                                        this.graphic.width / 2,
-                                    y: target.graphic.alignAttr.y -
-                                        this.graphic.height / 2
-                                };
-                            },
-
-                            // TRANSLATE POSITION WITHOUT CHANGING THE
-                            // ANCHOR
-                            events: {
-                                drag: function (e, target) {
-                                    var xy = this.mouseMoveToTranslation(e);
-
-                                    target.translate(xy.x, xy.y);
-
-                                    target.annotation.labels[0].options =
-                                        target.options;
-
-                                    target.redraw(false);
-                                }
-                            }
-                        }];
-
-                    return this.chart.addAnnotation(
-                        merge(
-                            {
-                                langKey: 'label',
-                                labelOptions: {
-                                    format: '{y:.2f}'
                                 },
-                                labels: [{
-                                    point: {
-                                        xAxis: 0,
-                                        yAxis: 0,
-                                        x: coords.xAxis[0].value,
-                                        y: coords.yAxis[0].value
-                                    },
-                                    overflow: 'none',
-                                    crop: true,
-                                    controlPoints: controlPoints
-                                }]
-                            },
-                            navigation
-                                .annotationsOptions,
-                            navigation
-                                .bindings
-                                .labelAnnotation
-                                .annotationsOptions
-                        )
-                    );
+
+                                // TRANSLATE POINT/ANCHOR
+                                events: {
+                                    drag: function (e, target) {
+                                        var xy = this.mouseMoveToTranslation(e);
+
+                                        target.translatePoint(xy.x, xy.y);
+
+                                        target.annotation.labels[0].options =
+                                            target.options;
+
+                                        target.redraw(false);
+                                    }
+                                }
+                            }, {
+                                symbol: 'square',
+                                positioner: function (target) {
+                                    if (!target.graphic.placed) {
+                                        return {
+                                            x: 0,
+                                            y: -9e7
+                                        };
+                                    }
+
+                                    return {
+                                        x: target.graphic.alignAttr.x -
+                                            this.graphic.width / 2,
+                                        y: target.graphic.alignAttr.y -
+                                            this.graphic.height / 2
+                                    };
+                                },
+
+                                // TRANSLATE POSITION WITHOUT CHANGING THE
+                                // ANCHOR
+                                events: {
+                                    drag: function (e, target) {
+                                        var xy = this.mouseMoveToTranslation(e);
+
+                                        target.translate(xy.x, xy.y);
+
+                                        target.annotation.labels[0].options =
+                                            target.options;
+
+                                        target.redraw(false);
+                                    }
+                                }
+                            }],
+                            overflow: 'none',
+                            crop: true
+                        }]
+                    },
+                    navigation.annotationsOptions,
+                    bindings[type] && bindings[type].annotationsOptions));
                 }
             }
         },
-        /**
-         * Path where Highcharts will look for icons. Change this to use icons
-         * from a different server.
-         *
-         * @type      {string}
-         * @default   https://code.highcharts.com/8.0.0/gfx/stock-icons/
-         * @since     7.1.3
-         * @apioption navigation.iconsURL
-         */
-
         /**
          * A `showPopup` event. Fired when selecting for example an annotation.
          *
@@ -1342,11 +1287,11 @@ H.setOptions({
          */
 
         /**
-         * A `closePopup` event. Fired when Popup should be hidden, for example
+         * A `hidePopop` event. Fired when Popup should be hidden, for exampole
          * when clicking on an annotation again.
          *
          * @type      {Function}
-         * @apioption navigation.events.closePopup
+         * @apioption navigation.events.hidePopup
          */
 
         /**

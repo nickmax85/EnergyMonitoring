@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.0 (2019-12-10)
+ * @license @product.name@ JS v@product.version@ (@product.date@)
  * @module highcharts/themes/sunset
  * @requires highcharts
  *

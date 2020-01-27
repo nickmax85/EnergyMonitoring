@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.0 (2019-12-10)
+ * @license Highcharts JS v7.1.2 (2019-06-03)
  *
  * (c) 2009-2019 Torstein Honsi
  *
@@ -35,9 +35,10 @@
          *
          *  Grid theme for Highcharts JS
          *
-         *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
-         *
          * */
+
+
+
         Highcharts.theme = {
             colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572',
                 '#FF9655', '#FFF263', '#6AF9C4'],
@@ -82,6 +83,7 @@
                         fontWeight: 'bold',
                         fontSize: '12px',
                         fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+
                     }
                 }
             },
@@ -110,6 +112,7 @@
                 itemStyle: {
                     font: '9pt Trebuchet MS, Verdana, sans-serif',
                     color: 'black'
+
                 },
                 itemHoverStyle: {
                     color: '#039'
@@ -123,6 +126,7 @@
                     color: '#99b'
                 }
             },
+
             navigation: {
                 buttonOptions: {
                     theme: {
@@ -131,6 +135,7 @@
                 }
             }
         };
+
         // Apply the theme
         Highcharts.setOptions(Highcharts.theme);
 

@@ -1,13 +1,11 @@
 'use strict';
 import H from '../../parts/Globals.js';
-
-import U from '../../parts/Utilities.js';
-var extend = U.extend,
-    isNumber = U.isNumber;
+import '../../parts/Utilities.js';
 
 var Annotation = H.Annotation,
     ControlPoint = Annotation.ControlPoint,
-    merge = H.merge;
+    merge = H.merge,
+    isNumber = H.isNumber;
 
 /**
  * @class
@@ -126,13 +124,18 @@ H.extendAnnotation(Measure, null,
          * @param {boolean} resize - the flag for resize shape
          */
         addValues: function (resize) {
-            var typeOptions = this.options.typeOptions,
-                formatter = typeOptions.label.formatter;
+            var options = this.options.typeOptions,
+                formatter = options.label.formatter,
+                typeOptions = this.options.typeOptions,
+                chart = this.chart,
+                inverted = chart.options.chart.inverted,
+                xAxis = chart.xAxis[typeOptions.xAxis],
+                yAxis = chart.yAxis[typeOptions.yAxis];
 
             // set xAxisMin, xAxisMax, yAxisMin, yAxisMax
             this.calculations.recalculate.call(this, resize);
 
-            if (!typeOptions.label.enabled) {
+            if (!options.label.enabled) {
                 return;
             }
 
@@ -141,7 +144,7 @@ H.extendAnnotation(Measure, null,
                             this.calculations.defaultFormatter.call(this);
 
             } else {
-                this.initLabel(extend({
+                this.initLabel(H.extend({
                     shape: 'rect',
                     backgroundColor: 'none',
                     color: 'black',
@@ -153,10 +156,6 @@ H.extendAnnotation(Measure, null,
                     crop: true,
                     point: function (target) {
                         var annotation = target.annotation,
-                            chart = annotation.chart,
-                            inverted = chart.inverted,
-                            xAxis = chart.xAxis[typeOptions.xAxis],
-                            yAxis = chart.yAxis[typeOptions.yAxis],
                             top = chart.plotTop,
                             left = chart.plotLeft;
 
@@ -169,7 +168,7 @@ H.extendAnnotation(Measure, null,
                     },
                     text: (formatter && formatter.call(this)) ||
                         this.calculations.defaultFormatter.call(this)
-                }, typeOptions.label));
+                }, options.label));
             }
         },
         /**
@@ -186,11 +185,11 @@ H.extendAnnotation(Measure, null,
         addBackground: function () {
             var shapePoints = this.shapePointsOptions();
 
-            if (typeof shapePoints[0].x === 'undefined') {
+            if (shapePoints[0].x === undefined) {
                 return;
             }
 
-            this.initShape(extend({
+            this.initShape(H.extend({
                 type: 'path',
                 points: this.shapePointsOptions()
             }, this.options.typeOptions.background), false);
@@ -205,7 +204,7 @@ H.extendAnnotation(Measure, null,
                 point = this.options.typeOptions.point,
                 xAxis = chart.xAxis[options.xAxis],
                 yAxis = chart.yAxis[options.yAxis],
-                inverted = chart.inverted,
+                inverted = chart.options.chart.inverted,
                 xAxisMin = xAxis.toPixels(this.xAxisMin),
                 xAxisMax = xAxis.toPixels(this.xAxisMax),
                 yAxisMin = yAxis.toPixels(this.yAxisMin),
@@ -216,18 +215,13 @@ H.extendAnnotation(Measure, null,
                 },
                 pathH = [],
                 pathV = [],
-                crosshairOptionsX,
-                crosshairOptionsY,
-                temp;
+                crosshairOptionsX, crosshairOptionsY;
 
             if (inverted) {
-                temp = xAxisMin;
-                xAxisMin = yAxisMin;
-                yAxisMin = temp;
-
-                temp = xAxisMax;
-                xAxisMax = yAxisMax;
-                yAxisMax = temp;
+                xAxisMin = yAxis.toPixels(this.yAxisMin);
+                xAxisMax = yAxis.toPixels(this.yAxisMax);
+                yAxisMin = xAxis.toPixels(this.xAxisMin);
+                yAxisMax = xAxis.toPixels(this.xAxisMax);
             }
             // horizontal line
             if (options.crosshairX.enabled) {
@@ -265,11 +259,11 @@ H.extendAnnotation(Measure, null,
                 crosshairOptionsX = merge(defaultOptions, options.crosshairX);
                 crosshairOptionsY = merge(defaultOptions, options.crosshairY);
 
-                this.initShape(extend({
+                this.initShape(H.extend({
                     d: pathH
                 }, crosshairOptionsX), false);
 
-                this.initShape(extend({
+                this.initShape(H.extend({
                     d: pathV
                 }, crosshairOptionsY), false);
 
@@ -358,11 +352,6 @@ H.extendAnnotation(Measure, null,
                 this.calculations.updateStartPoints.call(this, true, false);
             }
 
-            // #11174 - clipBox was not recalculate during resize / redraw
-            if (this.clipRect) {
-                this.clipRect.animate(this.getClipBox());
-            }
-
             this.addValues(resize);
             this.addCrosshairs();
             this.redrawItems(this.shapes, animation);
@@ -390,15 +379,15 @@ H.extendAnnotation(Measure, null,
                 var options = this.options.typeOptions,
                     chart = this.chart,
                     getPointPos = this.calculations.getPointPos,
-                    inverted = chart.inverted,
+                    inverted = chart.options.chart.inverted,
                     xAxis = chart.xAxis[options.xAxis],
                     yAxis = chart.yAxis[options.yAxis],
                     bck = options.background,
                     width = inverted ? bck.height : bck.width,
                     height = inverted ? bck.width : bck.height,
                     selectType = options.selectType,
-                    top = inverted ? chart.plotLeft : chart.plotTop,
-                    left = inverted ? chart.plotTop : chart.plotLeft;
+                    top = chart.plotTop,
+                    left = chart.plotLeft;
 
                 this.startXMin = options.point.x;
                 this.startYMin = options.point.y;
@@ -426,10 +415,10 @@ H.extendAnnotation(Measure, null,
                 // x / y selection type
                 if (selectType === 'x') {
                     this.startYMin = yAxis.toValue(top);
-                    this.startYMax = yAxis.toValue(top + yAxis.len);
+                    this.startYMax = yAxis.toValue(top + chart.plotHeight);
                 } else if (selectType === 'y') {
                     this.startXMin = xAxis.toValue(left);
-                    this.startXMax = xAxis.toValue(left + xAxis.len);
+                    this.startXMax = xAxis.toValue(left + chart.plotWidth);
                 }
 
             },
@@ -718,7 +707,7 @@ H.extendAnnotation(Measure, null,
                 /**
                  * The color of border.
                  */
-                stroke: void 0
+                stroke: undefined
             },
             /**
              * Configure a crosshair that is horizontally placed in middle of
@@ -855,7 +844,7 @@ H.extendAnnotation(Measure, null,
                  * @type      {function}
                  *
                  */
-                formatter: void 0
+                formatter: undefined
             }
         },
         controlPointOptions: {
@@ -866,7 +855,7 @@ H.extendAnnotation(Measure, null,
                     typeOptions = options.typeOptions,
                     selectType = typeOptions.selectType,
                     controlPointOptions = options.controlPointOptions,
-                    inverted = chart.inverted,
+                    inverted = chart.options.chart.inverted,
                     xAxis = chart.xAxis[typeOptions.xAxis],
                     yAxis = chart.yAxis[typeOptions.yAxis],
                     targetX = target.xAxisMax,

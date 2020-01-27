@@ -1,11 +1,6 @@
 'use strict';
 import H from './../../parts/Globals.js';
-
-import U from './../../parts/Utilities.js';
-var extend = U.extend,
-    isNumber = U.isNumber,
-    pick = U.pick;
-
+import './../../parts/Utilities.js';
 import './../../parts/SvgRenderer.js';
 import controllableMixin from './controllableMixin.js';
 import MockPoint from './../MockPoint.js';
@@ -241,14 +236,7 @@ H.merge(
                 // Chart.options.annotations
                 annotationIndex = chart.annotations.indexOf(this.annotation),
                 chartAnnotations = chart.options.annotations,
-                chartOptions = chartAnnotations[annotationIndex],
-                temp;
-
-            if (chart.inverted) {
-                temp = dx;
-                dx = dy;
-                dy = temp;
-            }
+                chartOptions = chartAnnotations[annotationIndex];
 
             // Local options:
             this.options.x += dx;
@@ -318,7 +306,7 @@ H.merge(
                     H.format(
                         text,
                         point.getLabelConfig(),
-                        this.annotation.chart
+                        this.annotation.chart.time
                     ) :
                     options.formatter.call(point, this)
             });
@@ -393,7 +381,7 @@ H.merge(
                     itemPosition = H.Tooltip.prototype.getPosition.call(
                         {
                             chart: chart,
-                            distance: pick(itemOptions.distance, 16)
+                            distance: H.pick(itemOptions.distance, 16)
                         },
                         item.width,
                         item.height,
@@ -417,7 +405,7 @@ H.merge(
                     };
 
                     itemPosition = ControllableLabel.alignedPosition(
-                        extend(itemOptions, {
+                        H.extend(itemOptions, {
                             width: item.width,
                             height: item.height
                         }),
@@ -472,7 +460,7 @@ H.SVGRenderer.prototype.symbols.connector = function (x, y, w, h, options) {
         yOffset,
         lateral = w / 2;
 
-    if (isNumber(anchorX) && isNumber(anchorY)) {
+    if (H.isNumber(anchorX) && H.isNumber(anchorY)) {
 
         path = ['M', anchorX, anchorY];
 

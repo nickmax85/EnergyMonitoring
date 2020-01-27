@@ -9,16 +9,7 @@
 'use strict';
 
 import H from '../parts/Globals.js';
-
-import U from '../parts/Utilities.js';
-var defined = U.defined,
-    destroyObjectProperties = U.destroyObjectProperties,
-    erase = U.erase,
-    extend = U.extend,
-    pick = U.pick,
-    splat = U.splat,
-    wrap = U.wrap;
-
+import '../parts/Utilities.js';
 import '../parts/Chart.js';
 import controllableMixin from './controllable/controllableMixin.js';
 import ControllableRect from './controllable/ControllableRect.js';
@@ -33,8 +24,14 @@ import ControlPoint from './ControlPoint.js';
 var merge = H.merge,
     addEvent = H.addEvent,
     fireEvent = H.fireEvent,
+    defined = H.defined,
+    erase = H.erase,
     find = H.find,
+    isString = H.isString,
+    pick = H.pick,
     reduce = H.reduce,
+    splat = H.splat,
+    destroyObjectProperties = H.destroyObjectProperties,
     chartProto = H.Chart.prototype;
 
 /* *********************************************************************
@@ -66,9 +63,9 @@ var merge = H.merge,
  * @name Highcharts.Annotation
  *
  * @param {Highcharts.Chart} chart a chart instance
- * @param {Highcharts.AnnotationsOptions} userOptions the options object
+ * @param {Highcharts.AnnotationsOptions} options the options object
  */
-var Annotation = H.Annotation = function (chart, userOptions) {
+var Annotation = H.Annotation = function (chart, options) {
     var labelsAndShapes;
 
     /**
@@ -113,23 +110,24 @@ var Annotation = H.Annotation = function (chart, userOptions) {
      *
      * @type {Highcharts.AnnotationsOptions}
      */
-    this.options = merge(this.defaultOptions, userOptions);
+    // this.options = merge(this.defaultOptions, userOptions);
+    this.options = options;
 
     /**
      * The user options for the annotations.
      *
      * @type {Highcharts.AnnotationsOptions}
      */
-    this.userOptions = userOptions;
+    this.userOptions = merge(true, {}, options);
 
     // Handle labels and shapes - those are arrays
     // Merging does not work with arrays (stores reference)
     labelsAndShapes = this.getLabelsAndShapesOptions(
-        this.options,
-        userOptions
+        this.userOptions,
+        options
     );
-    this.options.labels = labelsAndShapes.labels;
-    this.options.shapes = labelsAndShapes.shapes;
+    this.userOptions.labels = labelsAndShapes.labels;
+    this.userOptions.shapes = labelsAndShapes.shapes;
 
     /**
      * The callback that reports to the overlapping-labels module which
@@ -164,7 +162,7 @@ var Annotation = H.Annotation = function (chart, userOptions) {
      * @type {Highcharts.SVGElement}
      */
 
-    this.init(chart, this.options);
+    this.init(chart, options);
 };
 
 
@@ -182,7 +180,7 @@ merge(
          *
          * @type {Array<string>}
          */
-        nonDOMEvents: ['add', 'afterUpdate', 'drag', 'remove'],
+        nonDOMEvents: ['add', 'afterUpdate', 'remove'],
 
         /**
          * A basic type of an annotation. It allows to add custom labels
@@ -202,7 +200,6 @@ merge(
          *
          * @type         {Array<*>}
          * @since        6.0.0
-         * @requires     modules/annotations
          * @optionparent annotations
          */
         defaultOptions: {
@@ -212,7 +209,7 @@ merge(
              * annotation in [Chart#removeAnnotation(id)](
              * /class-reference/Highcharts.Chart#removeAnnotation) method.
              *
-             * @type      {string|number}
+             * @type      {string}
              * @apioption annotations.id
              */
 
@@ -240,8 +237,6 @@ merge(
              * Options for annotation's labels. Each label inherits options
              * from the labelOptions object. An option from the labelOptions
              * can be overwritten by config for a specific label.
-             *
-             * @requires modules/annotations
              */
             labelOptions: {
 
@@ -491,7 +486,6 @@ merge(
              *         Attach annotation to a mock point
              *
              * @type      {string|Highcharts.MockPointOptionsObject}
-             * @requires  modules/annotations
              * @apioption annotations.labels.point
              */
 
@@ -596,8 +590,6 @@ merge(
              * Options for annotation's shapes. Each shape inherits options from
              * the shapeOptions object. An option from the shapeOptions can be
              * overwritten by config for a specific shape.
-             *
-             * @requires  modules/annotations
              */
             shapeOptions: {
 
@@ -682,7 +674,6 @@ merge(
              * by options in a specific control point.
              *
              * @type      {Annotation.ControlPoint.Options}
-             * @requires  modules/annotations
              * @apioption annotations.controlPointOptions
              */
             controlPointOptions: {
@@ -731,8 +722,6 @@ merge(
 
             /**
              * Events available in annotations.
-             *
-             * @requires modules/annotations
              */
             events: {},
 
@@ -777,19 +766,17 @@ merge(
         },
 
         addShapes: function () {
-            (this.options.shapes || []).forEach(function (shapeOptions, i) {
-                var shape = this.initShape(shapeOptions, i);
-
-                merge(true, this.options.shapes[i], shape.options);
-            }, this);
+            (this.options.shapes || []).forEach(
+                this.initShape,
+                this
+            );
         },
 
         addLabels: function () {
-            (this.options.labels || []).forEach(function (labelsOptions, i) {
-                var labels = this.initLabel(labelsOptions, i);
-
-                merge(true, this.options.labels[i], labels.options);
-            }, this);
+            (this.options.labels || []).forEach(
+                this.initLabel,
+                this
+            );
         },
 
         addClipPaths: function () {
@@ -1105,7 +1092,7 @@ merge(
                 }
 
                 item.redraw(
-                    pick(animation, true) && item.graphic.placed
+                    H.pick(animation, true) && item.graphic.placed
                 );
 
                 if (item.points.length) {
@@ -1209,11 +1196,15 @@ H.extendAnnotation = function (
  *
  ******************************************************************** */
 
-extend(chartProto, /** @lends Highcharts.Chart# */ {
+H.extend(chartProto, /** @lends Highcharts.Chart# */ {
     initAnnotation: function (userOptions) {
         var Constructor =
             Annotation.types[userOptions.type] || Annotation,
-            annotation = new Constructor(this, userOptions);
+            options = H.merge(
+                Constructor.prototype.defaultOptions,
+                userOptions
+            ),
+            annotation = new Constructor(this, options);
 
         this.annotations.push(annotation);
 
@@ -1244,19 +1235,17 @@ extend(chartProto, /** @lends Highcharts.Chart# */ {
     /**
      * Remove an annotation from the chart.
      *
-     * @param {String|Number|Annotation} idOrAnnotation - The annotation's id or
+     * @param {String|Annotation} idOrAnnotation - The annotation's id or
      *      direct annotation object.
      */
     removeAnnotation: function (idOrAnnotation) {
         var annotations = this.annotations,
-            annotation = idOrAnnotation.coll === 'annotations' ?
-                idOrAnnotation :
-                find(
-                    annotations,
-                    function (annotation) {
-                        return annotation.options.id === idOrAnnotation;
-                    }
-                );
+            annotation = isString(idOrAnnotation) ? find(
+                annotations,
+                function (annotation) {
+                    return annotation.options.id === idOrAnnotation;
+                }
+            ) : idOrAnnotation;
 
         if (annotation) {
             fireEvent(annotation, 'remove');
@@ -1309,13 +1298,3 @@ chartProto.callbacks.push(function (chart) {
         chart.controlPointsGroup.destroy();
     });
 });
-
-wrap(
-    H.Pointer.prototype,
-    'onContainerMouseDown',
-    function (proceed) {
-        if (!this.chart.hasDraggedAnnotation) {
-            proceed.apply(this, Array.prototype.slice.call(arguments, 1));
-        }
-    }
-);

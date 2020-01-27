@@ -6,15 +6,8 @@
  *
  *  License: highcharts.com/license
  *
- *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
- *
  * */
-'use strict';
-import '../../parts/Globals.js';
-/**
- * @requires  modules/boost
- * @apioption boost
- */
+
 /**
  * Set the series threshold for when the boost should kick in globally.
  *
@@ -28,6 +21,7 @@ import '../../parts/Globals.js';
  * @default   null
  * @apioption boost.seriesThreshold
  */
+
 /**
  * Enable or disable boost on a chart.
  *
@@ -35,12 +29,14 @@ import '../../parts/Globals.js';
  * @default   true
  * @apioption boost.enabled
  */
+
 /**
  * Debugging options for boost.
  * Useful for benchmarking, and general timing.
  *
  * @apioption boost.debug
  */
+
 /**
  * Time the series rendering.
  *
@@ -51,6 +47,7 @@ import '../../parts/Globals.js';
  * @default   false
  * @apioption boost.debug.timeRendering
  */
+
 /**
  * Time the series processing.
  *
@@ -61,6 +58,7 @@ import '../../parts/Globals.js';
  * @default   false
  * @apioption boost.debug.timeSeriesProcessing
  */
+
 /**
  * Time the the WebGL setup.
  *
@@ -71,6 +69,7 @@ import '../../parts/Globals.js';
  * @default   false
  * @apioption boost.debug.timeSetup
  */
+
 /**
  * Time the building of the k-d tree.
  *
@@ -84,6 +83,7 @@ import '../../parts/Globals.js';
  * @default   false
  * @apioption boost.debug.timeKDTree
  */
+
 /**
  * Show the number of points skipped through culling.
  *
@@ -95,6 +95,7 @@ import '../../parts/Globals.js';
  * @default   false
  * @apioption boost.debug.showSkipSummary
  */
+
 /**
  * Time the WebGL to SVG buffer copy
  *
@@ -108,6 +109,7 @@ import '../../parts/Globals.js';
  * @default   false
  * @apioption boost.debug.timeBufferCopy
  */
+
 /**
  * Enable or disable GPU translations. GPU translations are faster than doing
  * the translation in JavaScript.
@@ -121,6 +123,7 @@ import '../../parts/Globals.js';
  * @default   false
  * @apioption boost.useGPUTranslations
  */
+
 /**
  * Enable or disable pre-allocation of vertex buffers.
  *
@@ -139,6 +142,7 @@ import '../../parts/Globals.js';
  * @default   false
  * @apioption boost.usePreallocated
  */
+
 /**
  * Set the point threshold for when a series should enter boost mode.
  *
@@ -153,11 +157,13 @@ import '../../parts/Globals.js';
  * `cropThreshold`, all points are rendered although outside the visible plot
  * area, and the `boostThreshold` won't take effect.
  *
+ * Requires `modules/boost.js`.
+ *
  * @type      {number}
  * @default   5000
- * @requires  modules/boost
  * @apioption plotOptions.series.boostThreshold
  */
+
 /**
  * If set to true, the whole chart will be boosted if one of the series
  * crosses its threshold, and all the series can be boosted.
@@ -166,13 +172,12 @@ import '../../parts/Globals.js';
  * @default   true
  * @apioption boost.allowForce
  */
+
 /**
  * Sets the color blending in the boost module.
  *
  * @type       {string}
  * @default    undefined
  * @validvalue ["add", "multiply", "darken"]
- * @requires   modules/boost
  * @apioption  plotOptions.series.boostBlending
  */
-''; // adds doclets above to transpiled file

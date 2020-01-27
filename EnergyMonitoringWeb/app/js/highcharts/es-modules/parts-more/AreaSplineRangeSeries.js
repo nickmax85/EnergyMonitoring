@@ -1,21 +1,23 @@
 /* *
+ * (c) 2010-2019 Torstein Honsi
  *
- *  (c) 2010-2019 Torstein Honsi
- *
- *  License: www.highcharts.com/license
- *
- *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
- *
- * */
+ * License: www.highcharts.com/license
+ */
+
 'use strict';
+
 import H from '../parts/Globals.js';
 import '../parts/Utilities.js';
 import '../parts/Options.js';
-var seriesType = H.seriesType, seriesTypes = H.seriesTypes;
+
+var seriesType = H.seriesType,
+    seriesTypes = H.seriesTypes;
+
 /**
  * The area spline range is a cartesian series type with higher and
  * lower Y values along an X axis. The area inside the range is colored, and
- * the graph outlining the area is a smoothed spline.
+ * the graph outlining the area is a smoothed spline. Requires
+ * `highcharts-more.js`.
  *
  * @sample {highstock|highstock} stock/demo/areasplinerange/
  *         Area spline range
@@ -24,12 +26,12 @@ var seriesType = H.seriesType, seriesTypes = H.seriesTypes;
  * @since     2.3.0
  * @excluding step
  * @product   highcharts highstock
- * @requires  highcharts-more
  * @apioption plotOptions.areasplinerange
  */
 seriesType('areasplinerange', 'arearange', null, {
     getPointSpline: seriesTypes.spline.prototype.getPointSpline
 });
+
 /**
  * A `areasplinerange` series. If the [type](#series.areasplinerange.type)
  * option is not specified, it is inherited from [chart.type](#chart.type).
@@ -37,9 +39,9 @@ seriesType('areasplinerange', 'arearange', null, {
  * @extends   series,plotOptions.areasplinerange
  * @excluding dataParser, dataURL, stack
  * @product   highcharts highstock
- * @requires  highcharts-more
  * @apioption series.areasplinerange
  */
+
 /**
  * An array of data points for the series. For the `areasplinerange`
  * series type, points can be given in the following ways:
@@ -94,4 +96,3 @@ seriesType('areasplinerange', 'arearange', null, {
  * @product   highcharts highstock
  * @apioption series.areasplinerange.data
  */
-''; // adds doclets above to transpiled file

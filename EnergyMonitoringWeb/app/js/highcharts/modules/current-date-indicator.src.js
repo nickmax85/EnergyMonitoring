@@ -1,5 +1,5 @@
 /**
- * @license Highcharts Gantt JS v8.0.0 (2019-12-10)
+ * @license Highcharts JS v7.1.2 (2019-06-03)
  *
  * CurrentDateIndicator
  *
@@ -28,7 +28,7 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'parts-gantt/CurrentDateIndicator.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (H, U) {
+    _registerModule(_modules, 'parts-gantt/CurrentDateIndicator.js', [_modules['parts/Globals.js']], function (H) {
         /* *
          *
          *  (c) 2016-2019 Highsoft AS
@@ -37,11 +37,15 @@
          *
          *  License: www.highcharts.com/license
          *
-         *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
-         *
          * */
-        var wrap = U.wrap;
-        var addEvent = H.addEvent, Axis = H.Axis, PlotLineOrBand = H.PlotLineOrBand, merge = H.merge;
+
+
+
+        var addEvent = H.addEvent,
+            Axis = H.Axis,
+            PlotLineOrBand = H.PlotLineOrBand,
+            merge = H.merge;
+
         var defaultConfig = {
             /**
              * Show an indicator on the axis for the current date and time. Can be a
@@ -53,7 +57,6 @@
              * @sample gantt/current-date-indicator/object-config
              *         Current date indicator with custom options
              *
-             * @declare   Highcharts.AxisCurrentDateIndicatorOptions
              * @type      {boolean|*}
              * @default   true
              * @extends   xAxis.plotLines
@@ -64,63 +67,65 @@
             currentDateIndicator: true,
             color: '#ccd6eb',
             width: 2,
-            /**
-             * @declare Highcharts.AxisCurrentDateIndicatorLabelOptions
-             */
             label: {
-                /**
-                 * Format of the label. This options is passed as the fist argument to
-                 * [dateFormat](/class-reference/Highcharts#dateFormat) function.
-                 *
-                 * @type      {string}
-                 * @default   '%a, %b %d %Y, %H:%M'
-                 * @product   gantt
-                 * @apioption xAxis.currentDateIndicator.label.format
-                 */
                 format: '%a, %b %d %Y, %H:%M',
-                formatter: function (value, format) {
-                    return H.dateFormat(format, value);
-                },
+                formatter: undefined,
                 rotation: 0,
-                /**
-                 * @type {Highcharts.CSSObject}
-                 */
                 style: {
-                    /** @internal */
                     fontSize: '10px'
                 }
             }
         };
-        /* eslint-disable no-invalid-this */
+
         addEvent(Axis, 'afterSetOptions', function () {
-            var options = this.options, cdiOptions = options.currentDateIndicator;
+            var options = this.options,
+                cdiOptions = options.currentDateIndicator;
+
             if (cdiOptions) {
-                cdiOptions = typeof cdiOptions === 'object' ?
-                    merge(defaultConfig, cdiOptions) : merge(defaultConfig);
+                if (typeof cdiOptions === 'object') {
+                    // Ignore formatter if custom format is defined
+                    if (cdiOptions.label && cdiOptions.label.format) {
+                        cdiOptions.label.formatter = undefined;
+                    }
+                    cdiOptions = merge(defaultConfig, cdiOptions);
+                } else {
+                    cdiOptions = merge(defaultConfig);
+                }
+
                 cdiOptions.value = new Date();
+
                 if (!options.plotLines) {
                     options.plotLines = [];
                 }
+
                 options.plotLines.push(cdiOptions);
             }
+
         });
+
         addEvent(PlotLineOrBand, 'render', function () {
-            // If the label already exists, update its text
-            if (this.label) {
-                this.label.attr({
-                    text: this.getLabelText(this.options.label)
-                });
-            }
-        });
-        wrap(PlotLineOrBand.prototype, 'getLabelText', function (defaultMethod, defaultLabelOptions) {
-            var options = this.options;
-            if (options.currentDateIndicator && options.label &&
-                typeof options.label.formatter === 'function') {
+            var options = this.options,
+                format,
+                formatter;
+
+            if (options.currentDateIndicator && options.label) {
+                format = options.label.format;
+                formatter = options.label.formatter;
+
                 options.value = new Date();
-                return options.label.formatter
-                    .call(this, options.value, options.label.format);
+                if (typeof formatter === 'function') {
+                    options.label.text = formatter(this);
+                } else {
+                    options.label.text = H.dateFormat(format, new Date());
+                }
+
+                // If the label already exists, update its text
+                if (this.label) {
+                    this.label.attr({
+                        text: options.label.text
+                    });
+                }
             }
-            return defaultMethod.call(this, defaultLabelOptions);
         });
 
     });

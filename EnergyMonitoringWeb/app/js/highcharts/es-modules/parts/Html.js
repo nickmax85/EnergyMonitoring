@@ -9,10 +9,9 @@
  * */
 'use strict';
 import H from './Globals.js';
-import U from './Utilities.js';
-var attr = U.attr, defined = U.defined, extend = U.extend, pick = U.pick, pInt = U.pInt;
+import './Utilities.js';
 import './SvgRenderer.js';
-var createElement = H.createElement, css = H.css, isFirefox = H.isFirefox, isMS = H.isMS, isWebKit = H.isWebKit, SVGElement = H.SVGElement, SVGRenderer = H.SVGRenderer, win = H.win;
+var attr = H.attr, createElement = H.createElement, css = H.css, defined = H.defined, extend = H.extend, isFirefox = H.isFirefox, isMS = H.isMS, isWebKit = H.isWebKit, pick = H.pick, pInt = H.pInt, SVGElement = H.SVGElement, SVGRenderer = H.SVGRenderer, win = H.win;
 /* eslint-disable valid-jsdoc */
 // Extend SvgElement for useHTML option.
 extend(SVGElement.prototype, /** @lends SVGElement.prototype */ {
@@ -33,7 +32,7 @@ extend(SVGElement.prototype, /** @lends SVGElement.prototype */ {
         // transform (#8809)
         isSettingWidth = (element.tagName === 'SPAN' &&
             styles &&
-            'width' in styles), textWidth = pick(isSettingWidth && styles.width, void 0), doTransform;
+            'width' in styles), textWidth = pick(isSettingWidth && styles.width, undefined), doTransform;
         if (isSettingWidth) {
             delete styles.width;
             wrapper.textWidth = textWidth;
@@ -267,7 +266,7 @@ extend(SVGRenderer.prototype, /** @lends SVGRenderer.prototype */ {
                 };
             });
             gWrapper.addedSetters = true;
-        };
+        }, chart = H.charts[renderer.chartIndex], styledMode = chart && chart.styledMode;
         // Text setter
         wrapper.textSetter = function (value) {
             if (value !== element.innerHTML) {
@@ -314,7 +313,7 @@ extend(SVGRenderer.prototype, /** @lends SVGRenderer.prototype */ {
             .css({
             position: 'absolute'
         });
-        if (!renderer.styledMode) {
+        if (!styledMode) {
             wrapper.css({
                 fontFamily: this.style.fontFamily,
                 fontSize: this.style.fontSize
@@ -365,11 +364,14 @@ extend(SVGRenderer.prototype, /** @lends SVGRenderer.prototype */ {
                                 }
                                 parentGroup.doTransform = true;
                             }
+                            if (cls) {
+                                cls = { className: cls };
+                            } // else null
                             // Create a HTML div and append it to the parent div
                             // to emulate the SVG group structure
                             htmlGroup =
                                 parentGroup.div =
-                                    parentGroup.div || createElement('div', cls ? { className: cls } : void 0, {
+                                    parentGroup.div || createElement('div', cls, {
                                         position: 'absolute',
                                         left: (parentGroup.translateX || 0) + 'px',
                                         top: (parentGroup.translateY || 0) + 'px',

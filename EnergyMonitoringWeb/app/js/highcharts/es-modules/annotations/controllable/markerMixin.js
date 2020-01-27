@@ -1,12 +1,7 @@
 'use strict';
 import H from './../../parts/Globals.js';
 import './../../parts/Chart.js';
-
-import U from './../../parts/Utilities.js';
-var defined = U.defined,
-    objectEach = U.objectEach,
-    splat = U.splat;
-
+import './../../parts/Utilities.js';
 import './../../parts/SvgRenderer.js';
 
 /**
@@ -122,7 +117,7 @@ var markerMixin = {
             chart = item.chart,
             defs = chart.options.defs,
             fill = itemOptions.fill,
-            color = defined(fill) && fill !== 'none' ?
+            color = H.defined(fill) && fill !== 'none' ?
                 fill :
                 itemOptions.stroke,
 
@@ -169,12 +164,12 @@ H.SVGRenderer.prototype.definition = function (def) {
     function recurse(config, parent) {
         var ret;
 
-        splat(config).forEach(function (item) {
+        H.splat(config).forEach(function (item) {
             var node = ren.createElement(item.tagName),
                 attr = {};
 
             // Set attributes
-            objectEach(item, function (val, key) {
+            H.objectEach(item, function (val, key) {
                 if (
                     key !== 'tagName' &&
                     key !== 'children' &&
@@ -210,7 +205,7 @@ H.SVGRenderer.prototype.definition = function (def) {
 H.addEvent(H.Chart, 'afterGetContainer', function () {
     this.options.defs = H.merge(defaultMarkers, this.options.defs || {});
 
-    objectEach(this.options.defs, function (def) {
+    H.objectEach(this.options.defs, function (def) {
         if (def.tagName === 'marker' && def.render !== false) {
             this.renderer.addMarker(def.id, def);
         }

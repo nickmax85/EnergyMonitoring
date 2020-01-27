@@ -10,35 +10,13 @@
 'use strict';
 import Highcharts from './Globals.js';
 /**
- * Function callback when a series point is clicked. Return false to cancel the
- * action.
- *
- * @callback Highcharts.PointClickCallbackFunction
- *
- * @param {Highcharts.Point} this
- *        The point where the event occured.
- *
- * @param {Highcharts.PointClickEventObject} event
- *        Event arguments.
- */
-/**
- * Common information for a click event on a series point.
- *
- * @interface Highcharts.PointClickEventObject
- * @extends Highcharts.PointerEventObject
- */ /**
-* Clicked point.
-* @name Highcharts.PointClickEventObject#point
-* @type {Highcharts.Point}
-*/
-/**
  * Configuration hash for the data label and tooltip formatters.
  *
  * @interface Highcharts.PointLabelObject
  */ /**
 * The point's current color.
 * @name Highcharts.PointLabelObject#color
-* @type {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject|undefined}
+* @type {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
 */ /**
 * The point's current color index, used in styled mode instead of `color`. The
 * color index is inserted in class names used for styling.
@@ -47,7 +25,7 @@ import Highcharts from './Globals.js';
 */ /**
 * The name of the related point.
 * @name Highcharts.PointLabelObject#key
-* @type {string|undefined}
+* @type {number|string}
 */ /**
 * The percentage for related points in a stacked series or pies.
 * @name Highcharts.PointLabelObject#percentage
@@ -64,99 +42,26 @@ import Highcharts from './Globals.js';
 * The total of values in either a stack for stacked series, or a pie in a pie
 * series.
 * @name Highcharts.PointLabelObject#total
-* @type {number|undefined}
+* @type {number}
 */ /**
 * For categorized axes this property holds the category name for the point. For
 * other axes it holds the X value.
 * @name Highcharts.PointLabelObject#x
-* @type {number|string|undefined}
+* @type {number|string}
 */ /**
 * The y value of the point.
 * @name Highcharts.PointLabelObject#y
 * @type {number|undefined}
 */
 /**
- * Gets fired when the mouse leaves the area close to the point.
- *
- * @callback Highcharts.PointMouseOutCallbackFunction
- *
- * @param {Highcharts.Point} this
- *        Point where the event occured.
- *
- * @param {global.PointerEvent} event
- *        Event that occured.
- */
-/**
- * Gets fired when the mouse enters the area close to the point.
- *
- * @callback Highcharts.PointMouseOverCallbackFunction
- *
- * @param {Highcharts.Point} this
- *        Point where the event occured.
- *
- * @param {global.Event} event
- *        Event that occured.
- */
-/**
- * The generic point options for all series.
- *
- * In TypeScript you have to extend `PointOptionsObject` with an additional
- * declaration to allow custom data options:
- *
- * ```
- * declare interface PointOptionsObject {
- *     customProperty: string;
- * }
- * ```
- *
- * @interface Highcharts.PointOptionsObject
- */
-/**
- * Possible option types for a data point.
- *
- * @typedef {number|string|Array<(number|string)>|Highcharts.PointOptionsObject|null} Highcharts.PointOptionsType
- */
-/**
- * Gets fired when the point is removed using the `.remove()` method.
- *
- * @callback Highcharts.PointRemoveCallbackFunction
- *
- * @param {Highcharts.Point} this
- *        Point where the event occured.
- *
- * @param {global.Event} event
- *        Event that occured.
- */
-/**
- * Possible key values for the point state options.
- *
- * @typedef {"hover"|"inactive"|"normal"|"select"} Highcharts.PointStateValue
- */
-/**
- * Gets fired when the point is updated programmatically through the `.update()`
- * method.
- *
- * @callback Highcharts.PointUpdateCallbackFunction
- *
- * @param {Highcharts.Point} this
- *        Point where the event occured.
- *
- * @param {Highcharts.PointUpdateEventObject} event
- *        Event that occured.
- */
-/**
- * Information about the update event.
- *
- * @interface Highcharts.PointUpdateEventObject
- * @extends global.Event
+ * @interface Highcharts.PointObject
  */ /**
-* Options data of the update event.
-* @name Highcharts.PointUpdateEventObject#options
-* @type {Highcharts.PointOptionsType}
+* Custom properties set by custom data options.
+* @name Highcharts.Point#[property:string]
+* @type {*}
 */
-import U from './Utilities.js';
-var animObject = U.animObject, defined = U.defined, erase = U.erase, extend = U.extend, isArray = U.isArray, isNumber = U.isNumber, isObject = U.isObject, syncTimeout = U.syncTimeout, pick = U.pick;
-var Point, H = Highcharts, fireEvent = H.fireEvent, format = H.format, uniqueKey = H.uniqueKey, removeEvent = H.removeEvent;
+import './Utilities.js';
+var Point, H = Highcharts, extend = H.extend, erase = H.erase, fireEvent = H.fireEvent, format = H.format, isArray = H.isArray, isNumber = H.isNumber, pick = H.pick, uniqueKey = H.uniqueKey, defined = H.defined, removeEvent = H.removeEvent;
 /* eslint-disable no-invalid-this, valid-jsdoc */
 /**
  * The Point object. The point objects are generated from the `series.data`
@@ -166,6 +71,7 @@ var Point, H = Highcharts, fireEvent = H.fireEvent, format = H.format, uniqueKey
  *
  * @class
  * @name Highcharts.Point
+ * @implements {Highcharts.PointObject}
  */
 Highcharts.Point = Point = function () { };
 Highcharts.Point.prototype = {
@@ -178,7 +84,7 @@ Highcharts.Point.prototype = {
      * @param {Highcharts.Series} series
      *        The series object containing this point.
      *
-     * @param {Highcharts.PointOptionsType} options
+     * @param {number|object|Array<(number|string)>|null} options
      *        The data in either number, array or object format.
      *
      * @param {number} [x]
@@ -216,7 +122,7 @@ Highcharts.Point.prototype = {
          * The point's current color.
          *
          * @name Highcharts.Point#color
-         * @type {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject|undefined}
+         * @type {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
          */
         if (!styledMode && !this.options.color) {
             this.color = series.color; // #3445
@@ -253,7 +159,7 @@ Highcharts.Point.prototype = {
      * @private
      * @function Highcharts.Point#applyOptions
      *
-     * @param {Highcharts.PointOptionsType} options
+     * @param {number|Highcharts.Dictionary<any>|Array<(number|string)>|null} options
      *        The point options as defined in series.data.
      *
      * @param {number} [x]
@@ -270,18 +176,8 @@ Highcharts.Point.prototype = {
         /**
          * The point's options as applied in the initial configuration, or
          * extended through `Point.update`.
-         *
-         * In TypeScript you have to extend `PointOptionsObject` via an
-         * additional interface to allow custom data options:
-         *
-         * ```
-         * declare interface PointOptionsObject {
-         *     customProperty: string;
-         * }
-         * ```
-         *
          * @name Highcharts.Point#options
-         * @type {Highcharts.PointOptionsObject}
+         * @type {object}
          */
         point.options = point.options ?
             extend(point.options, options) :
@@ -304,8 +200,10 @@ Highcharts.Point.prototype = {
         if (pointValKey) {
             point.y = point[pointValKey];
         }
-        point.isNull = pick(point.isValid && !point.isValid(), point.x === null || !isNumber(point.y)); // #3571, check for NaN
-        point.formatPrefix = point.isNull ? 'null' : 'point'; // #9233, #10874
+        point.isNull = pick(point.isValid && !point.isValid(), point.x === null || !isNumber(point.y, true)); // #3571, check for NaN
+        if (point.isNull) { // #9233
+            point.formatPrefix = 'null';
+        }
         // The point is initially selected by options (#5777)
         if (point.selected) {
             point.state = 'select';
@@ -319,13 +217,13 @@ Highcharts.Point.prototype = {
         // have an x value, however the y value can be null to create a gap in
         // the series
         if ('name' in point &&
-            typeof x === 'undefined' &&
+            x === undefined &&
             series.xAxis &&
             series.xAxis.hasNames) {
             point.x = series.xAxis.nameToX(point);
         }
-        if (typeof point.x === 'undefined' && series) {
-            if (typeof x === 'undefined') {
+        if (point.x === undefined && series) {
+            if (x === undefined) {
                 point.x = series.autoIncrement(point);
             }
             else {
@@ -359,7 +257,7 @@ Highcharts.Point.prototype = {
             var isLastKey = arr.length - 1 === i;
             result[key] = (isLastKey ?
                 value :
-                isObject(result[key], true) ?
+                H.isObject(result[key], true) ?
                     result[key] :
                     {});
             return result[key];
@@ -375,7 +273,7 @@ Highcharts.Point.prototype = {
      *
      * @function Highcharts.Point#optionsToObject
      *
-     * @param {Highcharts.PointOptionsType} options
+     * @param {number|Highcharts.Dictionary<*>|Array<number|string>|null} options
      *        The input option.
      *
      * @return {Highcharts.Dictionary<*>}
@@ -400,7 +298,7 @@ Highcharts.Point.prototype = {
             }
             while (j < valueCount) {
                 // Skip undefined positions for keys
-                if (!keys || typeof options[i] !== 'undefined') {
+                if (!keys || options[i] !== undefined) {
                     if (pointArrayMap[j].indexOf('.') > 0) {
                         // Handle nested keys, e.g. ['color.pattern.image']
                         // Avoid function call unless necessary.
@@ -443,8 +341,8 @@ Highcharts.Point.prototype = {
             (this.selected ? ' highcharts-point-select' : '') +
             (this.negative ? ' highcharts-negative' : '') +
             (this.isNull ? ' highcharts-null-point' : '') +
-            (typeof this.colorIndex !== 'undefined' ?
-                ' highcharts-color-' + this.colorIndex : '') +
+            (this.colorIndex !== undefined ? ' highcharts-color-' +
+                this.colorIndex : '') +
             (this.options.className ? ' ' + this.options.className : '') +
             (this.zone && this.zone.className ? ' ' +
                 this.zone.className.replace('highcharts-negative', '') : '');
@@ -454,7 +352,7 @@ Highcharts.Point.prototype = {
      *
      * @function Highcharts.Point#getZone
      *
-     * @return {Highcharts.SeriesZonesOptionsObject}
+     * @return {Highcharts.PlotSeriesZonesOptions}
      *         The zone item.
      */
     getZone: function () {
@@ -476,17 +374,6 @@ Highcharts.Point.prototype = {
         return zone;
     },
     /**
-     * Utility to check if point has new shape type. Used in column series and
-     * all others that are based on column series.
-     *
-     * @return boolean|undefined
-     */
-    hasNewShapeType: function () {
-        var oldShapeType = this.graphic &&
-            (this.graphic.symbolName || this.graphic.element.nodeName);
-        return oldShapeType !== this.shapeType;
-    },
-    /**
      * Destroy a point to clear memory. Its reference still stays in
      * `series.data`.
      *
@@ -495,71 +382,29 @@ Highcharts.Point.prototype = {
      * @return {void}
      */
     destroy: function () {
-        var point = this, series = point.series, chart = series.chart, dataSorting = series.options.dataSorting, hoverPoints = chart.hoverPoints, globalAnimation = point.series.chart.renderer.globalAnimation, animation = animObject(globalAnimation), prop;
-        /**
-         * Allow to call after animation.
-         * @private
-         */
-        function destroyPoint() {
-            if (hoverPoints) {
-                point.setState();
-                erase(hoverPoints, point);
-                if (!hoverPoints.length) {
-                    chart.hoverPoints = null;
-                }
-            }
-            if (point === chart.hoverPoint) {
-                point.onMouseOut();
-            }
-            // Remove all events and elements
-            if (point.graphic || point.dataLabel || point.dataLabels) {
-                removeEvent(point);
-                point.destroyElements();
-            }
-            for (prop in point) { // eslint-disable-line guard-for-in
-                point[prop] = null;
-            }
-        }
-        // Remove properties after animation
-        if (!dataSorting || !dataSorting.enabled) {
-            destroyPoint();
-        }
-        else {
-            this.animateBeforeDestroy();
-            syncTimeout(destroyPoint, animation.duration);
-        }
+        var point = this, series = point.series, chart = series.chart, hoverPoints = chart.hoverPoints, prop;
         chart.pointCount--;
+        if (hoverPoints) {
+            point.setState();
+            erase(hoverPoints, point);
+            if (!hoverPoints.length) {
+                chart.hoverPoints = null;
+            }
+        }
+        if (point === chart.hoverPoint) {
+            point.onMouseOut();
+        }
+        // Remove all events and elements
+        if (point.graphic || point.dataLabel || point.dataLabels) {
+            removeEvent(point);
+            point.destroyElements();
+        }
         if (point.legendItem) { // pies have legend items
             chart.legend.destroyItem(point);
         }
-    },
-    /**
-     * Animate SVG elements associated with the point.
-     *
-     * @private
-     * @function Highcharts.Point#animateBeforeDestroy
-     * @return {void}
-     */
-    animateBeforeDestroy: function () {
-        var point = this, animateParams = { x: point.startXPos, opacity: 0 }, isDataLabel, graphicalProps = point.getGraphicalProps();
-        graphicalProps.singular.forEach(function (prop) {
-            isDataLabel = prop === 'dataLabel';
-            point[prop] = point[prop].animate(isDataLabel ? {
-                x: point[prop].startXPos,
-                y: point[prop].startYPos,
-                opacity: 0
-            } : animateParams);
-        });
-        graphicalProps.plural.forEach(function (plural) {
-            point[plural].forEach(function (item) {
-                if (item.element) {
-                    item.animate(extend({ x: point.startXPos }, (item.startYPos ? {
-                        x: item.startXPos,
-                        y: item.startYPos
-                    } : {})));
-                }
-            });
-        });
+        for (prop in point) { // eslint-disable-line guard-for-in
+            point[prop] = null;
+        }
     },
     /**
      * Destroy SVG elements associated with the point.
@@ -570,29 +415,7 @@ Highcharts.Point.prototype = {
      * @return {void}
      */
     destroyElements: function (kinds) {
-        var point = this, props = point.getGraphicalProps(kinds);
-        props.singular.forEach(function (prop) {
-            point[prop] = point[prop].destroy();
-        });
-        props.plural.forEach(function (plural) {
-            point[plural].forEach(function (item) {
-                if (item.element) {
-                    item.destroy();
-                }
-            });
-            delete point[plural];
-        });
-    },
-    /**
-     * Get props of all existing graphical point elements.
-     *
-     * @private
-     * @function Highcharts.Point#getGraphicalProps
-     * @param {Highcharts.Dictionary<number>} [kinds]
-     * @return {Highcharts.PointGraphicalProps}
-     */
-    getGraphicalProps: function (kinds) {
-        var point = this, props = [], prop, i, graphicalProps = { singular: [], plural: [] };
+        var point = this, props = [], prop, i;
         kinds = kinds || { graphic: 1, dataLabel: 1 };
         if (kinds.graphic) {
             props.push('graphic', 'shadowGroup');
@@ -604,16 +427,20 @@ Highcharts.Point.prototype = {
         while (i--) {
             prop = props[i];
             if (point[prop]) {
-                graphicalProps.singular.push(prop);
+                point[prop] = point[prop].destroy();
             }
         }
         ['dataLabel', 'connector'].forEach(function (prop) {
             var plural = prop + 's';
             if (kinds[prop] && point[plural]) {
-                graphicalProps.plural.push(plural);
+                point[plural].forEach(function (item) {
+                    if (item.element) {
+                        item.destroy();
+                    }
+                });
+                delete point[plural];
             }
         });
-        return graphicalProps;
     },
     /**
      * Return the configuration hash needed for the data label and tooltip
@@ -653,8 +480,7 @@ Highcharts.Point.prototype = {
         var series = this.series, seriesTooltipOptions = series.tooltipOptions, valueDecimals = pick(seriesTooltipOptions.valueDecimals, ''), valuePrefix = seriesTooltipOptions.valuePrefix || '', valueSuffix = seriesTooltipOptions.valueSuffix || '';
         // Replace default point style with class name
         if (series.chart.styledMode) {
-            pointFormat =
-                series.chart.tooltip.styledModeFormat(pointFormat);
+            pointFormat = series.chart.tooltip.styledModeFormat(pointFormat);
         }
         // Loop over the point array map and replace unformatted values with
         // sprintf formatting markup
@@ -668,7 +494,7 @@ Highcharts.Point.prototype = {
         return format(pointFormat, {
             point: this,
             series: this.series
-        }, series.chart);
+        }, series.chart.time);
     },
     /**
      * Fire an event on the Point object.
@@ -679,10 +505,10 @@ Highcharts.Point.prototype = {
      * @param {string} eventType
      *        Type of the event.
      *
-     * @param {Highcharts.Dictionary<any>|Event} [eventArgs]
+     * @param {Highcharts.Dictionary<any>|Event} eventArgs
      *        Additional event arguments.
      *
-     * @param {Highcharts.EventCallbackFunction<Highcharts.Point>|Function} [defaultFunction]
+     * @param {Highcharts.EventCallbackFunction<Highcharts.Point>|Function} defaultFunction
      *        Default event handler.
      *
      * @fires Highcharts.Point#event:*

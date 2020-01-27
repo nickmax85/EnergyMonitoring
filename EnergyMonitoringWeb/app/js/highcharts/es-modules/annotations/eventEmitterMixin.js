@@ -1,7 +1,5 @@
 import H from '../parts/Globals.js';
-import U from '../parts/Utilities.js';
-var objectEach = U.objectEach,
-    pick = U.pick;
+import '../parts/Utilities.js';
 
 var fireEvent = H.fireEvent;
 
@@ -31,7 +29,7 @@ var eventEmitterMixin = {
             }
         );
 
-        objectEach(emitter.options.events, function (event, type) {
+        H.objectEach(emitter.options.events, function (event, type) {
             var eventHandler = function (e) {
                 if (type !== 'click' || !emitter.cancelClick) {
                     event.call(
@@ -50,7 +48,6 @@ var eventEmitterMixin = {
         });
 
         if (emitter.options.draggable) {
-
             H.addEvent(emitter, 'drag', emitter.onDrag);
 
             if (!emitter.graphic.renderer.styledMode) {
@@ -102,12 +99,13 @@ var eventEmitterMixin = {
             return;
         }
 
+        e.stopPropagation();
+
         e = pointer.normalize(e);
         prevChartX = e.chartX;
         prevChartY = e.chartY;
 
         emitter.cancelClick = false;
-        emitter.chart.hasDraggedAnnotation = true;
 
         emitter.removeDrag = H.addEvent(
             H.doc,
@@ -132,9 +130,8 @@ var eventEmitterMixin = {
             function (e) {
                 emitter.cancelClick = emitter.hasDragged;
                 emitter.hasDragged = false;
-                emitter.chart.hasDraggedAnnotation = false;
                 // ControlPoints vs Annotation:
-                fireEvent(pick(emitter.target, emitter), 'afterUpdate');
+                fireEvent(H.pick(emitter.target, emitter), 'afterUpdate');
                 emitter.onMouseUp(e);
             }
         );

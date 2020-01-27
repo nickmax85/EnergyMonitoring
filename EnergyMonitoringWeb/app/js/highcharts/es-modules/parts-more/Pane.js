@@ -1,23 +1,24 @@
 /* *
+ * (c) 2010-2019 Torstein Honsi
  *
- *  (c) 2010-2019 Torstein Honsi
- *
- *  License: www.highcharts.com/license
- *
- *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
- *
- * */
-'use strict';
-import H from '../parts/Globals.js';
+ * License: www.highcharts.com/license
+ */
+
 /**
  * @typedef {"arc"|"circle"|"solid"} Highcharts.PaneBackgroundShapeValue
  */
+
+'use strict';
+
+import H from '../parts/Globals.js';
 import '../mixins/centered-series.js';
-import U from '../parts/Utilities.js';
-var extend = U.extend, splat = U.splat;
-var CenteredSeriesMixin = H.CenteredSeriesMixin, merge = H.merge;
-/* eslint-disable valid-jsdoc */
-H.Chart.prototype.collectionsWithUpdate.push('pane');
+import '../parts/Utilities.js';
+
+var CenteredSeriesMixin = H.CenteredSeriesMixin,
+    extend = H.extend,
+    merge = H.merge,
+    splat = H.splat;
+
 /**
  * The Pane object allows options that are common to a set of X and Y axes.
  *
@@ -26,15 +27,20 @@ H.Chart.prototype.collectionsWithUpdate.push('pane');
  * @private
  * @class
  * @name Highcharts.Pane
+ *
  * @param {Highcharts.PaneOptions} options
+ *
  * @param {Highcharts.Chart} chart
  */
 function Pane(options, chart) {
     this.init(options, chart);
 }
+
 // Extend the Pane prototype
 extend(Pane.prototype, {
-    coll: 'pane',
+
+    coll: 'pane', // Member of chart.pane
+
     /**
      * Initialize the Pane object
      *
@@ -48,9 +54,12 @@ extend(Pane.prototype, {
     init: function (options, chart) {
         this.chart = chart;
         this.background = [];
+
         chart.pane.push(this);
+
         this.setOptions(options);
     },
+
     /**
      * @private
      * @function Highcharts.Pane#setOptions
@@ -58,9 +67,15 @@ extend(Pane.prototype, {
      * @param {Highcharts.PaneOptions} options
      */
     setOptions: function (options) {
+
         // Set options. Angular charts have a default background (#3318)
-        this.options = options = merge(this.defaultOptions, this.chart.angular ? { background: {} } : void 0, options);
+        this.options = options = merge(
+            this.defaultOptions,
+            this.chart.angular ? { background: {} } : undefined,
+            options
+        );
     },
+
     /**
      * Render the pane with its backgrounds.
      *
@@ -68,30 +83,49 @@ extend(Pane.prototype, {
      * @function Highcharts.Pane#render
      */
     render: function () {
-        var options = this.options, backgroundOption = this.options.background, renderer = this.chart.renderer, len, i;
+
+        var options = this.options,
+            backgroundOption = this.options.background,
+            renderer = this.chart.renderer,
+            len,
+            i;
+
         if (!this.group) {
             this.group = renderer.g('pane-group')
                 .attr({ zIndex: options.zIndex || 0 })
                 .add();
         }
+
         this.updateCenter();
+
         // Render the backgrounds
         if (backgroundOption) {
             backgroundOption = splat(backgroundOption);
-            len = Math.max(backgroundOption.length, this.background.length || 0);
+
+            len = Math.max(
+                backgroundOption.length,
+                this.background.length || 0
+            );
+
             for (i = 0; i < len; i++) {
                 // #6641 - if axis exists, chart is circular and apply
                 // background
                 if (backgroundOption[i] && this.axis) {
-                    this.renderBackground(merge(this.defaultBackgroundOptions, backgroundOption[i]), i);
-                }
-                else if (this.background[i]) {
+                    this.renderBackground(
+                        merge(
+                            this.defaultBackgroundOptions,
+                            backgroundOption[i]
+                        ),
+                        i
+                    );
+                } else if (this.background[i]) {
                     this.background[i] = this.background[i].destroy();
                     this.background.splice(i, 1);
                 }
             }
         }
     },
+
     /**
      * Render an individual pane background.
      *
@@ -105,9 +139,12 @@ extend(Pane.prototype, {
      *        The index of the background in this.backgrounds
      */
     renderBackground: function (backgroundOptions, i) {
-        var method = 'animate', attribs = {
-            'class': 'highcharts-pane ' + (backgroundOptions.className || '')
-        };
+        var method = 'animate',
+            attribs = {
+                'class':
+                    'highcharts-pane ' + (backgroundOptions.className || '')
+            };
+
         if (!this.chart.styledMode) {
             extend(attribs, {
                 'fill': backgroundOptions.backgroundColor,
@@ -115,26 +152,33 @@ extend(Pane.prototype, {
                 'stroke-width': backgroundOptions.borderWidth
             });
         }
+
         if (!this.background[i]) {
-            this.background[i] = this.chart.renderer
-                .path()
+            this.background[i] = this.chart.renderer.path()
                 .add(this.group);
             method = 'attr';
         }
+
         this.background[i][method]({
-            'd': this.axis.getPlotBandPath(backgroundOptions.from, backgroundOptions.to, backgroundOptions)
+            'd': this.axis.getPlotBandPath(
+                backgroundOptions.from,
+                backgroundOptions.to,
+                backgroundOptions
+            )
         }).attr(attribs);
+
     },
+
     /**
      * The pane serves as a container for axes and backgrounds for circular
      * gauges and polar charts.
      *
      * @since        2.3.0
      * @product      highcharts
-     * @requires     highcharts-more
      * @optionparent pane
      */
     defaultOptions: {
+
         /**
          * The end angle of the polar X axis or gauge value axis, given in
          * degrees where 0 is north. Defaults to [startAngle](#pane.startAngle)
@@ -148,6 +192,7 @@ extend(Pane.prototype, {
          * @product   highcharts
          * @apioption pane.endAngle
          */
+
         /**
          * The center of a polar chart or angular gauge, given as an array
          * of [x, y] positions. Positions can be given as integers that
@@ -162,6 +207,7 @@ extend(Pane.prototype, {
          * @product highcharts
          */
         center: ['50%', '50%'],
+
         /**
          * The size of the pane, either as a number defining pixels, or a
          * percentage defining a percentage of the plot are.
@@ -173,6 +219,7 @@ extend(Pane.prototype, {
          * @product highcharts
          */
         size: '85%',
+
         /**
          * The start angle of the polar X axis or gauge axis, given in degrees
          * where 0 is north. Defaults to 0.
@@ -185,6 +232,7 @@ extend(Pane.prototype, {
          */
         startAngle: 0
     },
+
     /**
      * An array of background items for the pane.
      *
@@ -195,6 +243,7 @@ extend(Pane.prototype, {
      * @optionparent pane.background
      */
     defaultBackgroundOptions: {
+
         /**
          * The class name for this background.
          *
@@ -210,6 +259,7 @@ extend(Pane.prototype, {
          * @since     5.0.0
          * @apioption pane.background.className
          */
+
         /**
          * The shape of the pane background. When `solid`, the background
          * is circular. When `arc`, the background extends only from the min
@@ -220,6 +270,7 @@ extend(Pane.prototype, {
          * @product highcharts
          */
         shape: 'circle',
+
         /**
          * The pixel border width of the pane background.
          *
@@ -227,33 +278,40 @@ extend(Pane.prototype, {
          * @product highcharts
          */
         borderWidth: 1,
+
         /**
          * The pane background border color.
          *
-         * @type    {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
+         * @type    {Highcharts.ColorString}
          * @since   2.3.0
          * @product highcharts
          */
         borderColor: '#cccccc',
+
         /**
          * The background color or gradient for the pane.
          *
-         * @type    {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
+         * @type    {Highcharts.GradientColorObject}
          * @default { linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 }, stops: [[0, #ffffff], [1, #e6e6e6]] }
          * @since   2.3.0
          * @product highcharts
          */
         backgroundColor: {
+
             /** @ignore-option */
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+
             /** @ignore-option */
             stops: [
                 [0, '#ffffff'],
                 [1, '#e6e6e6']
             ]
+
         },
+
         /** @ignore-option */
-        from: -Number.MAX_VALUE,
+        from: -Number.MAX_VALUE, // corrected to axis min
+
         /**
          * The inner radius of the pane background. Can be either numeric
          * (pixels) or a percentage string.
@@ -263,8 +321,10 @@ extend(Pane.prototype, {
          * @product highcharts
          */
         innerRadius: 0,
+
         /** @ignore-option */
-        to: Number.MAX_VALUE,
+        to: Number.MAX_VALUE, // corrected to axis max
+
         /**
          * The outer radius of the circular pane background. Can be either
          * numeric (pixels) or a percentage string.
@@ -274,20 +334,22 @@ extend(Pane.prototype, {
          * @product  highcharts
          */
         outerRadius: '105%'
+
     },
+
     /**
      * Gets the center for the pane and its axis.
      *
      * @private
      * @function Highcharts.Pane#updateCenter
-     * @param {Highcharts.RadialAxis} [axis]
-     * @return {void}
+     *
+     * @param {Highcharts.RadialAxis} axis
      */
     updateCenter: function (axis) {
-        this.center = (axis ||
-            this.axis ||
-            {}).center = CenteredSeriesMixin.getCenter.call(this);
+        this.center = (axis || this.axis || {}).center =
+            CenteredSeriesMixin.getCenter.call(this);
     },
+
     /**
      * Destroy the pane item
      *
@@ -304,19 +366,22 @@ extend(Pane.prototype, {
         this.group = this.group.destroy();
     },
     */
+
     /**
      * Update the pane item with new options
      *
      * @private
      * @function Highcharts.Pane#update
+     *
      * @param {Highcharts.PaneOptions} options
      *        New pane options
-     * @param {boolean} [redraw]
-     * @return {void}
+     *
+     * @param {boolean} redraw
      */
     update: function (options, redraw) {
         merge(true, this.options, options);
         merge(true, this.chart.options.pane, options); // #9917
+
         this.setOptions(this.options);
         this.render();
         this.chart.axes.forEach(function (axis) {
@@ -327,4 +392,5 @@ extend(Pane.prototype, {
         }, this);
     }
 });
+
 H.Pane = Pane;

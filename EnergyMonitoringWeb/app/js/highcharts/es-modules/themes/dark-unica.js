@@ -6,18 +6,21 @@
  *
  *  Dark theme for Highcharts JS
  *
- *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
- *
  * */
+
 'use strict';
+
 /* global document */
+
 // Load the fonts
 import Highcharts from '../parts/Globals.js';
+
 Highcharts.createElement('link', {
     href: 'https://fonts.googleapis.com/css?family=Unica+One',
     rel: 'stylesheet',
     type: 'text/css'
 }, null, document.getElementsByTagName('head')[0]);
+
 Highcharts.theme = {
     colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
         '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
@@ -60,6 +63,7 @@ Highcharts.theme = {
         title: {
             style: {
                 color: '#A0A0A3'
+
             }
         }
     },
@@ -89,10 +93,7 @@ Highcharts.theme = {
     plotOptions: {
         series: {
             dataLabels: {
-                color: '#F0F0F3',
-                style: {
-                    fontSize: '13px'
-                }
+                color: '#B0B0B3'
             },
             marker: {
                 lineColor: '#333'
@@ -109,7 +110,6 @@ Highcharts.theme = {
         }
     },
     legend: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         itemStyle: {
             color: '#E0E0E3'
         },
@@ -118,11 +118,6 @@ Highcharts.theme = {
         },
         itemHiddenStyle: {
             color: '#606063'
-        },
-        title: {
-            style: {
-                color: '#C0C0C0'
-            }
         }
     },
     credits: {
@@ -135,6 +130,7 @@ Highcharts.theme = {
             color: '#707073'
         }
     },
+
     drilldown: {
         activeAxisLabelStyle: {
             color: '#F0F0F3'
@@ -143,6 +139,7 @@ Highcharts.theme = {
             color: '#F0F0F3'
         }
     },
+
     navigation: {
         buttonOptions: {
             symbolStroke: '#DDDDDD',
@@ -151,6 +148,7 @@ Highcharts.theme = {
             }
         }
     },
+
     // scroll charts
     rangeSelector: {
         buttonTheme: {
@@ -185,6 +183,7 @@ Highcharts.theme = {
             color: 'silver'
         }
     },
+
     navigator: {
         handles: {
             backgroundColor: '#666',
@@ -200,6 +199,7 @@ Highcharts.theme = {
             gridLineColor: '#505053'
         }
     },
+
     scrollbar: {
         barBackgroundColor: '#808083',
         barBorderColor: '#808083',
@@ -209,7 +209,16 @@ Highcharts.theme = {
         rifleColor: '#FFF',
         trackBackgroundColor: '#404043',
         trackBorderColor: '#404043'
-    }
+    },
+
+    // special colors for some of the
+    legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+    background2: '#505053',
+    dataLabelsColor: '#B0B0B3',
+    textColor: '#C0C0C0',
+    contrastTextColor: '#F0F0F3',
+    maskColor: 'rgba(255,255,255,0.3)'
 };
+
 // Apply the theme
 Highcharts.setOptions(Highcharts.theme);

@@ -6,11 +6,12 @@
  *
  *  Dark blue theme for Highcharts JS
  *
- *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
- *
  * */
+
 'use strict';
+
 import Highcharts from '../parts/Globals.js';
+
 Highcharts.theme = {
     colors: ['#DDDF0D', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee',
         '#ff0066', '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
@@ -57,6 +58,7 @@ Highcharts.theme = {
                 fontWeight: 'bold',
                 fontSize: '12px',
                 fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+
             }
         }
     },
@@ -115,7 +117,6 @@ Highcharts.theme = {
         }
     },
     legend: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         itemStyle: {
             font: '9pt Trebuchet MS, Verdana, sans-serif',
             color: '#A0A0A0'
@@ -125,11 +126,6 @@ Highcharts.theme = {
         },
         itemHiddenStyle: {
             color: '#444'
-        },
-        title: {
-            style: {
-                color: '#C0C0C0'
-            }
         }
     },
     credits: {
@@ -142,9 +138,11 @@ Highcharts.theme = {
             color: '#CCC'
         }
     },
+
     navigation: {
         buttonOptions: {
             symbolStroke: '#DDDDDD',
+            hoverSymbolStroke: '#FFFFFF',
             theme: {
                 fill: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -157,6 +155,7 @@ Highcharts.theme = {
             }
         }
     },
+
     // scroll charts
     rangeSelector: {
         buttonTheme: {
@@ -209,6 +208,7 @@ Highcharts.theme = {
             color: 'silver'
         }
     },
+
     navigator: {
         handles: {
             backgroundColor: '#666',
@@ -221,6 +221,7 @@ Highcharts.theme = {
             lineColor: '#A6C7ED'
         }
     },
+
     scrollbar: {
         barBackgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -248,7 +249,15 @@ Highcharts.theme = {
             ]
         },
         trackBorderColor: '#666'
-    }
+    },
+
+    // special colors for some of the
+    legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+    background2: 'rgb(35, 35, 70)',
+    dataLabelsColor: '#444',
+    textColor: '#C0C0C0',
+    maskColor: 'rgba(255,255,255,0.3)'
 };
+
 // Apply the theme
 Highcharts.setOptions(Highcharts.theme);

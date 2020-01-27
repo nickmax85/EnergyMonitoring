@@ -10,10 +10,9 @@
 'use strict';
 import H from './Globals.js';
 /* globals MSPointerEvent, PointerEvent */
-import U from './Utilities.js';
-var extend = U.extend, objectEach = U.objectEach, wrap = U.wrap;
+import './Utilities.js';
 import './Pointer.js';
-var addEvent = H.addEvent, charts = H.charts, css = H.css, doc = H.doc, hasTouch = H.hasTouch, noop = H.noop, Pointer = H.Pointer, removeEvent = H.removeEvent, win = H.win;
+var addEvent = H.addEvent, charts = H.charts, css = H.css, doc = H.doc, extend = H.extend, hasTouch = H.hasTouch, noop = H.noop, Pointer = H.Pointer, removeEvent = H.removeEvent, win = H.win, wrap = H.wrap;
 if (!hasTouch && (win.PointerEvent || win.MSPointerEvent)) {
     // The touches object keeps track of the points being touched at all times
     var touches = {}, hasPointerEvent = !!win.PointerEvent, getWebkitTouches = function () {
@@ -21,7 +20,7 @@ if (!hasTouch && (win.PointerEvent || win.MSPointerEvent)) {
         fake.item = function (i) {
             return this[i];
         };
-        objectEach(touches, function (touch) {
+        H.objectEach(touches, function (touch) {
             fake.push({
                 pageX: touch.pageX,
                 pageY: touch.pageY,
