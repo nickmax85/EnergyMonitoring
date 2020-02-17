@@ -43,7 +43,7 @@ function showSelectGroups(data) {
 
     data.forEach(function (item, i) {
         debugger;
-        $('#selectGroup').append($('<option></option>').val(item.groupId).html(item.name));
+        $('#selectGroup').append($('<option></option>').val(item.GroupID).html(item.Name));
 
     });
 

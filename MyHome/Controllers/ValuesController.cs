@@ -25,7 +25,7 @@ namespace MyHome.Controllers
 
             var json = JsonConvert.SerializeObject(null);
 
-            return json;
+            return null;
         }
 
         // GET: api/Values/5
