@@ -10,6 +10,8 @@ namespace EnergyMonitoringWebAPI.Models
         public EnergyMonitoringContext()
             : base("name=EnergyMonitoringContext")
         {
+           
+
         }
 
         public virtual DbSet<Config> Config { get; set; }

@@ -20,7 +20,10 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Groups
         public IQueryable<Group> GetGroup()
         {
-            return db.Group;
+            db.Configuration.ProxyCreationEnabled = true;
+            db.Configuration.LazyLoadingEnabled = true;
+            return db.Group.Include(x => x.Equipment).OrderBy(x => x.Name);
+            //return db.Group;
         }
 
         // GET: api/Groups/5
