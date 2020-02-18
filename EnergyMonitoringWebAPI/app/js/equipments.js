@@ -90,7 +90,6 @@ function getEquipments(groupId) {
 
     let url = '/api/groups/' + groupId + '/equipments';
 
-
     $.getJSON(url)
         .done(function (data) {
 
@@ -118,7 +117,7 @@ function postEquipment(equipment) {
 
 function showEquipments(data) {
 
-    showCard(data);
+    showCardCollapsable(data);
 
 }
 
@@ -177,6 +176,45 @@ function showCard(data) {
         }
 
 
+    });
+
+}
+
+
+function showCardCollapsable(data) {
+
+    let container = $('#equipments');
+    container.empty();
+
+    if (!Array.isArray(data))
+        return;
+
+    data.forEach(function (item, i) {
+
+        //let element = $('<div class="col-md-3">');
+        //element.append($('<div class="card card-primary">'));
+        //element.append($('<div class="card-header">'));
+        //element.append($('<h3 class="card-title">Expandable</h3>'));
+        //element.append($('<div class="card-tools">'));
+        //element.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button >'));
+        //element.append($('<div class="card-body" style="display: block;">The body of the card</div >'));
+
+
+        let col = $('<div class="col-md-3">');
+
+        let card = $('<div class="card card-primary">');
+        col.append(card);
+
+        let header = $('<div class="card-header">');
+        header.append($('<h3 class="card-title">Expandable</h3>'));
+        header.append($('<div class="card-tools">'));
+        header.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>'));
+        card.append(header);
+
+        let body = $('<div class="card-body" style="display: block;">The body of the card</div >');
+        card.append(body);
+
+        container.append(card);
     });
 
 }
