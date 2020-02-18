@@ -1,0 +1,412 @@
+﻿<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>EnergyMonitoring</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link href="css/custom.css" rel="stylesheet" />
+
+    <script src="js/highcharts/8.0/highcharts.js"></script>
+    <script src="js/highcharts/8.0/highcharts-more.js"></script>
+
+
+    <script src="js/chartjs/2.9.3/Chart.min.js"></script>
+    <script src="js/chartjs/2.9.3/utils.js"></script>
+
+    <script src="js/groups.js"></script>
+    <script src="js/equipments.js"></script>
+
+
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+            </ul>
+
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index.html" class="brand-link">
+                <img src="img/velocity.png" alt="Logo" class="brand-image img-circle elevation-3"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-light">EnergyMonitoring</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                        with font-awesome or any other icon font library -->
+                        <!-- Dashboard -->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Dashboard
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+
+                        <!-- Konfiguration -->
+                        <li class="nav-item has-treeview menu">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-wrench"></i>
+                                <p>
+                                    Konfiguration
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Sensoren</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Dashboard</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+
+
+                    <!-- Charts -->
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area"></i>
+                                    Kennlinie
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="canvas" width="100%" height="50"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-3">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fas fa-calendar-day"></i>
+                                    Datum
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <!-- Date input -->
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="control-label" for="start">Start</label>
+                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control" value="2019-12-01">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <!-- Date input -->
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="control-label" for="end">Ende</label>
+                                                <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <!-- Submit button -->
+                                        <button class="btn btn-primary btn-block " name="submit" type="submit" onclick="getRecordsByDate()">Suche</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-none d-sm-inline">
+
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2019 <a>Markus Thaler</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.min.js"></script>
+
+
+
+    <script>
+
+        getDate();
+
+        let equipment;
+
+        $(document).ready(function () {
+
+            equipment = JSON.parse(localStorage.getItem('Equipment'));
+
+            $('#group').html(equipment.Group.Name);
+            $('#equipment').html(equipment.Name);
+            $('#header').html(equipment.Number + " - " + equipment.Name);
+
+            // getRecords(equipment.Device[0].DeviceID);
+
+        });
+
+
+        function getDate() {
+            let today = new Date();
+
+            let startXdaysBefore = 6;
+
+            let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + (today.getDate() - startXdaysBefore)).slice(-2);
+            let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+            $('#start').val(start);
+            $('#end').val(end);
+
+
+        }
+
+        function getRecordsByDate() {
+
+            let url = '/api/records/' + equipment.Device[0].DeviceID + '/' + $('#start').val() + '/' + $('#end').val();
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    data1.length = 0;
+                    data2.length = 0;
+                    labels1.length = 0;
+                    labels2.length = 0;
+
+                    showData(data);
+                    updateChart();
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+
+        }
+
+        function getRecords(deviceId) {
+
+            let url = '/api/records/' + deviceId;
+            $.getJSON(url)
+                .done(function (data) {
+                    // let data = JSON.parse(ddata.d);
+                    //debugger;
+
+                    showData(data);
+                    updateChart();
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+        }
+
+        function showData(data) {
+
+
+
+            if (!Array.isArray(data))
+                return;
+
+
+            data.forEach(function (item, i) {
+
+                if (item.Sensor.Unit.Name == 'Flow') {
+                    data1.push(item.Value);
+                    labels1.push(item.CreateDate);
+
+                }
+
+                if (item.Sensor.Unit.Name == 'Pressure') {
+                    data2.push(item.Value);
+                    labels2.push(item.CreateDate);
+
+                }
+
+            });
+
+
+
+        }
+
+
+        function updateChart() {
+
+            window.myLine.update();
+
+        }
+
+        let data1 = [];
+        let data2 = [];
+        let labels1 = [];
+        let labels2 = [];
+
+        var config = {
+            type: 'line',
+            data: {
+                labels: labels1,
+                datasets: [{
+                    label: 'Flow',
+                    yAxisID: 'A',
+                    backgroundColor: window.chartColors.orange,
+                    borderColor: window.chartColors.orange,
+                    data: data1,
+                    fill: false,
+                }, {
+                    label: 'Pressure',
+                    yAxisID: 'B',
+                    fill: false,
+                    backgroundColor: window.chartColors.blue,
+                    borderColor: window.chartColors.blue,
+                    data: data2
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: false,
+                    text: 'Chart.js Line Chart'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: false,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Zeitpunkt'
+                        }
+                    }],
+                    yAxes: [{
+                        id: 'A',
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'l/min',
+                        }
+                    },
+                    {
+                        id: 'B',
+                        display: true,
+                        position: 'right',
+                        ticks: {
+                            max: 10,
+                            min: 0
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'bar',
+                        }
+                    }]
+
+                }
+            }
+        };
+
+        window.onload = function () {
+            var ctx = document.getElementById('canvas').getContext('2d');
+            window.myLine = new Chart(ctx, config);
+        };
+
+
+
+
+    </script>
+
+
+</body>
+</html>

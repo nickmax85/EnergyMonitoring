@@ -4,9 +4,6 @@ function getGroups() {
 
     let url = '/api/Groups';
 
-
-
-
     $.getJSON(url)
         .done(function (data) {
 
@@ -42,7 +39,7 @@ function showSelectGroups(data) {
         return;
 
     data.forEach(function (item, i) {
-        debugger;
+       
         $('#selectGroup').append($('<option></option>').val(item.GroupID).html(item.Name));
 
     });

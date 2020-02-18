@@ -149,10 +149,20 @@
     <Content Include="app\img\industry40.png" />
     <Content Include="app\img\industry50.jpg" />
     <Content Include="app\img\velocity.png" />
+    <Content Include="app\charts.html" />
     <Content Include="app\index.html" />
+    <Content Include="app\js\chartjs\2.9.3\Chart.bundle.js" />
+    <Content Include="app\js\chartjs\2.9.3\Chart.bundle.min.js" />
+    <Content Include="app\js\chartjs\2.9.3\Chart.css" />
+    <Content Include="app\js\chartjs\2.9.3\Chart.js" />
+    <Content Include="app\js\chartjs\2.9.3\Chart.min.css" />
+    <Content Include="app\js\chartjs\2.9.3\Chart.min.js" />
+    <Content Include="app\js\chartjs\2.9.3\utils.js" />
     <Content Include="app\js\devices.js" />
     <Content Include="app\js\equipments.js" />
     <Content Include="app\js\groups.js" />
+    <Content Include="app\js\highcharts\8.0\highcharts-more.js" />
+    <Content Include="app\js\highcharts\8.0\highcharts.js" />
     <Content Include="app\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="app\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
     <Content Include="app\plugins\bootstrap-colorpicker\js\bootstrap-colorpicker.js" />
@@ -1712,6 +1722,7 @@
     <Content Include="app\plugins\toastr\toastr.min.css" />
     <Content Include="app\plugins\toastr\toastr.min.js" />
     <Content Include="app\starter.html" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -1719,6 +1730,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\EquipmentsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1837,6 +1849,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />

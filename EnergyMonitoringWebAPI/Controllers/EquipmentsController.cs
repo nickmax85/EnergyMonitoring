@@ -36,6 +36,20 @@ namespace EnergyMonitoringWebAPI.Controllers
             return Ok(equipment);
         }
 
+        //GET: api/groups/2/equipments
+        [Route("api/groups/{GroupId}/equipments")]
+        public IEnumerable<Equipment> GetEquipmentsByGroup(int GroupId)
+        {
+            var items = db.Equipment.Where(x => x.GroupID == GroupId)
+                 .Include(x => x.Group)
+                 .Include(x => x.Device.Select(d => d.Sensor))
+                 .ToList();
+
+            return items;
+        }
+
+
+
         // PUT: api/Equipments/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutEquipment(int id, Equipment equipment)

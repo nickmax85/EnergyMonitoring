@@ -10,7 +10,7 @@ namespace EnergyMonitoringWebAPI.Models
         public EnergyMonitoringContext()
             : base("name=EnergyMonitoringContext")
         {
-           
+            this.Configuration.LazyLoadingEnabled = false;
 
         }
 
