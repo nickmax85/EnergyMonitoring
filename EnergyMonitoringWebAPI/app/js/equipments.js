@@ -117,7 +117,7 @@ function postEquipment(equipment) {
 
 function showEquipments(data) {
 
-    showCardCollapsable(data);
+    showCard(data);
 
 }
 
