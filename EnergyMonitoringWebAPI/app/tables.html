@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+</head>
+<body class="container">
+
+    <h1>Sensoren</h1>
+
+    <ul id="sensors" class="list-group"></ul>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Einheit</th>
+                <th scope="col">Equipment</th>
+                <th scope="col">Bereich</th>
+                <th scope="col">Device</th>
+                <th scope="col">SensorId</th>
+            </tr>
+        </thead>
+        <tbody id="sensor-row">
+        </tbody>
+    </table>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            getJQuery1();
+
+            $('#refreshButton').click(function () {
+
+                getJQuery1();
+
+            });
+
+
+            $('#addButton').click(function () {
+
+                postJQuery1();
+
+            });
+
+
+
+
+        });
+
+
+        function getJQuery1() {
+            let url = '/api/sensors';
+            $.getJSON(url)
+                .done(function (data) {
+                    //let data = JSON.parse(ddata.d);
+                    showData(data);
+                    //alert(ddata);
+                    //debugger;
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+
+
+        function showData(data) {
+
+            let container = $('#sensor-row');
+            container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+            //data.forEach(function (item, i) {
+
+            //    let li = $('<li class="list-group-item">');
+            //    let label = $('<label>').html(item.SensorID + "; " +  item.Device.IP);
+
+            //    li.append(label);
+            //    container.append(li);
+            //});
+
+
+            data.forEach(function (item, i) {
+
+                let tr = $('<tr>');
+                //let th = $('<th scope="row">').html(i);
+                console.log(item);
+
+                let td = $('<td>').html(item.SensorID);
+                let td5 = $('<td>').html(item.Unit.Name + ' [' + item.Unit.Sign + ']');
+                let td2 = $('<td>').html(item.Device.Equipment.Number + ' - ' + item.Device.Equipment.Name);
+                let td3 = $('<td>').html();
+                let td4 = $('<td>').html(item.Device.Equipment.Group.Name);
+                let td6 = $('<td>').html(item.Device.Name + ' [' + item.Device.IP + ']');
+
+
+                tr.append(td5, td2, td4, td6, td);
+
+                container.append(tr);
+            });
+        }
+
+        function generateTable() {
+
+
+
+
+
+
+
+
+
+
+        }
+
+    </script>
+
+
+
+</body>
+</html>

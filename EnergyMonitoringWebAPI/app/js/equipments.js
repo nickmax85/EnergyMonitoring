@@ -117,7 +117,7 @@ function postEquipment(equipment) {
 
 function showEquipments(data) {
 
-    showCard(data);
+    showCardCollapsable(data);
 
 }
 
@@ -191,33 +191,49 @@ function showCardCollapsable(data) {
 
     data.forEach(function (item, i) {
 
-        //let element = $('<div class="col-md-3">');
-        //element.append($('<div class="card card-primary">'));
-        //element.append($('<div class="card-header">'));
-        //element.append($('<h3 class="card-title">Expandable</h3>'));
-        //element.append($('<div class="card-tools">'));
-        //element.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button >'));
-        //element.append($('<div class="card-body" style="display: block;">The body of the card</div >'));
+        let col = $('<div class="col-md-6">');
 
-
-        let col = $('<div class="col-md-3">');
-
-        let card = $('<div class="card card-primary">');
+        let card = $('<div class="card card-primary collapsed-card">');
         col.append(card);
 
         let header = $('<div class="card-header">');
-        header.append($('<h3 class="card-title">Expandable</h3>'));
-        header.append($('<div class="card-tools">'));
-        header.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>'));
-        card.append(header);
+        header.append($('<h3 class="card-title">Expandable</h3>').html(item.Number + ' - ' + item.Name));
 
-        let body = $('<div class="card-body" style="display: block;">The body of the card</div >');
-        card.append(body);
+        let tools = ($('<div class="card-tools">'));
+        tools.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>'));
+        header.append(tools);
 
-        container.append(card);
+        let body = $('<div class="card-body" style="display: none;"></div >');
+
+
+        // GaugeChart
+        let row = $('<div class="row">');
+        let gaugeChart1 = $('<div id="containerGauge1' + i + '" class="chart-container col-lg-6"</div>');
+        let gaugeChart2 = $('<div id="containerGauge2' + i + '" class="chart-container col-lg-6"</div>');
+        row.append(gaugeChart1, gaugeChart2);
+
+
+        // Buttons         
+        let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Charts</a>').click(function () {
+
+            localStorage.setItem('Equipment', JSON.stringify(item));
+            window.location.href = "charts.html";
+
+        });
+
+        body.append(row, buttonCharts);
+
+        card.append(header, body);
+        container.append(col);
+
+        if (item.Device[0] != null) {
+            addGaugeChart1(gaugeChart1.get(0).id, item.Device[0]);
+            addGaugeChart2(gaugeChart2.get(0).id, item.Device[0]);
+        }
     });
 
 }
+
 
 
 function addGaugeChart1(container, item) {

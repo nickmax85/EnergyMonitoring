@@ -39,13 +39,13 @@ function showSelectGroups(data) {
         return;
 
     data.forEach(function (item, i) {
-       
+
         $('#selectGroup').append($('<option></option>').val(item.GroupID).html(item.Name));
 
     });
 
 
-   // let id = localStorage.getItem('Group');
+    //let id = localStorage.getItem('Group');
     let id = 0;
     if ($("#selectGroup").prop('selectedIndex') > 0 || id > 0) {
 

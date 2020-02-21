@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\css\bootstrap.min.css" />
     <Content Include="app\css\custom.css" />
     <Content Include="app\dist\css\adminlte.css" />
     <Content Include="app\dist\css\adminlte.min.css" />
@@ -151,6 +152,7 @@
     <Content Include="app\img\velocity.png" />
     <Content Include="app\charts.html" />
     <Content Include="app\index.html" />
+    <Content Include="app\js\bootstrap.min.js" />
     <Content Include="app\js\chartjs\2.9.3\Chart.bundle.js" />
     <Content Include="app\js\chartjs\2.9.3\Chart.bundle.min.js" />
     <Content Include="app\js\chartjs\2.9.3\Chart.css" />
@@ -163,6 +165,7 @@
     <Content Include="app\js\groups.js" />
     <Content Include="app\js\highcharts\8.0\highcharts-more.js" />
     <Content Include="app\js\highcharts\8.0\highcharts.js" />
+    <Content Include="app\js\jquery-3.4.1.min.js" />
     <Content Include="app\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="app\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
     <Content Include="app\plugins\bootstrap-colorpicker\js\bootstrap-colorpicker.js" />
@@ -1722,6 +1725,7 @@
     <Content Include="app\plugins\toastr\toastr.min.css" />
     <Content Include="app\plugins\toastr\toastr.min.js" />
     <Content Include="app\starter.html" />
+    <Content Include="app\tables.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -1731,6 +1735,7 @@
     <Compile Include="Controllers\EquipmentsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\RecordsController.cs" />
+    <Compile Include="Controllers\SensorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
