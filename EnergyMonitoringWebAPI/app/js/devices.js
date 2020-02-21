@@ -1,4 +1,5 @@
 ﻿
+
 function getDevices(equipmentId) {
 
     let url = '/api/equipments/' + equipmentId + '/devices';

@@ -2,9 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="plugins/fontawesome-free/css/all.min.css" rel="stylesheet">
 
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -14,23 +16,61 @@
 
     <h1>Sensoren</h1>
 
-    <ul id="sensors" class="list-group"></ul>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" onclick="getData()">
+        <i class="fas fa-plus"></i>
+        Neu
+    </button>
+    <p></p>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Sensor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="device">Device</label>
+                        <select class="form-control" id="selectDevice">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="device">Einheit</label>
+                        <select class="form-control" id="selectUnit">
+                            <option>auswählen</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="saveSensor()">OK</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-    <table class="table">
+
+
+
+    <table class="table table-bordered table-hover">
         <thead>
             <tr>
-                <th scope="col">Einheit</th>
                 <th scope="col">Equipment</th>
                 <th scope="col">Bereich</th>
+                <th scope="col">Einheit</th>
                 <th scope="col">Device</th>
                 <th scope="col">SensorId</th>
+                <th scope="col">Bearbeiten</th>
             </tr>
         </thead>
         <tbody id="sensor-row">
         </tbody>
     </table>
-
 
     <script>
 
@@ -56,15 +96,12 @@
 
         });
 
-
         function getJQuery1() {
             let url = '/api/sensors';
             $.getJSON(url)
                 .done(function (data) {
                     //let data = JSON.parse(ddata.d);
                     showData(data);
-                    //alert(ddata);
-                    //debugger;
 
                 })
                 .fail(function (error) {
@@ -72,7 +109,6 @@
                 });
 
         }
-
 
 
         function showData(data) {
@@ -83,52 +119,94 @@
             if (!Array.isArray(data))
                 return;
 
-            //data.forEach(function (item, i) {
-
-            //    let li = $('<li class="list-group-item">');
-            //    let label = $('<label>').html(item.SensorID + "; " +  item.Device.IP);
-
-            //    li.append(label);
-            //    container.append(li);
-            //});
-
-
             data.forEach(function (item, i) {
 
-                let tr = $('<tr>');
-                //let th = $('<th scope="row">').html(i);
-                console.log(item);
-
-                let td = $('<td>').html(item.SensorID);
-                let td5 = $('<td>').html(item.Unit.Name + ' [' + item.Unit.Sign + ']');
-                let td2 = $('<td>').html(item.Device.Equipment.Number + ' - ' + item.Device.Equipment.Name);
-                let td3 = $('<td>').html();
-                let td4 = $('<td>').html(item.Device.Equipment.Group.Name);
-                let td6 = $('<td>').html(item.Device.Name + ' [' + item.Device.IP + ']');
-
-
-                tr.append(td5, td2, td4, td6, td);
+                let tr = "<tr>" +
+                    "<td>" + item.Device.Equipment.Number + ' - ' + item.Device.Equipment.Name + "</td>" +
+                    "<td>" + item.Device.Equipment.Group.Name + "</td>" +
+                    "<td>" + item.Unit.Name + ' [' + item.Unit.Sign + ']' + "</td>" +
+                    "<td>" + item.Device.Name + ' [' + item.Device.IP + ']' + "</td>" +
+                    "<td>" + item.SensorID + "</td>" +
+                    "<td>" +
+                    '<button type="button" class="btn"><i class="fas fa-edit"></i></button>' +
+                    '<button type="button" class="btn"><i class="fas fa-trash"></i></button>' +
+                    "</td > " +
+                    "</tr>";
 
                 container.append(tr);
             });
         }
 
-        function generateTable() {
+        function getData() {
 
-
-
-
-
-
-
-
-
+            getDevices();
+            getUnits();
 
         }
 
+
+        function getDevices() {
+
+            let url = '/api/devices';
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    let container = $('#selectDevice');
+                    container.empty();
+
+                    if (!Array.isArray(data))
+                        return;
+
+                    data.forEach(function (item, i) {
+
+                        if (i == 0)
+                            $('#selectDevice').append($('<option></option>').html("auswählen"));
+
+                        $('#selectDevice').append($('<option></option>').html(item.Name));
+                    });
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function getUnits() {
+
+            let url = '/api/units';
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    let container = $('#selectUnit');
+                    container.empty();
+
+                    if (!Array.isArray(data))
+                        return;
+
+                    data.forEach(function (item, i) {
+                        if (i == 0)
+                            $('#selectUnit').append($('<option></option>').html("auswählen"));
+
+                        $('#selectUnit').append($('<option></option>').html(item.Name));
+                    });
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function saveSensor() {
+
+        }
+
+
+
     </script>
-
-
 
 </body>
 </html>
