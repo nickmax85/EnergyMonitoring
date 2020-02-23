@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="Scripts/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Number</th>
+                <th scope="col">Value</th>
+            </tr>
+        </thead>
+        <tbody id="sensor-row">
+        </tbody>
+    </table>
+
+
+
+    <script>
+
+        getJQuery1();
+
+
+        function getJQuery1() {
+            let url = '/data/cmi.json';
+
+            $.getJSON(url)
+                .done(function (data) {
+                    //let data = JSON.parse(ddata.d);
+                    showData(data);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+
+        function showData(data) {
+
+            let container = $('#sensor-row');
+            container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+            data.forEach(function (item, i) {
+
+                let tr = "<tr>" +
+                    "<td>" + item.Device.Equipment.Number + ' - ' + item.Device.Equipment.Name + "</td>" +
+                    "<td>" + item.Device.Equipment.Group.Name + "</td>" +
+                    "</tr>";
+
+                container.append(tr);
+            });
+        }
+
+
+
+    </script>
+
+</body>
+</html>
