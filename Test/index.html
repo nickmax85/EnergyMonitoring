@@ -29,7 +29,7 @@
 
 
         function getJQuery1() {
-            let url = '/data/cmi.json';
+            let url = '/api/data';
 
             $.getJSON(url)
                 .done(function (data) {
@@ -55,8 +55,8 @@
             data.forEach(function (item, i) {
 
                 let tr = "<tr>" +
-                    "<td>" + item.Device.Equipment.Number + ' - ' + item.Device.Equipment.Name + "</td>" +
-                    "<td>" + item.Device.Equipment.Group.Name + "</td>" +
+                    "<td>" + item.Number + "</td>" +
+                    "<td>" + item.Value + "</td>" +
                     "</tr>";
 
                 container.append(tr);
