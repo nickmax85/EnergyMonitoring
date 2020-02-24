@@ -160,7 +160,7 @@ function showCard(data) {
 
             localStorage.setItem('Equipment', JSON.stringify(item));
 
-            window.location.href = "charts.html";
+            window.location.href = "app/charts.html";
 
         });
 

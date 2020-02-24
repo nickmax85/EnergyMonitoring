@@ -13,6 +13,8 @@ namespace EnergyMonitoringService.Models
         public EnergyMonitoringContext(DbContextOptions<EnergyMonitoringContext> options)
             : base(options)
         {
+
+
         }
 
         public virtual DbSet<Config> Config { get; set; }
@@ -31,7 +33,7 @@ namespace EnergyMonitoringService.Models
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 //optionsBuilder.UseSqlServer("Server=localhost;Database=energymonitoring;Trusted_Connection=True;");
-                optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=EnergyMonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
+                optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=energymonitoring;Trusted_Connection=False;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
             }
         }
 

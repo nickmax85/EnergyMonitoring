@@ -98,6 +98,7 @@ namespace EnergyMonitoringService
 
                                     context.Record.Add(record);
                                     context.SaveChanges();
+
                                 }
                             }
                         }
@@ -114,6 +115,12 @@ namespace EnergyMonitoringService
                     {
 
                         log.Error(ex.StackTrace);
+
+                    }
+                    catch (Exception)
+                    {
+
+
 
                     }
 
