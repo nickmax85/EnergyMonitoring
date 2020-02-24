@@ -19,6 +19,7 @@ namespace EnergyMonitoringService.Models
         public virtual DbSet<Device> Device { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<Group> Group { get; set; }
+        public virtual DbSet<MailGroup> MailGroup { get; set; }
         public virtual DbSet<Record> Record { get; set; }
         public virtual DbSet<Sensor> Sensor { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
@@ -29,8 +30,8 @@ namespace EnergyMonitoringService.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=EnergyMonitoring;Trusted_Connection=True;");
-                //optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC2\PRODRBS;Database=EnergyMonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
+                //optionsBuilder.UseSqlServer("Server=localhost;Database=energymonitoring;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=EnergyMonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
             }
         }
 
@@ -107,6 +108,36 @@ namespace EnergyMonitoringService.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MailGroup>(entity =>
+            {
+                entity.HasKey(e => e.MailDistributionId)
+                    .HasName("PK_MailDistribution");
+
+                entity.Property(e => e.MailDistributionId)
+                    .HasColumnName("MailDistributionID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.GroupId).HasColumnName("GroupID");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.MailGroup)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Group_MailDistribution");
+
+                entity.HasOne(d => d.MailDistribution)
+                    .WithOne(p => p.MailGroup)
+                    .HasForeignKey<MailGroup>(d => d.MailDistributionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_MailDistribution");
             });
 
             modelBuilder.Entity<Record>(entity =>

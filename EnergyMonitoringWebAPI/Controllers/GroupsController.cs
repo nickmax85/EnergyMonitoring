@@ -21,9 +21,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         public IQueryable<Group> GetGroup()
         {
 
-            //return db.Group.Include(x => x.Equipment).OrderBy(x => x.Name);
-
-            return db.Group;
+            return db.Group.OrderBy(x => x.Name);
         }
 
         // GET: api/Groups/5

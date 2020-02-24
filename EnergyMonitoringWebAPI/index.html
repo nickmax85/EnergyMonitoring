@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>EnergyMonitoring</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="app/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="app/dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link href="app/css/custom.css" rel="stylesheet" />
+
+    <script src="app/js/highcharts/8.0/highcharts.js"></script>
+    <script src="app/js/highcharts/8.0/highcharts-more.js"></script>
+
+    <script src="app/js/groups.js"></script>
+    <script src="app/js/equipments.js"></script>
+
+
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index.html" class="brand-link">
+                <img src="app/img/velocity.png" alt="Logo" class="brand-image img-circle elevation-3"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-light">EnergyMonitoring</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                        with font-awesome or any other icon font library -->
+                        <!-- Dashboard -->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Dashboard
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+
+                        <!-- Konfiguration -->
+                        <li class="nav-item has-treeview menu">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-wrench"></i>
+                                <p>
+                                    Konfiguration
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="tables.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Sensoren</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Dashboard</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <!-- Groups -->
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Bereiche</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" style="display: block;">
+                                    <div class="form-group">
+                                        <!--<label for="selectArea">Group</label>-->
+                                        <select class="form-control" id="selectGroup" onchange="groupSelectionChange(this)">
+                                            <option>auswählen</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--  -->
+                        <div id="info" class="col-md-6">
+                            <div class="card card-gray">
+                                <div class="card-header">
+                                    <h3 class="card-title">Informationen</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" style="display: block;">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-6 col-12">
+                                                <div class="info-box">
+                                                    <span class="info-box-icon bg-info"><i class="nav-icon fas fa-wrench"></i></span>
+
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text">Maschinen</span>
+                                                        <span id="machinecount" class="info-box-number"></span>
+                                                    </div>
+                                                    <!-- /.info-box-content -->
+                                                </div>
+                                                <!-- /.info-box -->
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-12">
+                                                <div class="info-box">
+                                                    <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text">Sensoren</span>
+                                                        <span id="sensorcount" class="info-box-number"></span>
+                                                    </div>
+                                                    <!-- /.info-box-content -->
+                                                </div>
+                                                <!-- /.info-box -->
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-12">
+                                                <div class="info-box">
+                                                    <span class="info-box-icon bg-success"><i class="far fa-envelope"></i></span>
+
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text">Messwerte</span>
+                                                        <span id="recordcount" class="info-box-number"></span>
+                                                    </div>
+                                                    <!-- /.info-box-content -->
+                                                </div>
+                                                <!-- /.info-box -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- Equipments -->
+                    <div class="row" id="equipments"></div>
+
+                    <!-- Background -->
+                    <div class="cont" id="background">
+                        <img class="img-fluid image" src="app/img/industry50.jpg" />
+                        <div class="middle">
+                            <img class="img-fluid" src="app/img/industry40.png" />
+                        </div>
+                    </div>
+
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-none d-sm-inline">
+
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2019 <a>Markus Thaler</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="app/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="app/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="app/dist/js/adminlte.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            getGroups();
+            showInfo();
+
+        });
+
+
+        function showInfo(data) {
+
+            let url = '/api/equipments';
+            $.getJSON(url)
+                .done(function (data) {
+
+                    $('#machinecount').html(data.length);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+
+            url = '/api/sensors';
+            $.getJSON(url)
+                .done(function (data) {
+
+                    if (!Array.isArray(data))
+                        return;
+
+                    let counter = 0;
+                    data.forEach(function (item, i) {
+
+                        if (item.Device.Active == true)
+                            counter++;
+
+                    });
+
+                    $('#sensorcount').html(counter);
+
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+
+
+            url = '/api/records';
+            $.getJSON(url)
+                .done(function (data) {
+
+                    $('#recordcount').html(data.length);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+
+        }
+
+
+
+    </script>
+
+</body>
+</html>

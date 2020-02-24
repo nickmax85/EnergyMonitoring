@@ -1,0 +1,1 @@
+﻿  //optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC2\PRODRBS;Database=EnergyMonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
