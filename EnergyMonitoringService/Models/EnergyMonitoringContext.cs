@@ -8,6 +8,7 @@ namespace EnergyMonitoringService.Models
     {
         public EnergyMonitoringContext()
         {
+
         }
 
         public EnergyMonitoringContext(DbContextOptions<EnergyMonitoringContext> options)

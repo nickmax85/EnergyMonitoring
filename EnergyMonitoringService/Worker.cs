@@ -63,7 +63,7 @@ namespace EnergyMonitoringService
                         var json = await request.GetStringAsync(url);
 
                         WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
-
+                        log.Info(device.Name);
                         // iterate over sensor list                
                         foreach (var sensor in device.Sensor)
                         {
@@ -117,10 +117,9 @@ namespace EnergyMonitoringService
                         log.Error(ex.StackTrace);
 
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
-
+                        log.Error(ex.StackTrace);
 
                     }
 
