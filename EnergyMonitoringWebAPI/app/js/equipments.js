@@ -121,66 +121,6 @@ function showEquipments(data) {
 
 }
 
-
-function showCard(data) {
-
-    let container = $('#equipments');
-    container.empty();
-
-    if (!Array.isArray(data))
-        return;
-
-    data.forEach(function (item, i) {
-
-        let grid = $('<div class="col-sm-6 mb-3">');
-        let card = $('<div class="card">');
-        let header = $('<div class="card-header">header</div>').html(item.Number + ' - ' + item.Name);
-        //let editButton = $('<a href="#" class="btn btn-primary">edit</a>');
-        let body = $('<div class="card-body">');
-        //let title = $('<h6 class="card-title">title</h6>').html(item.Equipment.length + " Equipments");
-
-        let text = $('<p class="card-text">text</p>');
-
-        // GaugeChart
-        let row = $('<div class="row">');
-        let gaugeChart1 = $('<div id="containerGauge1' + i + '" class="chart-container col-lg-6"</div>');
-        let gaugeChart2 = $('<div id="containerGauge2' + i + '" class="chart-container col-lg-6"</div>');
-        row.append(gaugeChart1, gaugeChart2);
-
-
-        // Buttons    
-        let buttonDevices = $('<a href="#" class="btn btn-primary col-sm-6 mb-1">Sensoren</a>').click(function () {
-
-            localStorage.setItem('Equipment', JSON.stringify(item));
-            window.location.href = "devices.html";
-
-        });
-
-        let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Charts</a>').click(function () {
-
-            localStorage.setItem('Equipment', JSON.stringify(item));
-
-            window.location.href = "app/charts.html";
-
-        });
-
-        body.append(row, buttonCharts);
-        card.append(header, body);
-        grid.append(card);
-
-        container.append(grid);
-
-        if (item.Device[0] != null) {
-            addGaugeChart1(gaugeChart1.get(0).id, item.Device[0]);
-            addGaugeChart2(gaugeChart2.get(0).id, item.Device[0]);
-        }
-
-
-    });
-
-}
-
-
 function showCardCollapsable(data) {
 
     let container = $('#equipments');
@@ -217,7 +157,7 @@ function showCardCollapsable(data) {
         let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Charts</a>').click(function () {
 
             localStorage.setItem('Equipment', JSON.stringify(item));
-            window.location.href = "charts.html";
+            window.location.href = "app/charts.html";
 
         });
 

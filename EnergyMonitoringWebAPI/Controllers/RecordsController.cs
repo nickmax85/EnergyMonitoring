@@ -20,7 +20,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Records
         public IQueryable<Record> GetRecord()
         {
-            return db.Record;
+            return db.Record.Take(5);
         }
 
         // GET: api/Records/5
@@ -46,6 +46,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 .Include(x => x.Sensor.Unit)
                 .Where(x => DbFunctions.TruncateTime(x.CreateDate) >= DbFunctions.TruncateTime(startDate)
                 && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate))
+                .Take(5)
                 .ToList();
 
             return items;
