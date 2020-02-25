@@ -93,7 +93,7 @@ function getEquipments(groupId) {
     $.getJSON(url)
         .done(function (data) {
 
-            showEquipments(data);
+            showCardCollapsable(data);
         })
         .fail(function (error) {
             alert("ERROR: " + error.status + ' ' + error.statusText);
@@ -115,11 +115,6 @@ function postEquipment(equipment) {
 
 }
 
-function showEquipments(data) {
-
-    showCardCollapsable(data);
-
-}
 
 function showCardCollapsable(data) {
 
@@ -145,6 +140,9 @@ function showCardCollapsable(data) {
 
         let body = $('<div class="card-body" style="display: none;"></div >');
 
+        console.log(item.Name);
+        console.log(item.Device[0].Sensor[0].LowerLimit);
+        console.log(item.Device[0].Sensor[0].UpperLimit);
 
         // GaugeChart
         let row = $('<div class="row">');
@@ -175,93 +173,26 @@ function showCardCollapsable(data) {
 }
 
 
-
 function addGaugeChart1(container, item) {
-
-    var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 5000,
-            title: {
-                text: 'Durchfluss'
-            },
-            plotBands: [{
-                from: 0,
-                to: 200,
-                color: '#55BF3B' // green
-            }, {
-                from: 200,
-                to: 300,
-                color: '#DDDF0D' // yellow
-            }, {
-                from: 300,
-                to: 5000,
-                color: '#DF5353' // red
-            }]
-        },
-
-        series: [{
-            name: 'Durchfluss',
-            data: [0],
-            dataLabels: {
-                format:
-                    '<div style="text-align:center">' +
-                    '<span style="font-size:18px">{y:.1f}</span><br/>' +
-                    '<span style="font-size:12px;opacity:0.4">' +
-                    ' l / min' +
-                    '</span>' +
-                    '</div>'
-            },
-            tooltip: {
-                valueSuffix: ' l / min'
-            }
-        }]
-
-    }));
-
-    setInterval(function () {
-
-        var point;
-
-        url = 'http://' + item.IP + '/rest/json';
-        $.getJSON(url)
-            .done(function (data) {
-
-                if (flowGauge) {
-                    point = flowGauge.series[0].points[0];
-                    point.update(data.iostate.input[1].value);
-                }
-
-            })
-            .fail(function (error) {
-                //  alert("ERROR: " + error.status + ' ' + error.statusText);
-            });
-
-    }, 2000);
-}
-
-
-
-function addGaugeChart2(container, item) {
 
     var pressureGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 10,
+            max: 8,
             title: {
                 text: 'Druck',
             },
             plotBands: [{
                 from: 0,
-                to: 7,
+                to: item.Sensor[0].LowerLimit,
+                color: '#DF5353' // red
+            }, {
+                from: item.Sensor[0].LowerLimit,
+                to: item.Sensor[0].UpperLimit,
                 color: '#55BF3B' // green
             }, {
-                from: 7,
+                from: item.Sensor[0].UpperLimit,
                 to: 8,
-                color: '#DDDF0D' // yellow
-            }, {
-                from: 8,
-                to: 10,
                 color: '#DF5353' // red
             }]
         },
@@ -302,6 +233,70 @@ function addGaugeChart2(container, item) {
                 if (pressureGauge) {
                     point = pressureGauge.series[0].points[0];
                     point.update(data.iostate.input[0].value);
+                }
+
+            })
+            .fail(function (error) {
+                //  alert("ERROR: " + error.status + ' ' + error.statusText);
+            });
+
+    }, 2000);
+}
+
+
+
+
+function addGaugeChart2(container, item) {
+
+    var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 5000,
+            title: {
+                text: 'Durchfluss'
+            },
+            plotBands: [{
+                from: 0,
+                to: item.Sensor[1].UpperLimit,
+                color: '#55BF3B' // green
+            },
+            {
+                from: item.Sensor[1].UpperLimit,
+                to: 5000,
+                color: '#DF5353' // red
+            }]
+        },
+
+        series: [{
+            name: 'Durchfluss',
+            data: [0],
+            dataLabels: {
+                format:
+                    '<div style="text-align:center">' +
+                    '<span style="font-size:18px">{y:.1f}</span><br/>' +
+                    '<span style="font-size:12px;opacity:0.4">' +
+                    ' l / min' +
+                    '</span>' +
+                    '</div>'
+            },
+            tooltip: {
+                valueSuffix: ' l / min'
+            }
+        }]
+
+    }));
+
+    setInterval(function () {
+
+        var point;
+
+        url = 'http://' + item.IP + '/rest/json';
+        $.getJSON(url)
+            .done(function (data) {
+
+                if (flowGauge) {
+                    point = flowGauge.series[0].points[0];
+                    point.update(data.iostate.input[1].value);
                 }
 
             })

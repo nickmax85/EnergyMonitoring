@@ -49,6 +49,17 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
 
+        //GET: api/devices/2/sensors
+        [Route("api/devices/{DeviceId}/sensors")]
+        public IEnumerable<Sensor> GetSensorsFromDevice(int DeviceId)
+        {
+            var items = db.Sensor.Where(x => x.DeviceID == DeviceId)
+                 .Include(x => x.Unit)
+                 .ToList();
+            return items;
+        }
+
+
         // PUT: api/Sensors/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutSensor(int id, Sensor sensor)

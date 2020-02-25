@@ -32,7 +32,9 @@ namespace EnergyMonitoringService
 
                 InitData();
 
-                await Task.Delay(5000, stoppingToken);
+                int oneMinute = 1000 * 60;
+
+                await Task.Delay(oneMinute * 15, stoppingToken);
 
             }
         }
@@ -46,14 +48,12 @@ namespace EnergyMonitoringService
                 var devices = context.Device.Include(device => device.Sensor)
                .ThenInclude(sensor => sensor.Unit)
                .Include(device => device.Equipment)
-               .Include(device => device.Equipment.Group)
                .Where(x => (bool)x.Active)
                .ToList();
 
                 // iterate over device list
                 foreach (var device in devices)
                 {
-
                     try
                     {
                         // read json
@@ -67,7 +67,6 @@ namespace EnergyMonitoringService
                         // iterate over sensor list                
                         foreach (var sensor in device.Sensor)
                         {
-
                             // iterate over inputs
                             foreach (var item in obj.iostate.input)
                             {
@@ -75,8 +74,6 @@ namespace EnergyMonitoringService
                                 {
                                     StringBuilder sb = new StringBuilder();
 
-                                    sb.Append(Environment.NewLine);
-                                    sb.Append($"Group: name={device.Equipment.Group.Name}; ");
                                     sb.Append(Environment.NewLine);
                                     sb.Append($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
                                     sb.Append(Environment.NewLine);
@@ -97,7 +94,7 @@ namespace EnergyMonitoringService
                                     record.CreateDate = DateTime.Now;
 
                                     context.Record.Add(record);
-                                    context.SaveChanges();
+                                    await context.SaveChangesAsync();
 
                                 }
                             }

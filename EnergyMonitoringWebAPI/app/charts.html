@@ -229,6 +229,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         getDate();
 
         let equipment;
+        let sensors;
 
         $(document).ready(function () {
 
@@ -238,7 +239,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#equipment').html(equipment.Name);
             $('#header').html(equipment.Number + " - " + equipment.Name);
 
-            // getRecords(equipment.Device[0].DeviceID);
+            sensors = getSensors(equipment.Device[0].DeviceID);
 
         });
 
@@ -275,7 +276,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
+        }
 
+        function getSensors(deviceId) {
+
+            let url = '/api/devices/' + deviceId + '/sensors';
+            $.getJSON(url)
+                .done(function (data) {
+                    sensors = data;
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
 
         }
 
@@ -284,8 +297,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             let url = '/api/records/' + deviceId;
             $.getJSON(url)
                 .done(function (data) {
-                    // let data = JSON.parse(ddata.d);
-                    //debugger;
 
                     showData(data);
                     updateChart();
@@ -297,29 +308,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         function showData(data) {
 
-
-
             if (!Array.isArray(data))
                 return;
 
 
             data.forEach(function (item, i) {
 
-                if (item.Sensor.Unit.Name == 'Flow') {
+                if (item.SensorID == sensors[1].SensorID) {
+
                     data1.push(item.Value);
                     labels1.push(item.CreateDate);
 
                 }
 
-                if (item.Sensor.Unit.Name == 'Pressure') {
+                if (item.SensorID == sensors[0].SensorID) {
                     data2.push(item.Value);
                     labels2.push(item.CreateDate);
-
                 }
 
             });
-
-
 
         }
 
