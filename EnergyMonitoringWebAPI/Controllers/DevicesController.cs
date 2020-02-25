@@ -36,6 +36,15 @@ namespace EnergyMonitoringWebAPI.Controllers
             return Ok(device);
         }
 
+        //GET: api/Devices/count
+        [Route("api/devices/count")]
+        public int GetDevicesCount()
+        {
+            int count = db.Device.Where(x => (bool)x.Active).Count();
+
+            return count;
+        }
+
         // PUT: api/Devices/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutDevice(int id, Device device)

@@ -85,7 +85,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="tables.html" class="nav-link">
+                                    <a href="app/tables.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sensoren</p>
                                     </a>
@@ -273,11 +273,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         function showInfo(data) {
 
-            let url = '/api/equipments';
+            let url = '/api/equipments/count';
             $.getJSON(url)
                 .done(function (data) {
 
-                    $('#machinecount').html(data.length);
+                    $('#machinecount').html(data);
 
                 })
                 .fail(function (error) {
@@ -285,22 +285,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 });
 
 
-            url = '/api/sensors';
+            url = '/api/sensors/count';
             $.getJSON(url)
                 .done(function (data) {
 
-                    if (!Array.isArray(data))
-                        return;
 
-                    let counter = 0;
-                    data.forEach(function (item, i) {
-
-                        if (item.Device.Active == true)
-                            counter++;
-
-                    });
-
-                    $('#sensorcount').html(counter);
+                    $('#sensorcount').html(data);
 
 
                 })
@@ -310,11 +300,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 
-            url = '/api/records';
+            url = '/api/records/count';
             $.getJSON(url)
                 .done(function (data) {
 
-                    $('#recordcount').html(data.length);
+                    $('#recordcount').html(data);
 
                 })
                 .fail(function (error) {

@@ -52,6 +52,15 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         }
 
+        //GET: api/records/count
+        [Route("api/records/count")]
+        public int GetRecordsCount()
+        {
+            int count = db.Record.Count();
+
+            return count;
+        }
+
         // PUT: api/Records/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutRecord(long id, Record record)

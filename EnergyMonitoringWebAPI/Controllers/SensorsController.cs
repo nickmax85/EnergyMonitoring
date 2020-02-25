@@ -37,6 +37,17 @@ namespace EnergyMonitoringWebAPI.Controllers
 
             return Ok(sensor);
         }
+        //GET: api/sensors/count
+        [Route("api/sensors/count")]
+        public int GetSensorsCount()
+        {
+            int count = db.Sensor.Include(x => x.Device)
+                .Where(x => (bool)x.Device.Active)
+                .Count();
+
+            return count;
+        }
+
 
         // PUT: api/Sensors/5
         [ResponseType(typeof(void))]

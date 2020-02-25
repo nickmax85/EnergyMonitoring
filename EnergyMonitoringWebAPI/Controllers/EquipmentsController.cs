@@ -36,6 +36,16 @@ namespace EnergyMonitoringWebAPI.Controllers
             return Ok(equipment);
         }
 
+
+        //GET: api/equipments/count
+        [Route("api/equipments/count")]
+        public int GetEquipmentsCount()
+        {
+            int count = db.Equipment.Count();
+
+            return count;
+        }
+
         //GET: api/groups/2/equipments
         [Route("api/groups/{GroupId}/equipments")]
         public IEnumerable<Equipment> GetEquipmentsByGroup(int GroupId)
