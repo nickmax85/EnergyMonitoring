@@ -16,10 +16,18 @@
 
     <h1>Sensoren</h1>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" onclick="getData()">
-        <i class="fas fa-plus"></i>
-        Neu
-    </button>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" onclick="getData()">
+            <i class="fas fa-plus"></i>
+            Neu
+        </button>
+
+        <button id="refreshButton" type="button" class="btn btn-primary" data-toggle="modal">
+            <i class="fas fa-sync"></i>
+            Aktualisieren
+        </button>
+    </div>
+
     <p></p>
 
     <!-- Modal -->
@@ -54,16 +62,15 @@
     </div>
 
 
-
-
-
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th scope="col">Equipment</th>
                 <th scope="col">Bereich</th>
-                <th scope="col">Einheit</th>
                 <th scope="col">Device</th>
+                <th scope="col">Physikalische Größe</th>
+                <th scope="col">Untergrenze</th>
+                <th scope="col">Obergrenze</th>
                 <th scope="col">SensorId</th>
                 <th scope="col">Bearbeiten</th>
             </tr>
@@ -121,15 +128,18 @@
 
             data.forEach(function (item, i) {
 
+         
                 let tr = "<tr>" +
                     "<td>" + item.Device.Equipment.Number + ' - ' + item.Device.Equipment.Name + "</td>" +
                     "<td>" + item.Device.Equipment.Group.Name + "</td>" +
-                    "<td>" + item.Unit.Name + ' [' + item.Unit.Sign + ']' + "</td>" +
                     "<td>" + item.Device.Name + ' [' + item.Device.IP + ']' + "</td>" +
+                    "<td>" + item.Unit.Name + "</td>" +
+                    "<td>" + item.LowerLimit.toFixed(1) + ' ' + item.Unit.Sign + "</td>" +
+                    "<td>" + item.UpperLimit.toFixed(1) + ' ' + item.Unit.Sign + "</td>" +
                     "<td>" + item.SensorID + "</td>" +
                     "<td>" +
                     '<button type="button" class="btn"><i class="fas fa-edit"></i></button>' +
-                    '<button type="button" class="btn"><i class="fas fa-trash"></i></button>' +
+                    '<button type="button" disabled class="btn"><i class="fas fa-trash"></i></button>' +
                     "</td > " +
                     "</tr>";
 

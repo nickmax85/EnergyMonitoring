@@ -126,7 +126,7 @@ function showCardCollapsable(data) {
 
     data.forEach(function (item, i) {
 
-        let col = $('<div class="col-md-6">');
+        let col = $('<div class="col-md-5">');
 
         let card = $('<div class="card card-primary collapsed-card">');
         col.append(card);
