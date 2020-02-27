@@ -112,6 +112,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\img\house40.png" />
+    <Content Include="app\img\industr.jpg" />
+    <Content Include="app\info.html" />
     <Content Include="app\css\bootstrap.min.css" />
     <Content Include="app\css\custom.css" />
     <Content Include="app\dist\css\adminlte.css" />
@@ -1749,6 +1752,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
+    <Content Include="app\dashboard.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

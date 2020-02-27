@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.EventLog;
+using Serilog;
 
 namespace EnergyMonitoringService
 {
@@ -38,6 +39,19 @@ namespace EnergyMonitoringService
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
+
+
+                    var serilogLogger = new LoggerConfiguration()
+            .WriteTo.RollingFile("EnergyMonitoringServiceLog.txt")
+            .CreateLogger();
+
+                    services.AddLogging(builder =>
+                    {
+                        builder.SetMinimumLevel(LogLevel.Information);
+                        builder.AddSerilog(logger: serilogLogger, dispose: true);
+                    });
+
+
                 });
     }
 }
