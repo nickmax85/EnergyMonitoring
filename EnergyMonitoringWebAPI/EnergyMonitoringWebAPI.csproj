@@ -114,7 +114,6 @@
   <ItemGroup>
     <Content Include="app\img\house40.png" />
     <Content Include="app\img\industr.jpg" />
-    <Content Include="app\info.html" />
     <Content Include="app\css\bootstrap.min.css" />
     <Content Include="app\css\custom.css" />
     <Content Include="app\dist\css\adminlte.css" />

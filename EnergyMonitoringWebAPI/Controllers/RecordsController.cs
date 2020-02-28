@@ -43,7 +43,7 @@ namespace EnergyMonitoringWebAPI.Controllers
             var items = db.Record
                  .Where(x => x.Sensor.DeviceID == deviceId)
                 .Where(x => DbFunctions.TruncateTime(x.CreateDate) >= DbFunctions.TruncateTime(startDate)
-                && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate)).OrderBy(x => x.CreateDate).Take(500)
+                && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate)).OrderBy(x => x.CreateDate)
                 .ToList();
 
             return items;

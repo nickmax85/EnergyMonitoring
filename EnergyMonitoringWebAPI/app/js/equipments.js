@@ -155,7 +155,7 @@ function showCardCollapsable(data) {
         let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Charts</a>').click(function () {
 
             localStorage.setItem('Equipment', JSON.stringify(item));
-            window.location.href = "app/charts.html";
+            window.location.href = "charts.html";
 
         });
 
