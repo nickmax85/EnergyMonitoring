@@ -10,7 +10,7 @@
 
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-
+    <link href="css/custom.css" rel="stylesheet" />
 </head>
 <body class="container">
 
@@ -61,8 +61,9 @@
         </div>
     </div>
 
+    <div class="loading"></div>
 
-    <table class="table table-bordered table-hover">
+    <table id="table" class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th scope="col">Equipment</th>
@@ -77,6 +78,7 @@
         </thead>
         <tbody id="sensor-row">
         </tbody>
+
     </table>
 
     <script>
@@ -98,20 +100,30 @@
 
             });
 
-
-
-
         });
 
         function getJQuery1() {
             let url = '/api/sensors';
-            $.getJSON(url)
-                .done(function (data) {
-                    //let data = JSON.parse(ddata.d);
-                    showData(data);
 
+            $.ajax({
+                url: url,
+                dataType: "json",
+                beforeSend: function () {
+                    $('.loading').show();
+                    $('#table').hide();
+                },
+                success: function (data) {
+
+                },
+                complete: function () {
+                    $('.loading').hide();
+                    $('#table').show();
+                }
+            })
+                .done(function (data) {
+                    showData(data);
                 })
-                .fail(function (error) {
+                .fail(function (data) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
 
@@ -128,7 +140,7 @@
 
             data.forEach(function (item, i) {
 
-         
+
                 let tr = "<tr>" +
                     "<td>" + item.Device.Equipment.Number + ' - ' + item.Device.Equipment.Name + "</td>" +
                     "<td>" + item.Device.Equipment.Group.Name + "</td>" +
@@ -142,6 +154,22 @@
                     '<button type="button" disabled class="btn"><i class="fas fa-trash"></i></button>' +
                     "</td > " +
                     "</tr>";
+
+                console.info(item);
+
+                //let tr = "<tr>" +
+                //   "<td>" + item.Equipment.Number + ' - ' + item.Equipment.Name + "</td>" +
+                //   "<td>" + item.Equipment.Group.Name + "</td>" +
+                //   "<td>" + item.Name + ' [' + item.IP + ']' + "</td>" +
+                //   "<td>" + item.Sensor.Unit.Name + "</td>" +
+                //   "<td>" + item.Sensor.LowerLimit.toFixed(1) + ' ' + item.Sensor.Unit.Sign + "</td>" +
+                //   "<td>" + item.Sensor.UpperLimit.toFixed(1) + ' ' + item.Sensor.Unit.Sign + "</td>" +
+                //   "<td>" + item.Sensor.SensorID + "</td>" +
+                //   "<td>" +
+                //   '<button type="button" class="btn"><i class="fas fa-edit"></i></button>' +
+                //   '<button type="button" disabled class="btn"><i class="fas fa-trash"></i></button>' +
+                //   "</td > " +
+                //   "</tr>";
 
                 container.append(tr);
             });
