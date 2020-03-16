@@ -4,15 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EnergyMonitoringModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EnergyMonitoringModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alarm">
           <Key>
             <PropertyRef Name="AlarmID" />
           </Key>
-          <Property Name="AlarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EquipmentID" Type="int" Nullable="false" />
+          <Property Name="AlarmID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RecordID" Type="bigint" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateDate" Type="date" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
@@ -265,8 +264,7 @@
             <End Role="MailGroup" EntitySet="MailGroup" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EnergyMonitoringModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -275,9 +273,8 @@
             <PropertyRef Name="AlarmID" />
           </Key>
           <Property Name="AlarmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EquipmentID" Type="Int32" Nullable="false" />
           <Property Name="RecordID" Type="Int64" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Record" Relationship="Self.FK_Alarm_Record" FromRole="Alarm" ToRole="Record" />
         </EntityType>
         <EntityType Name="Config">
@@ -558,7 +555,6 @@
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Alarm">
               <MappingFragment StoreEntitySet="Alarm">
                 <ScalarProperty Name="AlarmID" ColumnName="AlarmID" />
-                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
                 <ScalarProperty Name="RecordID" ColumnName="RecordID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
               </MappingFragment>
@@ -683,7 +679,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
