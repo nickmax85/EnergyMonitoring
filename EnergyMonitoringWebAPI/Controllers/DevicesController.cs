@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using EnergyMonitoringWebAPI.Models;
+
 
 namespace EnergyMonitoringWebAPI.Controllers
 {
@@ -20,14 +20,14 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Devices
         public IQueryable<Device> GetDevice()
         {
-            return db.Device;
+            return db.Devices;
         }
 
         // GET: api/Devices/5
         [ResponseType(typeof(Device))]
         public async Task<IHttpActionResult> GetDevice(int id)
         {
-            Device device = await db.Device.FindAsync(id);
+            Device device = await db.Devices.FindAsync(id);
             if (device == null)
             {
                 return NotFound();
@@ -40,7 +40,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/devices/count")]
         public int GetDevicesCount()
         {
-            int count = db.Device.Where(x => (bool)x.Active).Count();
+            int count = db.Devices.Where(x => (bool)x.Active).Count();
 
             return count;
         }
@@ -89,7 +89,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Device.Add(device);
+            db.Devices.Add(device);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = device.DeviceID }, device);
@@ -99,13 +99,13 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Device))]
         public async Task<IHttpActionResult> DeleteDevice(int id)
         {
-            Device device = await db.Device.FindAsync(id);
+            Device device = await db.Devices.FindAsync(id);
             if (device == null)
             {
                 return NotFound();
             }
 
-            db.Device.Remove(device);
+            db.Devices.Remove(device);
             await db.SaveChangesAsync();
 
             return Ok(device);
@@ -122,7 +122,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         private bool DeviceExists(int id)
         {
-            return db.Device.Count(e => e.DeviceID == id) > 0;
+            return db.Devices.Count(e => e.DeviceID == id) > 0;
         }
     }
 }

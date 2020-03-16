@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using EnergyMonitoringWebAPI.Models;
 
 namespace EnergyMonitoringWebAPI.Controllers
 {
@@ -21,14 +20,14 @@ namespace EnergyMonitoringWebAPI.Controllers
         public IQueryable<Group> GetGroup()
         {
 
-            return db.Group.OrderBy(x => x.Name);
+            return db.Groups.OrderBy(x => x.Name);
         }
 
         // GET: api/Groups/5
         [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> GetGroup(int id)
         {
-            Group group = await db.Group.FindAsync(id);
+            Group group = await db.Groups.FindAsync(id);
             if (group == null)
             {
                 return NotFound();
@@ -81,7 +80,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Group.Add(group);
+            db.Groups.Add(group);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = group.GroupID }, group);
@@ -91,13 +90,13 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> DeleteGroup(int id)
         {
-            Group group = await db.Group.FindAsync(id);
+            Group group = await db.Groups.FindAsync(id);
             if (group == null)
             {
                 return NotFound();
             }
 
-            db.Group.Remove(group);
+            db.Groups.Remove(group);
             await db.SaveChangesAsync();
 
             return Ok(group);
@@ -114,7 +113,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         private bool GroupExists(int id)
         {
-            return db.Group.Count(e => e.GroupID == id) > 0;
+            return db.Groups.Count(e => e.GroupID == id) > 0;
         }
     }
 }

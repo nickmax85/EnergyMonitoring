@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using EnergyMonitoringWebAPI.Models;
 
 namespace EnergyMonitoringWebAPI.Controllers
 {
@@ -20,14 +19,14 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Units
         public IQueryable<Unit> GetUnit()
         {
-            return db.Unit;
+            return db.Units;
         }
 
         // GET: api/Units/5
         [ResponseType(typeof(Unit))]
         public async Task<IHttpActionResult> GetUnit(int id)
         {
-            Unit unit = await db.Unit.FindAsync(id);
+            Unit unit = await db.Units.FindAsync(id);
             if (unit == null)
             {
                 return NotFound();
@@ -80,7 +79,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Unit.Add(unit);
+            db.Units.Add(unit);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = unit.UnitID }, unit);
@@ -90,13 +89,13 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Unit))]
         public async Task<IHttpActionResult> DeleteUnit(int id)
         {
-            Unit unit = await db.Unit.FindAsync(id);
+            Unit unit = await db.Units.FindAsync(id);
             if (unit == null)
             {
                 return NotFound();
             }
 
-            db.Unit.Remove(unit);
+            db.Units.Remove(unit);
             await db.SaveChangesAsync();
 
             return Ok(unit);
@@ -113,7 +112,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         private bool UnitExists(int id)
         {
-            return db.Unit.Count(e => e.UnitID == id) > 0;
+            return db.Units.Count(e => e.UnitID == id) > 0;
         }
     }
 }

@@ -140,9 +140,9 @@ function showCardCollapsable(data) {
 
         let body = $('<div class="card-body" style="display: none;"></div >');
 
-        console.log(item.Name);
-        console.log(item.Device[0].Sensor[0].LowerLimit);
-        console.log(item.Device[0].Sensor[0].UpperLimit);
+        //console.log(item.Name);
+        //console.log(item.Device[0].Sensor[0].LowerLimit);
+        //console.log(item.Device[0].Sensor[0].UpperLimit);
 
         // GaugeChart
         let row = $('<div class="row">');
@@ -164,9 +164,9 @@ function showCardCollapsable(data) {
         card.append(header, body);
         container.append(col);
 
-        if (item.Device[0] != null) {
-            addGaugeChart1(gaugeChart1.get(0).id, item.Device[0]);
-            addGaugeChart2(gaugeChart2.get(0).id, item.Device[0]);
+        if (item.Devices[0] != null) {
+            addGaugeChart1(gaugeChart1.get(0).id, item.Devices[0]);
+            addGaugeChart2(gaugeChart2.get(0).id, item.Devices[0]);
         }
     });
 
@@ -184,14 +184,14 @@ function addGaugeChart1(container, item) {
             },
             plotBands: [{
                 from: 0,
-                to: item.Sensor[0].LowerLimit,
+                to: item.Sensors[0].LowerLimit,
                 color: '#DF5353' // red
             }, {
-                from: item.Sensor[0].LowerLimit,
-                to: item.Sensor[0].UpperLimit,
+                from: item.Sensors[0].LowerLimit,
+                to: item.Sensors[0].UpperLimit,
                 color: '#55BF3B' // green
             }, {
-                from: item.Sensor[0].UpperLimit,
+                from: item.Sensors[0].UpperLimit,
                 to: 8,
                 color: '#DF5353' // red
             }]
@@ -257,11 +257,11 @@ function addGaugeChart2(container, item) {
             },
             plotBands: [{
                 from: 0,
-                to: item.Sensor[1].UpperLimit,
+                to: item.Sensors[1].UpperLimit,
                 color: '#55BF3B' // green
             },
             {
-                from: item.Sensor[1].UpperLimit,
+                from: item.Sensors[1].UpperLimit,
                 to: 5000,
                 color: '#DF5353' // red
             }]

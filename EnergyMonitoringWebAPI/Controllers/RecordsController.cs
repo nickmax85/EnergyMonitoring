@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using EnergyMonitoringWebAPI.Models;
 
 namespace EnergyMonitoringWebAPI.Controllers
 {
@@ -20,14 +19,14 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Records
         public IQueryable<Record> GetRecord()
         {
-            return db.Record.Take(1000);
+            return db.Records.Take(1000);
         }
 
         // GET: api/Records/5
         [ResponseType(typeof(Record))]
         public async Task<IHttpActionResult> GetRecord(long id)
         {
-            Record record = await db.Record.FindAsync(id);
+            Record record = await db.Records.FindAsync(id);
             if (record == null)
             {
                 return NotFound();
@@ -40,7 +39,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/records/{deviceId}/{startDate}/{endDate}")]
         public IEnumerable<Record> GetRecordsByDevice(int deviceId, DateTime startDate, DateTime endDate)
         {
-            var items = db.Record
+            var items = db.Records
                  .Where(x => x.Sensor.DeviceID == deviceId)
                 .Where(x => DbFunctions.TruncateTime(x.CreateDate) >= DbFunctions.TruncateTime(startDate)
                 && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate)).OrderBy(x => x.CreateDate)
@@ -54,7 +53,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/records/count")]
         public int GetRecordsCount()
         {
-            int count = db.Record.Count();
+            int count = db.Records.Count();
 
             return count;
         }
@@ -103,7 +102,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Record.Add(record);
+            db.Records.Add(record);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = record.RecordID }, record);
@@ -113,13 +112,13 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Record))]
         public async Task<IHttpActionResult> DeleteRecord(long id)
         {
-            Record record = await db.Record.FindAsync(id);
+            Record record = await db.Records.FindAsync(id);
             if (record == null)
             {
                 return NotFound();
             }
 
-            db.Record.Remove(record);
+            db.Records.Remove(record);
             await db.SaveChangesAsync();
 
             return Ok(record);
@@ -136,7 +135,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         private bool RecordExists(long id)
         {
-            return db.Record.Count(e => e.RecordID == id) > 0;
+            return db.Records.Count(e => e.RecordID == id) > 0;
         }
     }
 }

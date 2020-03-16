@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using EnergyMonitoringWebAPI.Models;
+
 
 namespace EnergyMonitoringWebAPI.Controllers
 {
@@ -20,7 +20,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Sensors
         public IQueryable<Sensor> GetSensor()
         {
-            return db.Sensor
+            return db.Sensors
                 .Include(x => x.Device.Equipment.Group)
                 .Include(x => x.Unit);
         }
@@ -29,7 +29,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Sensor))]
         public async Task<IHttpActionResult> GetSensor(int id)
         {
-            Sensor sensor = await db.Sensor.FindAsync(id);
+            Sensor sensor = await db.Sensors.FindAsync(id);
             if (sensor == null)
             {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/sensors/count")]
         public int GetSensorsCount()
         {
-            int count = db.Sensor.Include(x => x.Device)
+            int count = db.Sensors.Include(x => x.Device)
                 .Where(x => (bool)x.Device.Active)
                 .Count();
 
@@ -53,7 +53,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/devices/{DeviceId}/sensors")]
         public IEnumerable<Sensor> GetSensorsFromDevice(int DeviceId)
         {
-            var items = db.Sensor.Where(x => x.DeviceID == DeviceId)
+            var items = db.Sensors.Where(x => x.DeviceID == DeviceId)
                  .Include(x => x.Unit)
                  .ToList();
             return items;
@@ -104,7 +104,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Sensor.Add(sensor);
+            db.Sensors.Add(sensor);
 
             try
             {
@@ -129,13 +129,13 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Sensor))]
         public async Task<IHttpActionResult> DeleteSensor(int id)
         {
-            Sensor sensor = await db.Sensor.FindAsync(id);
+            Sensor sensor = await db.Sensors.FindAsync(id);
             if (sensor == null)
             {
                 return NotFound();
             }
 
-            db.Sensor.Remove(sensor);
+            db.Sensors.Remove(sensor);
             await db.SaveChangesAsync();
 
             return Ok(sensor);
@@ -152,7 +152,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         private bool SensorExists(int id)
         {
-            return db.Sensor.Count(e => e.SensorID == id) > 0;
+            return db.Sensors.Count(e => e.SensorID == id) > 0;
         }
     }
 }

@@ -77,6 +77,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
 
+                        <!-- Alarme -->
+                        <li class="nav-item">
+                            <a href="alarms.html" class="nav-link ">
+                                <i class="nav-icon fas fa-bell"></i>
+                                <p>
+                                    Alarme
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+
+                        <!-- Info -->
+                        <li class="nav-item">
+                            <a href="info.html" class="nav-link">
+                                <i class="nav-icon fas fa-info"></i>
+                                <p>
+                                    Info
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+
                         <!-- Konfiguration -->
                         <li class="nav-item has-treeview menu">
                             <a href="#" class="nav-link">
@@ -86,6 +108,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            <!-- Sensoren -->
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="tables.html" class="nav-link">
@@ -239,7 +262,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#equipment').html(equipment.Name);
             $('#header').html(equipment.Number + " - " + equipment.Name);
 
-            sensors = getSensors(equipment.Device[0].DeviceID);
+            sensors = getSensors(equipment.Devices[0].DeviceID);
 
         });
 
@@ -260,7 +283,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         function getRecordsByDate() {
 
-            let url = '/api/records/' + equipment.Device[0].DeviceID + '/' + $('#start').val() + '/' + $('#end').val();
+            let url = '/api/records/' + equipment.Devices[0].DeviceID + '/' + $('#start').val() + '/' + $('#end').val();
 
             $.getJSON(url)
                 .done(function (data) {

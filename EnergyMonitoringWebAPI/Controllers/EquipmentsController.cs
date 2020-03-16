@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using EnergyMonitoringWebAPI.Models;
+
 
 namespace EnergyMonitoringWebAPI.Controllers
 {
@@ -20,14 +20,14 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Equipments
         public IQueryable<Equipment> GetEquipment()
         {
-            return db.Equipment;
+            return db.Equipments;
         }
 
         // GET: api/Equipments/5
         [ResponseType(typeof(Equipment))]
         public async Task<IHttpActionResult> GetEquipment(int id)
         {
-            Equipment equipment = await db.Equipment.FindAsync(id);
+            Equipment equipment = await db.Equipments.FindAsync(id);
             if (equipment == null)
             {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/equipments/count")]
         public int GetEquipmentsCount()
         {
-            int count = db.Equipment.Count();
+            int count = db.Equipments.Count();
 
             return count;
         }
@@ -50,9 +50,9 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/groups/{GroupId}/equipments")]
         public IEnumerable<Equipment> GetEquipmentsByGroup(int GroupId)
         {
-            var items = db.Equipment.Where(x => x.GroupID == GroupId)
+            var items = db.Equipments.Where(x => x.GroupID == GroupId)
                  .Include(x => x.Group)
-                 .Include(x => x.Device.Select(d => d.Sensor))
+                 .Include(x => x.Devices.Select(d => d.Sensors))
                  .ToList();
 
             return items;
@@ -104,7 +104,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Equipment.Add(equipment);
+            db.Equipments.Add(equipment);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = equipment.EquipmentID }, equipment);
@@ -114,13 +114,13 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Equipment))]
         public async Task<IHttpActionResult> DeleteEquipment(int id)
         {
-            Equipment equipment = await db.Equipment.FindAsync(id);
+            Equipment equipment = await db.Equipments.FindAsync(id);
             if (equipment == null)
             {
                 return NotFound();
             }
 
-            db.Equipment.Remove(equipment);
+            db.Equipments.Remove(equipment);
             await db.SaveChangesAsync();
 
             return Ok(equipment);
@@ -137,7 +137,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         private bool EquipmentExists(int id)
         {
-            return db.Equipment.Count(e => e.EquipmentID == id) > 0;
+            return db.Equipments.Count(e => e.EquipmentID == id) > 0;
         }
     }
 }
