@@ -170,8 +170,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <thead>
                                             <tr>
                                                 <th>Zeitpunkt</th>
+                                                <th>Bereich</th>
                                                 <th>Equipment</th>
-                                                <th>Messwert</th>
+                                                <th>Sensor</th>
+                                                <th>Wert</th>
+                                                <!--<th>Bemerkung</th>-->
                                             </tr>
                                         </thead>
                                         <tbody id="alarm-table-row">
@@ -221,7 +224,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
 
+        getJQuery();
 
+        function getJQuery() {
+
+            let url = '/api/alarms';
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    showData(data);
+                    console.log(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
 
         function showData(data) {
 
@@ -233,36 +252,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             data.forEach(function (item, i) {
 
-
                 let tr = "<tr>" +
-                    "<td>" + item.Device.Equipment.Number + ' - ' + item.Device.Equipment.Name + "</td>" +
-                    "<td>" + item.Device.Equipment.Group.Name + "</td>" +
-                    "<td>" + item.Device.Name + ' [' + item.Device.IP + ']' + "</td>" +
-                    "<td>" + item.Unit.Name + "</td>" +
-                    "<td>" + item.LowerLimit.toFixed(1) + ' ' + item.Unit.Sign + "</td>" +
-                    "<td>" + item.UpperLimit.toFixed(1) + ' ' + item.Unit.Sign + "</td>" +
-                    "<td>" + item.SensorID + "</td>" +
-                    "<td>" +
-                    '<button type="button" class="btn"><i class="fas fa-edit"></i></button>' +
-                    '<button type="button" disabled class="btn"><i class="fas fa-trash"></i></button>' +
-                    "</td > " +
+                    "<td>" + item.CreateDate + "</td>" +
+                    "<td>" + item.Record.Sensor.Device.Equipment.Group.Name + "</td>" +
+                    "<td>" + item.Record.Sensor.Device.Equipment.Name + "</td>" +
+                    "<td>" + item.Record.Sensor.Unit.Name + "</td>" +
+                    "<td>" + item.Record.Value + " " + item.Record.Sensor.Unit.Sign + "</td>" +
+                    //"<td>" +
+                    //'<button type="button" class="btn"><i class="fas fa-edit"></i></button>' +
+                    //"</td > " +
                     "</tr>";
-
-                console.info(item);
-
-                //let tr = "<tr>" +
-                //   "<td>" + item.Equipment.Number + ' - ' + item.Equipment.Name + "</td>" +
-                //   "<td>" + item.Equipment.Group.Name + "</td>" +
-                //   "<td>" + item.Name + ' [' + item.IP + ']' + "</td>" +
-                //   "<td>" + item.Sensor.Unit.Name + "</td>" +
-                //   "<td>" + item.Sensor.LowerLimit.toFixed(1) + ' ' + item.Sensor.Unit.Sign + "</td>" +
-                //   "<td>" + item.Sensor.UpperLimit.toFixed(1) + ' ' + item.Sensor.Unit.Sign + "</td>" +
-                //   "<td>" + item.Sensor.SensorID + "</td>" +
-                //   "<td>" +
-                //   '<button type="button" class="btn"><i class="fas fa-edit"></i></button>' +
-                //   '<button type="button" disabled class="btn"><i class="fas fa-trash"></i></button>' +
-                //   "</td > " +
-                //   "</tr>";
 
                 container.append(tr);
             });

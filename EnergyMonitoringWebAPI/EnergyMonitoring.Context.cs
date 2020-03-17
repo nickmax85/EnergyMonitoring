@@ -12,19 +12,22 @@ namespace EnergyMonitoringWebAPI
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     public partial class EnergyMonitoringContext : DbContext
     {
         public EnergyMonitoringContext()
             : base("name=EnergyMonitoringContext")
         {
+
+            //this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false;
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<Alarm> Alarms { get; set; }
         public virtual DbSet<Config> Configs { get; set; }
         public virtual DbSet<Device> Devices { get; set; }

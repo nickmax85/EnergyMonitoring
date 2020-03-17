@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnergyMonitoringWebAPI.Common;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -20,10 +21,53 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Sensors
         public IQueryable<Sensor> GetSensor()
         {
-            return db.Sensors
-                .Include(x => x.Device.Equipment.Group)
-                .Include(x => x.Unit);
+            return db.Sensors.Where(x => (bool)x.Device.Active)
+                .Include(x => x.Unit)
+                .Include(x => x.Device.Equipment.Group);
+
+
         }
+
+
+        //// GET: api/Sensors
+        //public IEnumerable<Sensor> GetSensor()
+        //{
+
+
+        //    var items = (from s in db.Sensors
+
+        //                 join u in db.Units
+        //                    on s.UnitID equals u.UnitID
+
+        //                 join d in db.Devices
+        //                     on s.DeviceID equals d.DeviceID
+
+        //                 join e in db.Equipments
+        //                     on d.EquipmentID equals e.EquipmentID
+
+        //                 join g in db.Groups
+        //                     on e.GroupID equals g.GroupID
+
+        //                 where d.Active == true
+
+        //                 select new
+        //                 {
+        //                     Sensor = s,
+        //                     Unit = u,
+        //                     Device = d,
+        //                     Equipment = e,
+        //                     Group = g
+        //                 }).ToList();
+
+
+        //    List<Sensor> result = new List<Sensor>();
+        //    foreach (var item in items)
+        //    {
+        //        result.Add(item.Sensor);
+
+        //    }
+        //    return result;
+        //}
 
         // GET: api/Sensors/5
         [ResponseType(typeof(Sensor))]

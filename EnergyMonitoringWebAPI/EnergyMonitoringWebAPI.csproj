@@ -1776,6 +1776,7 @@
     <Compile Include="Config.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AlarmsController.cs" />
     <Compile Include="Controllers\DevicesController.cs" />
     <Compile Include="Controllers\EquipmentsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />

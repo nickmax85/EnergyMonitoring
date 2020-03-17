@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace EnergyMonitoringWebAPI.Common
 {
@@ -36,6 +40,121 @@ namespace EnergyMonitoringWebAPI.Common
                     }
                 }
             }
+            return result;
+        }
+
+        public static List<Sensor> GetSensors()
+        {
+
+            List<Sensor> result = new List<Sensor>();
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                SqlCommand command = new SqlCommand("GetSensors", conn);
+                command.CommandType = CommandType.StoredProcedure;
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.HasRows && reader.Read())
+                    {
+                        Sensor item = new Sensor();
+
+                        item.Device = new Device();
+                        item.Device.Name = (string)reader["Name"];
+                        item.Device.IP = (string)reader["IP"];
+
+                        item.Device.Equipment = new Equipment();
+                        item.Device.Equipment.Number = (string)reader["Number"];
+                        item.Device.Equipment.Name = (string)reader["Name"];
+
+
+
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static List<Sensor> GetNativeSql()
+        {
+            string sql = "select Unit.Name as unit, Sensor.LowerLimit, Sensor.UpperLimit, Device.Name as device " +
+                            "from Sensor " +
+                                "join Unit " +
+                                    "on Unit.UnitID = Sensor.UnitID " +
+                                "join Device " +
+                                    "on Device.DeviceID = Sensor.DeviceID " +
+                                    "where Device.Active = 1"
+
+
+                                    ;
+
+            List<Sensor> result = new List<Sensor>();
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                SqlCommand command = new SqlCommand(sql, conn);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.HasRows && reader.Read())
+                    {
+                        Sensor item = new Sensor();
+
+                        item.Unit = new Unit();
+                        item.Unit.Name = reader["unit"] == DBNull.Value ? null : (string)reader["unit"];
+
+                        item.Device = new Device();
+                        item.Device.Name = reader["device"] == DBNull.Value ? null : (string)reader["device"];
+
+                        result.Add(item);
+                        Console.WriteLine(item);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static List<string> GetJson1()
+        {
+
+            List<string> result = new List<string>();
+
+            dynamic flexible = new ExpandoObject();
+            flexible.Int = 3;
+            flexible.String = "hi";
+
+            var dictionary = (IDictionary<string, object>)flexible;
+            dictionary.Add("Bool", false);
+
+            var serialized = JsonConvert.SerializeObject(dictionary); // {"Int":3,"String":"hi","Bool":false}
+
+            result.Add(serialized);
+
+            return result;
+        }
+
+
+        public static List<string> GetJson2()
+        {
+
+            List<string> result = new List<string>();
+
+            var columns = new Dictionary<string, string>
+            {
+                { "FirstName", "Mathew"},
+                { "Surname", "Thompson"},
+                { "Gender", "Male"},
+                { "SerializeMe", "GoOnThen"}
+            };
+
+            var jsSerializer = new JavaScriptSerializer();
+
+            var serialized = jsSerializer.Serialize(columns);
+
+            result.Add(serialized);
+
             return result;
         }
     }

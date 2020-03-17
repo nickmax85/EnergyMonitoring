@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnergyMonitoringWebAPI.Common;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -19,7 +20,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Groups
         public IQueryable<Group> GetGroup()
         {
-
+           
             return db.Groups.OrderBy(x => x.Name);
         }
 
