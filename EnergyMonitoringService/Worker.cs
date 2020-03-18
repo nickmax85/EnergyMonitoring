@@ -30,14 +30,48 @@ namespace EnergyMonitoringService
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                //InitData();
-                GenerateTestdata();
+                InitData();
+
                 int oneMinute = 1000 * 60;
 
                 await Task.Delay(oneMinute * 15, stoppingToken);
 
             }
+
+
+            //while (!stoppingToken.IsCancellationRequested)
+            //{
+            //    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+
+            //    DateTime dt = DateTime.Now;
+            //    if (dt.DayOfWeek == DayOfWeek.Sunday)
+            //    {
+            //        if (dt.Hour == 12)
+            //        {
+            //            log.Info("Hallo");
+
+            //        }
+            //    }
+
+
+            //    int oneMinute = 1000 * 60;
+
+            //    Record record = new Record();
+            //    record.RecordId = 2;
+            //    record.Sensor = new Sensor { SensorId = 1, LowerLimit = 0, UpperLimit = 10 };
+
+            //    record.Value = (decimal)Math.Round(15.0f, 1);
+            //    record.CreateDate = DateTime.Now;
+
+            //    CheckAlarm(record);
+
+            //    await Task.Delay(oneMinute * 1, stoppingToken);
+
+            //}
+
         }
+
+
 
         private void GenerateTestdata()
         {
@@ -128,7 +162,10 @@ namespace EnergyMonitoringService
                                     record.CreateDate = DateTime.Now;
 
                                     context.Record.Add(record);
+
                                     await context.SaveChangesAsync();
+
+                                    CheckAlarm(record);
 
                                 }
                             }
@@ -153,14 +190,37 @@ namespace EnergyMonitoringService
                         log.Error(ex.StackTrace);
 
                     }
-
-
-
-
                 }
             }
         }
 
+        private async void CheckAlarm(Record record)
+        {
+            using (var context = new EnergyMonitoringContext())
+            {
+                DateTime dt = DateTime.Now;
+                if (dt.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    if (dt.Hour == 12)
+                    {
+                        if (record.Value < record.Sensor.LowerLimit || record.Value > record.Sensor.UpperLimit)
+                        {
+                            Alarm alarm = new Alarm();
+                            alarm.RecordId = record.RecordId;
+                            alarm.CreateDate = DateTime.Now;
+
+                            log.Info($"Alarm: {alarm.AlarmId};");
+                            context.Alarm.Add(alarm);
+
+                            await context.SaveChangesAsync();
+                        }
+
+                    }
+                }
+
+
+            }
+        }
 
     }
 }

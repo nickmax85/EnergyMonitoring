@@ -157,5 +157,46 @@ namespace EnergyMonitoringWebAPI.Common
 
             return result;
         }
+
+
+        //// GET: api/Sensors
+        //public IEnumerable<Sensor> GetSensor()
+        //{
+
+
+        //    var items = (from s in db.Sensors
+
+        //                 join u in db.Units
+        //                    on s.UnitID equals u.UnitID
+
+        //                 join d in db.Devices
+        //                     on s.DeviceID equals d.DeviceID
+
+        //                 join e in db.Equipments
+        //                     on d.EquipmentID equals e.EquipmentID
+
+        //                 join g in db.Groups
+        //                     on e.GroupID equals g.GroupID
+
+        //                 where d.Active == true
+
+        //                 select new
+        //                 {
+        //                     Sensor = s,
+        //                     Unit = u,
+        //                     Device = d,
+        //                     Equipment = e,
+        //                     Group = g
+        //                 }).ToList();
+
+
+        //    List<Sensor> result = new List<Sensor>();
+        //    foreach (var item in items)
+        //    {
+        //        result.Add(item.Sensor);
+
+        //    }
+        //    return result;
+        //}
     }
 }

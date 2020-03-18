@@ -8,16 +8,14 @@ namespace EnergyMonitoringService.Models
     {
         public EnergyMonitoringContext()
         {
-
         }
 
         public EnergyMonitoringContext(DbContextOptions<EnergyMonitoringContext> options)
             : base(options)
         {
-
-
         }
 
+        public virtual DbSet<Alarm> Alarm { get; set; }
         public virtual DbSet<Config> Config { get; set; }
         public virtual DbSet<Device> Device { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
@@ -33,13 +31,31 @@ namespace EnergyMonitoringService.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                //optionsBuilder.UseSqlServer("Server=localhost;Database=energymonitoring;Trusted_Connection=True;");
-                optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=energymonitoring;Trusted_Connection=False;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
+                optionsBuilder.UseSqlServer("Server=localhost;Database=energymonitoring;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Alarm>(entity =>
+            {
+                entity.Property(e => e.AlarmId).HasColumnName("AlarmID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("date");
+
+                entity.Property(e => e.RecordId).HasColumnName("RecordID");
+
+                entity.Property(e => e.Remark)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Record)
+                    .WithMany(p => p.Alarm)
+                    .HasForeignKey(d => d.RecordId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Alarm_Record");
+            });
+
             modelBuilder.Entity<Config>(entity =>
             {
                 entity.Property(e => e.ConfigId).HasColumnName("ConfigID");

@@ -5,6 +5,11 @@ namespace EnergyMonitoringService.Models
 {
     public partial class Record
     {
+        public Record()
+        {
+            Alarm = new HashSet<Alarm>();
+        }
+
         public long RecordId { get; set; }
         public decimal Value { get; set; }
         public int SensorId { get; set; }
@@ -14,5 +19,6 @@ namespace EnergyMonitoringService.Models
 
         public virtual Equipment Equipment { get; set; }
         public virtual Sensor Sensor { get; set; }
+        public virtual ICollection<Alarm> Alarm { get; set; }
     }
 }

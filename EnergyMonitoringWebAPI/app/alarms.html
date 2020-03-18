@@ -253,7 +253,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             data.forEach(function (item, i) {
 
                 let tr = "<tr>" +
-                    "<td>" + item.CreateDate + "</td>" +
+                    "<td>" + item.CreateDate.substring(0,10) + "</td>" +
                     "<td>" + item.Record.Sensor.Device.Equipment.Group.Name + "</td>" +
                     "<td>" + item.Record.Sensor.Device.Equipment.Name + "</td>" +
                     "<td>" + item.Record.Sensor.Unit.Name + "</td>" +
