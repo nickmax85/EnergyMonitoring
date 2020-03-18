@@ -14,43 +14,43 @@ namespace EnergyMonitoringWebAPI.Controllers
     {
         private EnergyMonitoringContext db = new EnergyMonitoringContext();
 
-        //// GET: api/Alarms
-        //public IEnumerable<Alarm> Get()
-        //{
+        // GET: api/Alarms
+        public IEnumerable<Alarm> Get()
+        {
 
-        //    //var items = DbHelper.GetNativeSql();
-        //    //var items = DbHelper.GetJson2();
-        //    //var items = GetSensorsFromDB();
-        //    //return new string[] { "value1", "value2" };
+            //var items = DbHelper.GetNativeSql();
+            //var items = DbHelper.GetJson2();
+            //var items = GetSensorsFromDB();
+            //return new string[] { "value1", "value2" };
 
 
-        //    //db.Database.Log = Console.Write;
+            //db.Database.Log = Console.Write;
 
-        //    var items = db.Alarms
-        //         .Include(x => x.Record.Sensor.Unit)
-        //         .Include(x => x.Record.Sensor.Device.Equipment.Group)
-        //         .Where(x => (bool)x.Record.Sensor.Device.Active)
-        //         ;
+            var items = db.Alarms
+                 .Include(x => x.Record.Sensor.Unit)
+                 .Include(x => x.Record.Sensor.Device.Equipment.Group)
+                 .Where(x => (bool)x.Record.Sensor.Device.Active)
+                 ;
 
-        //    var units = db.Units;
-        //    foreach (var alarm in items)
-        //    {
-        //        foreach (var item in units)
-        //        {
-        //            if (alarm.Record.Sensor.UnitID == item.UnitID)
-        //                alarm.Record.Sensor.Unit = item;
-        //        }
+            var units = db.Units;
+            foreach (var alarm in items)
+            {
+                foreach (var item in units)
+                {
+                    if (alarm.Record.Sensor.UnitID == item.UnitID)
+                        alarm.Record.Sensor.Unit = item;
+                }
 
-        //    }
+            }
 
-        //    foreach (var item in items)
-        //    {
-        //        System.Diagnostics.Debug.Write(item.Record.Sensor);
-        //    }
+            foreach (var item in items)
+            {
+                System.Diagnostics.Debug.Write(item.Record.Sensor);
+            }
 
-        //    return items;
+            return items;
 
-        //}
+        }
 
 
 

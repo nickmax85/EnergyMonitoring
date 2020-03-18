@@ -30,13 +30,47 @@ namespace EnergyMonitoringService
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                InitData();
-
+                //InitData();
+                GenerateTestdata();
                 int oneMinute = 1000 * 60;
 
                 await Task.Delay(oneMinute * 15, stoppingToken);
 
             }
+        }
+
+        private void GenerateTestdata()
+        {
+            using (var context = new EnergyMonitoringContext())
+            {
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    Random r = new Random();
+                    int rInt = r.Next(0, 100); //for ints
+                    int range = 100;
+                    double rDouble = r.NextDouble() * range; //for doubles
+
+
+                    Record record = new Record();
+                    record.EquipmentId = 2;
+                    record.SensorId = 1;
+
+
+                    record.Value = (decimal)Math.Round(rDouble, 1);
+                    record.CreateDate = DateTime.Now;
+
+                    //context.Record.Add(record);
+                    //context.SaveChanges();
+                    log.Info(record.Value);
+
+                }
+
+
+
+            }
+
+
         }
 
         private async void InitData()
