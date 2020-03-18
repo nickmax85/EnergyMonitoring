@@ -126,7 +126,7 @@ function showCardCollapsable(data) {
 
     data.forEach(function (item, i) {
 
-        let col = $('<div class="col-md-5">');
+        let col = $('<div class="col-md-6">');
 
         let card = $('<div class="card card-primary collapsed-card">');
         col.append(card);
@@ -152,7 +152,7 @@ function showCardCollapsable(data) {
 
 
         // Buttons         
-        let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Charts</a>').click(function () {
+        let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Auswertung</a>').click(function () {
 
             localStorage.setItem('Equipment', JSON.stringify(item));
             window.location.href = "charts.html";

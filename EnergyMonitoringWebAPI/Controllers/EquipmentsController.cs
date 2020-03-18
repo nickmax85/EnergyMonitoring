@@ -41,9 +41,12 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/equipments/count")]
         public int GetEquipmentsCount()
         {
-            int count = db.Equipments.Count();
+            //int count = db.Equipments.Count();
 
-            return count;
+            var sql = "SELECT COUNT(*) FROM Equipment";
+            var item = db.Database.SqlQuery<int>(sql).Single();
+
+            return item;
         }
 
         //GET: api/groups/2/equipments

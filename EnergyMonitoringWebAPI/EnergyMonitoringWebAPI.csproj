@@ -1782,6 +1782,7 @@
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\SensorsController.cs" />
+    <Compile Include="Controllers\Sensors1Controller.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Device.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
@@ -1802,6 +1803,9 @@
       <DependentUpon>EnergyMonitoring.edmx</DependentUpon>
     </Compile>
     <Compile Include="Equipment.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetSensors_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">

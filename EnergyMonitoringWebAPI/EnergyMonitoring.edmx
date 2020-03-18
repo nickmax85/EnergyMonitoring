@@ -216,6 +216,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetSensors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EnergyMonitoringModelStoreContainer">
           <EntitySet Name="Alarm" EntityType="Self.Alarm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
@@ -544,7 +545,18 @@
             <End Role="Unit" EntitySet="Units" />
             <End Role="Sensor" EntitySet="Sensors" />
           </AssociationSet>
+          <FunctionImport Name="GetSensors" ReturnType="Collection(EnergyMonitoringModel.GetSensors_Result)" />
         </EntityContainer>
+        <ComplexType Name="GetSensors_Result">
+          <Property Type="Int32" Name="SensorID" Nullable="false" />
+          <Property Type="Decimal" Name="LowerLimit" Nullable="true" Precision="18" Scale="1" />
+          <Property Type="Decimal" Name="UpperLimit" Nullable="true" Precision="18" Scale="1" />
+          <Property Type="String" Name="Unit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Device" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="Equipment" Nullable="true" MaxLength="61" />
+          <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -664,6 +676,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetSensors" FunctionName="EnergyMonitoringModel.Store.GetSensors">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.GetSensors_Result">
+                <ScalarProperty Name="SensorID" ColumnName="SensorID" />
+                <ScalarProperty Name="LowerLimit" ColumnName="LowerLimit" />
+                <ScalarProperty Name="UpperLimit" ColumnName="UpperLimit" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Sign" ColumnName="Sign" />
+                <ScalarProperty Name="Device" ColumnName="Device" />
+                <ScalarProperty Name="Equipment" ColumnName="Equipment" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -679,7 +705,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
