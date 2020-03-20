@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="plugins/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <link href="css/custom.css" rel="stylesheet" />
+</head>
+<body class="container">
+
+    <h1>Sensor</h1>
+    <button class="btn btn-warning" id="saveButton">
+        <i class="fas fa-save"></i>
+        Speichern
+    </button>
+
+    <button class="btn btn-info" id="refreshButton">
+        <i class="fas fa-sync"></i>
+        Aktualisieren
+    </button>
+
+    <p></p>
+
+    <div class="form-group">
+        <label for="lowerLimit">Untergrenze</label>
+        <input id="lowerLimit" type="number" name="name" value="" />
+        <label id="sign1"></label>
+    </div>
+    <div class="form-group">
+        <label for="upperLimit">Obergrenze</label>
+        <input id="upperLimit" type="number" name="name" value="" />
+        <label id="sign2"></label>
+    </div>
+    <div class="form-group">
+        <label for="selectUnit">Einheit</label>
+        <select class="form-control" id="selectUnit" onchange="">
+            <option>auswählen</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="selectDevice">Device</label>
+        <select class="form-control" id="selectDevice" onchange="">
+            <option>auswählen</option>
+        </select>
+    </div>
+
+    <script>
+
+        let item;
+        let sensor;
+
+        $(document).ready(function () {
+
+            let item = JSON.parse(localStorage.getItem('sensor'));
+
+            getSensor(item.SensorID);
+
+
+            $('#refreshButton').click(function () {
+
+                getSensor(item.SensorID);
+
+            });
+
+            $('#saveButton').click(function () {
+
+                updateSensor();
+            });
+
+        });
+
+
+
+        function getSensor(SensorID) {
+
+
+            let url = '/api/Sensors/' + SensorID;
+
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    $('#lowerLimit').val(data.LowerLimit);
+                    $('#upperLimit').val(data.UpperLimit);
+                    sensor = data;
+
+                    getUnits(data);
+                    getDevices(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function getUnits(data) {
+
+            let url = '/api/units';
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    showUnits(data);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function getDevices() {
+
+            let url = '/api/devices';
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    showDevices(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+
+
+        function showDevices(data) {
+
+            let container = $('#selectDevice');
+
+            if (!Array.isArray(data))
+                return;
+
+            data.forEach(function (item, i) {
+
+                $('#selectDevice').append($('<option></option>').val(item.DeviceID).html(item.Name + ' -  ' + item.IP));
+
+            });
+             $('#selectDevice').val(sensor.DeviceID);
+        }
+
+
+
+        function showUnits(data) {
+
+            let container = $('#selectUnit');
+
+            if (!Array.isArray(data))
+                return;
+
+            data.forEach(function (item, i) {
+
+                $('#selectUnit').append($('<option></option>').val(item.UnitID).html(item.Name + ' - ' + item.Sign));
+
+            });
+
+            $('#selectUnit').val(sensor.UnitID);
+
+        }
+
+
+
+        function updateSensor() {
+
+            let item = JSON.parse(localStorage.getItem('sensor'));
+            let url = '/api/sensors/' + item.SensorID;
+
+            Sensor = new Object();
+            Sensor.LowerLimit = $('#lowerLimit').val();
+            Sensor.UpperLimit = $('#upperLimit').val();
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(Sensor),
+                success: function (product) {
+
+                },
+                error: function (request, message, error) {
+
+                }
+            });
+        }
+
+    </script>
+
+</body>
+</html>

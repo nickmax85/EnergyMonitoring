@@ -186,6 +186,7 @@
     <Content Include="app\js\chartjs\2.9.3\utils.js" />
     <Content Include="app\js\devices.js" />
     <Content Include="app\js\equipments.js" />
+    <Content Include="app\js\sensors.js" />
     <Content Include="app\js\groups.js" />
     <Content Include="app\js\highcharts\8.0\highcharts-more.js" />
     <Content Include="app\js\highcharts\8.0\highcharts.js" />
@@ -1749,6 +1750,7 @@
     <Content Include="app\plugins\toastr\toastr.min.css" />
     <Content Include="app\plugins\toastr\toastr.min.js" />
     <Content Include="app\starter.html" />
+    <Content Include="app\sensor.html" />
     <Content Include="app\tables.html" />
     <Content Include="EnergyMonitoring.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

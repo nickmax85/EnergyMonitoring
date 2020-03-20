@@ -28,9 +28,18 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
         // GET: api/Sensors/5
-        public string Get(int id)
+        public Sensor Get(int id)
         {
-            return "value";
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                //db.Configuration.ProxyCreationEnabled = false;
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var item = db.Sensors.Find(id);
+
+
+                return item;
+            }
         }
 
         //GET: api/sensors/count
@@ -76,11 +85,37 @@ namespace EnergyMonitoringWebAPI.Controllers
         // POST: api/Sensors
         public void Post([FromBody]string value)
         {
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+
+            }
+
+
         }
 
         // PUT: api/Sensors/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut()]
+        public IHttpActionResult Put(int id, Sensor value)
         {
+            IHttpActionResult ret = null;
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                var sensor = db.Sensors.Find(id);
+
+                sensor.LowerLimit = value.LowerLimit;
+                sensor.UpperLimit = value.UpperLimit;
+
+                db.SaveChanges();
+
+                ret = Ok(sensor);
+
+
+            }
+
+
+            return ret;
         }
 
         // DELETE: api/Sensors/5
