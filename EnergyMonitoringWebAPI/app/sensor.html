@@ -177,6 +177,8 @@
             Sensor = new Object();
             Sensor.LowerLimit = $('#lowerLimit').val();
             Sensor.UpperLimit = $('#upperLimit').val();
+            Sensor.UnitID = $('#selectUnit').val();
+            Sensor.DeviceID = $('#selectDevice').val();
 
             $.ajax({
                 url: url,
@@ -187,7 +189,7 @@
 
                 },
                 error: function (request, message, error) {
-
+                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 }
             });
         }

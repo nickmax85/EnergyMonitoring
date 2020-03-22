@@ -106,6 +106,8 @@ namespace EnergyMonitoringWebAPI.Controllers
 
                 sensor.LowerLimit = value.LowerLimit;
                 sensor.UpperLimit = value.UpperLimit;
+                sensor.DeviceID = value.DeviceID;
+                sensor.UnitID = value.UnitID;
 
                 db.SaveChanges();
 
