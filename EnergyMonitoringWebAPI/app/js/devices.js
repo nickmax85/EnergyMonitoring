@@ -16,6 +16,79 @@ function getDevices(equipmentId) {
 
 }
 
+
+
+
+function showDevicesDiag(data) {
+
+    let container = $('#devices');
+    container.empty();
+
+    if (!Array.isArray(data))
+        return;
+
+    data.forEach(function (item, i) {
+
+        let col = $('<div class="col-md-2">');
+
+        let card = $('<div class="card card-outline card-primary">');
+        col.append(card);
+
+        let header = $('<div class="card-header">');
+        header.append($('<h3 class="card-title">Expandable</h3>').html(item.Name + '<br/>' + item.IP));
+
+        let tools = ($('<div class="card-tools">'));
+        tools.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>'));
+        header.append(tools);
+
+        let body = $('<div class="card-body" style="display: block;"></div >');
+
+        let img = $('<img src="img/webio.png"/>');
+        body.append(img);
+        let label = $('<label id="' + item.DeviceID + '"></label>');
+        body.append(label);
+
+        img.css("padding", "10px");
+        img.css("border", "1px solid #021a40");
+        img.css("background-color", "lightgreen");
+
+        setInterval(function () {
+
+            let date = new Date();
+
+            console.log(label);
+
+            label.html(date);
+
+            //url = 'http://' + item.IP + '/rest/json';
+
+            //$.getJSON(url)
+            //    .done(function (data) {
+
+            //    })
+            //    .fail(function (error) {
+
+            //    });
+
+
+        }, 2000);
+
+       
+        let row = $('<div class="row">');
+
+        body.append(row);
+
+        card.append(header, body);
+        container.append(col);
+
+    });
+
+}
+
+
+
+
+
 function showDevices(data) {
 
     let container = $('#devices');
@@ -60,7 +133,6 @@ function showDevices(data) {
     });
 
 }
-
 var solidGaugeOptions = {
     chart: {
         type: 'solidgauge'
@@ -114,9 +186,6 @@ var solidGaugeOptions = {
         }
     }
 };
-
-
-
 var gaugeOptions = {
 
     chart: {
@@ -275,7 +344,6 @@ function addGauge1(container, item) {
 
 
 }
-
 function addGauge2(container, item) {
 
     //The flow gauge
@@ -340,8 +408,6 @@ function addGauge2(container, item) {
 
     }, 2000);
 }
-
-
 function addGauge3(container, item) {
 
     var gauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
@@ -399,5 +465,7 @@ function addGauge3(container, item) {
 
 
 }
+
+
 
 

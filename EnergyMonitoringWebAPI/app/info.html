@@ -27,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
-
+    <script src="js/devices.js"></script>
 
 </head>
 <body class="hold-transition sidebar-mini">
@@ -62,7 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-    with font-awesome or any other icon font library -->
+                        with font-awesome or any other icon font library -->
                         <!-- Dashboard -->
                         <li class="nav-item">
                             <a href="/app/dashboard.html" class="nav-link">
@@ -166,43 +166,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="card-body" style="display: block;">
                                     <div class="form-group">
                                         <div class="row">
-                                            <!--<div class="col-md-4 col-sm-6 col-12">
-                                                <div class="info-box">
-                                                    <span class="info-box-icon bg-info"><i class="nav-icon fas fa-wrench"></i></span>
-
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text">Maschinen</span>
-                                                        <span id="machinecount" class="info-box-number"></span>
-                                                    </div>
-                                                     /.info-box-content
-                                                </div>
-                                                 /.info-box
-                                            </div>
-                                            <div class="col-md-4 col-sm-6 col-12">
-                                                <div class="info-box">
-                                                    <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text">Sensoren</span>
-                                                        <span id="sensorcount" class="info-box-number"></span>
-                                                    </div>
-                                                     /.info-box-content
-                                                </div>
-                                                 /.info-box
-                                            </div>
-                                            <div class="col-md-4 col-sm-6 col-12">
-                                                <div class="info-box">
-                                                    <span class="info-box-icon bg-success"><i class="far fa-envelope"></i></span>
-
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text">Messwerte</span>
-                                                        <span id="recordcount" class="info-box-number"></span>
-                                                    </div>
-                                                     /.info-box-content
-                                                </div>
-                                                 /.info-box
-                                            </div>-->
-
                                             <div class="col-lg-4 col-6">
                                                 <!-- small card -->
                                                 <div class="small-box bg-info">
@@ -257,15 +220,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                     <!-- /.row -->
 
-                   
 
-                    <!-- Background -->
-                    <!--<div class="cont" id="background">
-                        <img class="img-fluid image" src="app/img/industry50.jpg" />
-                        <div class="middle">
-                            <img class="img-fluid" src="app/img/industry40.png" />
+                    <div class="row">
+                        <!-- Info  -->
+                        <div id="info" class="col-md-12">
+                            <div class="card card-gray">
+                                <div class="card-header">
+                                    <h3 class="card-title">Devices</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" style="display: block;">
+
+                                    <!-- Devices -->
+                                    <div class="row" id="devices">
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>-->
+                        <!-- /.card-body -->
+                    </div>
+
+                    <!-- /.row -->
+
+
 
                 </div><!-- /.container-fluid -->
             </div>
@@ -303,8 +288,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
 
-        getGroups();
-        showInfo();
+
+
+        $(document).ready(function () {
+            getGroups();
+            getDevices();
+
+            showInfo();
+        });
+
+
+        function getDevices() {
+
+            let url = '/api/devices';
+
+            $.getJSON(url)
+                .done(function (data) {
+
+                    showDevicesDiag(data);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
 
         function showInfo(data) {
 

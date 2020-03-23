@@ -112,6 +112,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\img\webio.png" />
     <Content Include="app\info.html" />
     <Content Include="app\alarms.html" />
     <Content Include="app\img\house40.png" />
@@ -1749,6 +1750,7 @@
     <Content Include="app\plugins\toastr\toastr.css" />
     <Content Include="app\plugins\toastr\toastr.min.css" />
     <Content Include="app\plugins\toastr\toastr.min.js" />
+    <Content Include="app\devices.html" />
     <Content Include="app\starter.html" />
     <Content Include="app\sensor.html" />
     <Content Include="app\tables.html" />

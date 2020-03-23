@@ -109,6 +109,8 @@ namespace EnergyMonitoringWebAPI.Controllers
                 sensor.DeviceID = value.DeviceID;
                 sensor.UnitID = value.UnitID;
 
+                sensor.UpdateDate = DateTime.Now;
+
                 db.SaveChanges();
 
                 ret = Ok(sensor);
