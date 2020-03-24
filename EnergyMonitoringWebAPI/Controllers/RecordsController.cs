@@ -52,15 +52,41 @@ namespace EnergyMonitoringWebAPI.Controllers
         //GET: api/records/count
         [Route("api/records/count")]
         public int GetRecordsCount()
-        {
-           
-
+        {          
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
                 int count = db.Records.Count();
 
                 var sql = "SELECT COUNT(*) FROM Record";
                 var item = db.Database.SqlQuery<int>(sql).Single();
+
+                return item;
+
+            }
+        }
+
+        //GET: api/records/sum/1
+        [Route("api/records/sum/{days}")]
+        public IEnumerable<object> GetLastDaysSumRecords(int days)
+        {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+              var item =  db.spGetLastDaysSumRecords(days).ToList();
+
+                return item;
+
+            }
+        }
+
+        //GET: api/records/avg/1
+        [Route("api/records/avg/{days}")]
+        public IEnumerable<object> GetLastDaysAvgRecords(int days)
+        {
+
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                var item = db.spGetLastDaysAvgRecords(days).ToList();
 
                 return item;
 

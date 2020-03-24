@@ -112,6 +112,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\css\animate.css" />
+    <Content Include="app\css\style.css" />
+    <Content Include="app\img\488.gif" />
+    <Content Include="app\img\dna.gif" />
     <Content Include="app\img\webio.png" />
     <Content Include="app\info.html" />
     <Content Include="app\alarms.html" />
@@ -185,6 +189,7 @@
     <Content Include="app\js\chartjs\2.9.3\Chart.min.css" />
     <Content Include="app\js\chartjs\2.9.3\Chart.min.js" />
     <Content Include="app\js\chartjs\2.9.3\utils.js" />
+    <Content Include="app\js\records.js" />
     <Content Include="app\js\devices.js" />
     <Content Include="app\js\equipments.js" />
     <Content Include="app\js\sensors.js" />
@@ -192,6 +197,7 @@
     <Content Include="app\js\highcharts\8.0\highcharts-more.js" />
     <Content Include="app\js\highcharts\8.0\highcharts.js" />
     <Content Include="app\js\jquery-3.4.1.min.js" />
+    <Content Include="app\navbar.html" />
     <Content Include="app\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="app\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
     <Content Include="app\plugins\bootstrap-colorpicker\js\bootstrap-colorpicker.js" />
@@ -1751,6 +1757,7 @@
     <Content Include="app\plugins\toastr\toastr.min.css" />
     <Content Include="app\plugins\toastr\toastr.min.js" />
     <Content Include="app\devices.html" />
+    <Content Include="app\preload.html" />
     <Content Include="app\starter.html" />
     <Content Include="app\sensor.html" />
     <Content Include="app\tables.html" />
@@ -1808,9 +1815,6 @@
     <Compile Include="Equipment.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="GetSensors_Result.cs">
-      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1825,6 +1829,15 @@
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="Sensor.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetLastDaysAvgRecords_Result.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetLastDaysSumRecords_Result.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetSensors_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="Unit.cs">

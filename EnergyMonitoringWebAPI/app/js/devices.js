@@ -1,6 +1,4 @@
-﻿
-
-function getDevices(equipmentId) {
+﻿function getDevices(equipmentId) {
 
     let url = '/api/equipments/' + equipmentId + '/devices';
 
@@ -15,9 +13,6 @@ function getDevices(equipmentId) {
         });
 
 }
-
-
-
 
 function showDevicesDiag(data) {
 
@@ -43,45 +38,69 @@ function showDevicesDiag(data) {
 
         let body = $('<div class="card-body" style="display: block;"></div >');
 
-        let img = $('<img src="img/webio.png"/>');
+        let img = $('<img src="http://localhost:56447/app/img/webio.png"/>');
         body.append(img);
-        let label = $('<label id="' + item.DeviceID + '"></label>');
+        let label = $('<label class="rounded" id="' + item.DeviceID + '"></label>');
         body.append(label);
 
-        img.css("padding", "10px");
-        img.css("border", "1px solid #021a40");
-        img.css("background-color", "lightgreen");
+        //let row = $('<div class="row">');
+        //body.append(row);
 
-        setInterval(function () {
+        changeDeviceState(img, label);
 
-            let date = new Date();
-
-            console.log(label);
-
-            label.html(date);
-
-            //url = 'http://' + item.IP + '/rest/json';
-
-            //$.getJSON(url)
-            //    .done(function (data) {
-
-            //    })
-            //    .fail(function (error) {
-
-            //    });
-
-
-        }, 2000);
-
-       
-        let row = $('<div class="row">');
-
-        body.append(row);
 
         card.append(header, body);
         container.append(col);
 
     });
+
+}
+
+function changeDeviceState(img, label) {
+
+    let state;
+
+    data();
+
+    function data() {
+
+        img.css("padding", "5px");
+        img.css("border", "1px transparent");
+        img.css("border-radius", "5px");
+
+        if (state == false) {
+            img.css("background-color", "lightgreen");
+            state = true;
+        }
+        else {
+          
+            img.css("background-color", "coral");
+            state = false;
+        }
+
+
+        let date = new Date();
+        console.log(label);
+        label.html(date);
+
+    }
+
+
+    setInterval(function () {
+        data();
+
+        //url = 'http://' + item.IP + '/rest/json';
+
+        //$.getJSON(url)
+        //    .done(function (data) {
+        //    })
+        //    .fail(function (error) {
+        //    });
+
+    }, 2000);
+
+
+
 
 }
 

@@ -9,8 +9,9 @@
           <Key>
             <PropertyRef Name="AlarmID" />
           </Key>
-          <Property Name="AlarmID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AlarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RecordID" Type="bigint" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
           <Property Name="CreateDate" Type="date" />
         </EntityType>
         <EntityType Name="Config">
@@ -216,7 +217,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="GetSensors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetLastDaysAvgRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="days" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spGetLastDaysSumRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="days" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spGetSensors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EnergyMonitoringModelStoreContainer">
           <EntitySet Name="Alarm" EntityType="Self.Alarm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
@@ -277,6 +284,7 @@
           <Property Name="RecordID" Type="Int64" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Record" Relationship="Self.FK_Alarm_Record" FromRole="Alarm" ToRole="Record" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
@@ -545,9 +553,23 @@
             <End Role="Unit" EntitySet="Units" />
             <End Role="Sensor" EntitySet="Sensors" />
           </AssociationSet>
-          <FunctionImport Name="GetSensors" ReturnType="Collection(EnergyMonitoringModel.GetSensors_Result)" />
+          <FunctionImport Name="spGetLastDaysAvgRecords" ReturnType="Collection(EnergyMonitoringModel.spGetLastDaysAvgRecords_Result)">
+            <Parameter Name="days" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetLastDaysSumRecords" ReturnType="Collection(EnergyMonitoringModel.spGetLastDaysSumRecords_Result)">
+            <Parameter Name="days" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetSensors" ReturnType="Collection(EnergyMonitoringModel.spGetSensors_Result)" />
         </EntityContainer>
-        <ComplexType Name="GetSensors_Result">
+        <ComplexType Name="spGetLastDaysAvgRecords_Result">
+          <Property Type="Decimal" Name="average" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Int32" Name="unitId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spGetLastDaysSumRecords_Result">
+          <Property Type="Decimal" Name="sum" Nullable="true" Precision="38" Scale="1" />
+          <Property Type="Int32" Name="unitId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spGetSensors_Result">
           <Property Type="Int32" Name="SensorID" Nullable="false" />
           <Property Type="Decimal" Name="LowerLimit" Nullable="true" Precision="18" Scale="1" />
           <Property Type="Decimal" Name="UpperLimit" Nullable="true" Precision="18" Scale="1" />
@@ -566,6 +588,7 @@
           <EntitySetMapping Name="Alarms">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Alarm">
               <MappingFragment StoreEntitySet="Alarm">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="AlarmID" ColumnName="AlarmID" />
                 <ScalarProperty Name="RecordID" ColumnName="RecordID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -676,9 +699,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetSensors" FunctionName="EnergyMonitoringModel.Store.GetSensors">
+          <FunctionImportMapping FunctionImportName="spGetLastDaysAvgRecords" FunctionName="EnergyMonitoringModel.Store.spGetLastDaysAvgRecords">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.GetSensors_Result">
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetLastDaysAvgRecords_Result">
+                <ScalarProperty Name="average" ColumnName="average" />
+                <ScalarProperty Name="unitId" ColumnName="unitId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetLastDaysSumRecords" FunctionName="EnergyMonitoringModel.Store.spGetLastDaysSumRecords">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetLastDaysSumRecords_Result">
+                <ScalarProperty Name="sum" ColumnName="sum" />
+                <ScalarProperty Name="unitId" ColumnName="unitId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetSensors" FunctionName="EnergyMonitoringModel.Store.spGetSensors">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetSensors_Result">
                 <ScalarProperty Name="SensorID" ColumnName="SensorID" />
                 <ScalarProperty Name="LowerLimit" ColumnName="LowerLimit" />
                 <ScalarProperty Name="UpperLimit" ColumnName="UpperLimit" />

@@ -20,8 +20,8 @@ namespace EnergyMonitoringWebAPI
         public EnergyMonitoringContext()
             : base("name=EnergyMonitoringContext")
         {
-            //this.Configuration.ProxyCreationEnabled = false;
             this.Configuration.LazyLoadingEnabled = false;
+
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -40,9 +40,27 @@ namespace EnergyMonitoringWebAPI
         public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<User> Users { get; set; }
     
-        public virtual ObjectResult<GetSensors_Result> GetSensors()
+        public virtual ObjectResult<spGetLastDaysAvgRecords_Result> spGetLastDaysAvgRecords(Nullable<int> days)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSensors_Result>("GetSensors");
+            var daysParameter = days.HasValue ?
+                new ObjectParameter("days", days) :
+                new ObjectParameter("days", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLastDaysAvgRecords_Result>("spGetLastDaysAvgRecords", daysParameter);
+        }
+    
+        public virtual ObjectResult<spGetLastDaysSumRecords_Result> spGetLastDaysSumRecords(Nullable<int> days)
+        {
+            var daysParameter = days.HasValue ?
+                new ObjectParameter("days", days) :
+                new ObjectParameter("days", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLastDaysSumRecords_Result>("spGetLastDaysSumRecords", daysParameter);
+        }
+    
+        public virtual ObjectResult<spGetSensors_Result> spGetSensors()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetSensors_Result>("spGetSensors");
         }
     }
 }

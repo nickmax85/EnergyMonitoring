@@ -62,7 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-    with font-awesome or any other icon font library -->
+                        with font-awesome or any other icon font library -->
                         <!-- Dashboard -->
                         <li class="nav-item">
                             <a href="dashboard.html" class="nav-link active">
@@ -172,20 +172,168 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Equipments -->
+                    <div class="row" id="equipmentsRow">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Equipments</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" style="display: block;">
+                                    <div id="equipments" class="form-group">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
 
                     </div>
 
+                    <!-- Info -->
+                    <div class="row">
+                        <!-- Info  -->
+                        <div id="info" class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Gesamtübersicht</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
 
-                    <!-- Equipments -->
-                    <div class="row" id="equipments"></div>
-
-                    <!-- Background -->
-                    <!--<div class="cont" id="background">
-                        <img class="img-fluid image" src="app/img/industry50.jpg" />
-                        <div class="middle">
-                            <img class="img-fluid" src="app/img/industry40.png" />
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" style="display: block;">
+                                    <input id="btnDays" type="number" value="1" style="width:50px;" />
+                                    <label for="btnDays">Tage</label>
+                                    <button class="btn-primary" onclick="showRecords()">anzeigen</button>
+                                    <br />
+                                    <br />
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-6">
+                                                <!-- small card -->
+                                                <div class="small-box bg-gradient-primary">
+                                                    <div class="inner">
+                                                        <h3 id="pressureAvg">0 l/min</h3>
+                                                        <p>Druck</p>
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="fas fa-circle"></i>
+                                                    </div>
+                                                    <!--<a href="#" class="small-box-footer">
+                                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                                    </a>-->
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-6">
+                                                <!-- small card -->
+                                                <div class="small-box bg-gradient-primary">
+                                                    <div class="inner">
+                                                        <h3 id="flowAvg">0 bar</h3>
+                                                        <p>Durchfluss</p>
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="fas fa-gas-pump"></i>
+                                                    </div>
+                                                    <!--<a href="#" class="small-box-footer">
+                                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                                    </a>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
-                    </div>-->
+                    </div>
+                    <!-- /.row -->
+                    <!--  -->
+                    <div class="row">
+                        <!-- Info  -->
+                        <div id="info" class="col-md-6">
+                            <div class="card card-gray">
+                                <div class="card-header">
+                                    <h3 class="card-title">Info</h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" style="display: block;">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-6">
+                                                <!-- small card -->
+                                                <div class="small-box bg-info">
+                                                    <div class="inner">
+                                                        <h3 id="machinecount">0</h3>
+                                                        <p>Anlagen</p>
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="fas fa-chart-pie"></i>
+                                                    </div>
+                                                    <!--<a href="#" class="small-box-footer">
+                                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                                    </a>-->
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-6">
+                                                <!-- small card -->
+                                                <div class="small-box bg-gradient-yellow">
+                                                    <div class="inner">
+                                                        <h3 id="sensorcount">0</h3>
+                                                        <p>Sensoren</p>
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="far fa-copy"></i>
+                                                    </div>
+                                                    <!--<a href="#" class="small-box-footer">
+                                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                                    </a>-->
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-6">
+                                                <!-- small card -->
+                                                <div class="small-box bg-success">
+                                                    <div class="inner">
+                                                        <h3 id="recordcount">0</h3>
+                                                        <p>Messwerte</p>
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="far fa-envelope"></i>
+                                                    </div>
+                                                    <!--<a href="#" class="small-box-footer">
+                                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                                    </a>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
 
                 </div><!-- /.container-fluid -->
             </div>
@@ -223,8 +371,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
 
-        getGroups();
-        showInfo();
+
+        $(document).ready(function () {
+
+            getGroups();
+
+            showInfo();
+            showRecords();
+
+        });
 
         function showInfo(data) {
 
@@ -258,6 +413,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 .done(function (data) {
 
                     $('#recordcount').html(data);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function showRecords() {
+
+            days = $('#btnDays').val();
+
+            $('#pressureAvg').html('0 bar');
+            $('#flowAvg').html('0 l/min');
+
+            let url = '/api/records/avg/' + days;
+            $.getJSON(url)
+                .done(function (data) {
+
+                    $('#pressureAvg').html(data[0].average + ' bar');
+                    $('#flowAvg').html(data[1].average + ' l/min');
 
                 })
                 .fail(function (error) {
