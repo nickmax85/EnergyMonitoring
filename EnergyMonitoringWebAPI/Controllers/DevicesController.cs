@@ -18,9 +18,19 @@ namespace EnergyMonitoringWebAPI.Controllers
         private EnergyMonitoringContext db = new EnergyMonitoringContext();
 
         // GET: api/Devices
-        public IQueryable<Device> GetDevice()
+        public IEnumerable<Device> GetDevice()
         {
-            return db.Devices;
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var items = db.Devices
+                    .Include(x => x.Sensors.Select(y => y.Unit))
+                    .Include(x => x.Equipment)
+                   .ToList();
+
+                return items;
+            }
         }
 
         // GET: api/Devices/5

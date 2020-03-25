@@ -28,7 +28,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
 
-
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -85,12 +84,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
 
-                        <!-- Info -->
+                        <!-- diagnosis -->
                         <li class="nav-item">
-                            <a href="info.html" class="nav-link">
-                                <i class="nav-icon fas fa-info"></i>
+                            <a href="diagnosis.html" class="nav-link">
+                                <i class="nav-icon fas fa-diagnoses"></i>
                                 <p>
-                                    Info
+                                    Diagnose
                                     <span class="right badge badge-danger"></span>
                                 </p>
                             </a>
@@ -145,10 +144,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.content-header -->
             <!-- Main content -->
             <div class="content">
+
                 <div class="container-fluid">
 
+
+                    <!-- Groups -->
                     <div class="row">
-                        <!-- Groups -->
                         <div class="col-md-12">
                             <div class="card card-primary">
                                 <div class="card-header">
@@ -168,46 +169,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <select class="form-control" id="selectGroup" onchange="groupSelectionChange(this)">
                                             <option>auswählen</option>
                                         </select>
+                                        <br />
+                                        <div id="equipments" class="row"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Equipments -->
-                    <div class="row" id="equipmentsRow">
-                        <div class="col-md-12">
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <h3 class="card-title">Equipments</h3>
 
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /.card-tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body" style="display: block;">
-                                    <div id="equipments" class="form-group">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-
-                    <!-- Info -->
+                    <!-- Durchschnittswerte -->
                     <div class="row">
-                        <!-- Info  -->
+
+                        <div class="col-md-0"></div>
+
                         <div id="info" class="col-md-6">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Gesamtübersicht</h3>
+                                    <h3 class="card-title">Durchschnittswerte</h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas fa-minus"></i>
@@ -218,11 +197,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body" style="display: block;">
-                                    <input id="btnDays" type="number" value="1" style="width:50px;" />
-                                    <label for="btnDays">Tage</label>
-                                    <button class="btn-primary" onclick="showRecords()">anzeigen</button>
-                                    <br />
-                                    <br />
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-6 col-6">
@@ -236,13 +211,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="fas fa-circle"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
+                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>-->
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-6">
                                                 <!-- small card -->
-                                                <div class="small-box bg-gradient-primary">
+                                                <div class="small-box bg-gradient-info">
                                                     <div class="inner">
                                                         <h3 id="flowAvg">0 bar</h3>
                                                         <p>Durchfluss</p>
@@ -251,11 +226,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="fas fa-gas-pump"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
+                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>-->
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div align="right">
+                                        <label for="btnDays">letzte </label>
+                                        <input id="btnDays" type="number" value="1" style="width:50px;" />
+                                        <label for="btnDays">Tag(e)</label>
+                                        <button class="btn-primary" onclick="showRecords()">anzeigen</button>
                                     </div>
                                 </div>
                             </div>
@@ -264,8 +246,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                     <!-- /.row -->
                     <!--  -->
+                    <!-- Info  -->
                     <div class="row">
-                        <!-- Info  -->
+                        <div class="col-md-0"></div>
                         <div id="info" class="col-md-6">
                             <div class="card card-gray">
                                 <div class="card-header">
@@ -293,8 +276,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="fas fa-chart-pie"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
+                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>-->
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-6">
@@ -308,8 +291,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="far fa-copy"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
+                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>-->
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-6">
@@ -323,8 +306,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="far fa-envelope"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
+                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -334,6 +317,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <!-- /.card-body -->
                         </div>
                     </div>
+
+
+
 
                 </div><!-- /.container-fluid -->
             </div>
@@ -432,8 +418,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $.getJSON(url)
                 .done(function (data) {
 
-                    $('#pressureAvg').html(data[0].average + ' bar');
-                    $('#flowAvg').html(data[1].average + ' l/min');
+                    if (typeof data[0] != 'undefined')
+                        $('#pressureAvg').html(data[0].average + ' bar');
+                    if (typeof data[1] != 'undefined')
+                        $('#flowAvg').html(data[1].average + ' l/min');
 
                 })
                 .fail(function (error) {

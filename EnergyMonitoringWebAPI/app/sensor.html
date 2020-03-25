@@ -170,10 +170,9 @@
 
             let attr = $("#selectUnit option:selected").attr('unit');
 
-            if ($("#selectUnit").prop('selectedIndex') != 0) {
-                $("#sign1").text(JSON.parse(attr).Sign);
-                $("#sign2").text(JSON.parse(attr).Sign);
-            }
+            $("#sign1").text(JSON.parse(attr).Sign);
+            $("#sign2").text(JSON.parse(attr).Sign);
+
 
         }
 
@@ -198,11 +197,11 @@
             let sel = $("#selectUnit option:selected").val();
             let attr = $("#selectUnit option:selected").attr('unit');
 
-            if ($("#selectUnit").prop('selectedIndex') != 0) {
 
-                $("#sign1").text(JSON.parse(attr).Sign);
-                $("#sign2").text(JSON.parse(attr).Sign);
-            }
+
+            $("#sign1").text(JSON.parse(attr).Sign);
+            $("#sign2").text(JSON.parse(attr).Sign);
+
 
         }
 

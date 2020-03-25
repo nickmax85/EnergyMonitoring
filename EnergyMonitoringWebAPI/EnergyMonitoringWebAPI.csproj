@@ -116,8 +116,9 @@
     <Content Include="app\css\style.css" />
     <Content Include="app\img\488.gif" />
     <Content Include="app\img\dna.gif" />
+    <Content Include="app\img\background.gif" />
     <Content Include="app\img\webio.png" />
-    <Content Include="app\info.html" />
+    <Content Include="app\diagnosis.html" />
     <Content Include="app\alarms.html" />
     <Content Include="app\img\house40.png" />
     <Content Include="app\img\industr.jpg" />

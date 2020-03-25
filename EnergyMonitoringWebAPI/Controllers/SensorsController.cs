@@ -48,7 +48,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-
+                db.Configuration.LazyLoadingEnabled = false;
                 //    int count = db.Sensors.Include(x => x.Device)
                 //        .Where(x => (bool)x.Device.Active)
                 //        .Count();

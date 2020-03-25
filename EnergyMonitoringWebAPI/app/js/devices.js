@@ -14,7 +14,7 @@
 
 }
 
-function showDevicesDiag(data) {
+function showDevicesDiagnosis(data) {
 
     let container = $('#devices');
     container.empty();
@@ -24,9 +24,9 @@ function showDevicesDiag(data) {
 
     data.forEach(function (item, i) {
 
-        let col = $('<div class="col-md-2">');
+        let col = $('<div class="col-md-3">');
 
-        let card = $('<div class="card card-outline card-primary">');
+        let card = $('<div class="card card-primary">');
         col.append(card);
 
         let header = $('<div class="card-header">');
@@ -38,16 +38,31 @@ function showDevicesDiag(data) {
 
         let body = $('<div class="card-body" style="display: block;"></div >');
 
+        let row1 = $('<div class="row">');
+
+        let col1 = $('<div class="col-md-4">');
         let img = $('<img src="http://localhost:56447/app/img/webio.png"/>');
-        body.append(img);
-        let label = $('<label class="rounded" id="' + item.DeviceID + '"></label>');
-        body.append(label);
+        col1.append(img);
 
-        //let row = $('<div class="row">');
-        //body.append(row);
+        let col2 = $('<div class="col-md-8">');
+      
+        let labelUnit1 = $('<label>' + item.Sensors[0].Unit.Name + ":&nbsp" +'</label>');
+        let labelSensor1Limit = $('<label>' + item.Sensors[0].LowerLimit + ' - ' + item.Sensors[0].UpperLimit + ' ' + item.Sensors[0].Unit.Sign + '</label><br/>');
+        let labelUnit2 = $('<label>' + item.Sensors[1].Unit.Name + ":&nbsp" + '</label>');
+        let labelSensor2Limit = $('<label>' + item.Sensors[1].LowerLimit + ' - ' + item.Sensors[1].UpperLimit + ' ' + item.Sensors[1].Unit.Sign + '</label><br/>');
+        col2.append(labelUnit1, labelSensor1Limit, labelUnit2, labelSensor2Limit);
 
-        changeDeviceState(img, label);
+        row1.append(col1, col2);
+        body.append(row1);
 
+        let row2 = $('<div class="row">');
+
+        let labelEquipment = $('<label>' + item.Equipment.Number + ' - ' + item.Equipment.Name + '</label>');
+        let labelStatus = $('<label id="' + item.DeviceID + '"></label>');
+        row2.append(labelEquipment, labelStatus);
+        body.append(row2);
+
+        showDeviceState(img, labelStatus);
 
         card.append(header, body);
         container.append(col);
@@ -56,7 +71,7 @@ function showDevicesDiag(data) {
 
 }
 
-function changeDeviceState(img, label) {
+function showDeviceState(img, labelStatus) {
 
     let state;
 
@@ -73,15 +88,14 @@ function changeDeviceState(img, label) {
             state = true;
         }
         else {
-          
+
             img.css("background-color", "coral");
             state = false;
         }
 
-
         let date = new Date();
-        console.log(label);
-        label.html(date);
+
+        labelStatus.html(date);
 
     }
 
@@ -97,15 +111,9 @@ function changeDeviceState(img, label) {
         //    .fail(function (error) {
         //    });
 
-    }, 2000);
-
-
-
+    }, 1000);
 
 }
-
-
-
 
 
 function showDevices(data) {
