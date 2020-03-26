@@ -41,7 +41,7 @@ function showDevicesDiagnosis(data) {
         let row1 = $('<div class="row">');
 
         let col1 = $('<div class="col-md-4">');
-        let img = $('<img src="http://localhost:56447/app/img/webio.png"/>');
+        let img = $('<img src="img/webio.png"/>');
         col1.append(img);
 
         let col2 = $('<div class="col-md-8">');
