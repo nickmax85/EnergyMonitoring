@@ -45,7 +45,7 @@ function showDevicesDiagnosis(data) {
         col1.append(img);
 
         let col2 = $('<div class="col-md-8">');
-             
+
         row1.append(col1);
         body.append(row1);
 
@@ -56,7 +56,7 @@ function showDevicesDiagnosis(data) {
         row2.append(labelEquipment, labelStatus);
         body.append(row2);
 
-        showDeviceState(img, labelStatus);
+        showDeviceState(img, labelStatus, item);
 
         card.append(header, body);
         container.append(col);
@@ -65,7 +65,7 @@ function showDevicesDiagnosis(data) {
 
 }
 
-function showDeviceState(img, labelStatus) {
+function showDeviceState(img, labelStatus, item) {
 
     let state;
 
@@ -77,35 +77,33 @@ function showDeviceState(img, labelStatus) {
         img.css("border", "1px transparent");
         img.css("border-radius", "5px");
 
-        if (state == false) {
-            img.css("background-color", "lightgreen");
-            state = true;
-        }
-        else {
+        url = 'http://' + item.IP + '/rest/json/system';
 
+        $.getJSON(url)
+            .done(function (data) {
+                state = true;
+                //labelStatus.html(data.system.diagarchive[0].msg);          
+                labelStatus.html("Gerät antwortet");
+            })
+            .fail(function (error) {
+                state = false;
+                labelStatus.html("Gerät antwortet nicht");
+            });
+
+        if (state == false)
             img.css("background-color", "coral");
-            state = false;
-        }
-
-        let date = new Date();
-
-        labelStatus.html(date);
+        else
+            img.css("background-color", "lightgreen");
 
     }
 
 
     setInterval(function () {
-        data();
+        //data();
 
-        //url = 'http://' + item.IP + '/rest/json';
 
-        //$.getJSON(url)
-        //    .done(function (data) {
-        //    })
-        //    .fail(function (error) {
-        //    });
 
-    }, 1000);
+    }, 2000);
 
 }
 
