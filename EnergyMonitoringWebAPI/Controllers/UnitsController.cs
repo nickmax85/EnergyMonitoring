@@ -17,22 +17,41 @@ namespace EnergyMonitoringWebAPI.Controllers
         private EnergyMonitoringContext db = new EnergyMonitoringContext();
 
         // GET: api/Units
-        public IQueryable<Unit> GetUnit()
+        public IEnumerable<Unit> GetUnit()
         {
-            return db.Units;
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                return db.Units.ToList();
+
+            }
+
+
         }
 
         // GET: api/Units/5
         [ResponseType(typeof(Unit))]
         public async Task<IHttpActionResult> GetUnit(int id)
         {
-            Unit unit = await db.Units.FindAsync(id);
-            if (unit == null)
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                return NotFound();
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                Unit unit = await db.Units.FindAsync(id);
+                if (unit == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(unit);
+
             }
 
-            return Ok(unit);
         }
 
         // PUT: api/Units/5

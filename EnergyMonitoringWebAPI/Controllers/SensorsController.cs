@@ -74,6 +74,8 @@ namespace EnergyMonitoringWebAPI.Controllers
 
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
+                db.Configuration.LazyLoadingEnabled = false;
+
                 var items = db.Sensors.Where(x => x.DeviceID == DeviceId)
                  .Include(x => x.Unit)
                  .ToList();
@@ -102,6 +104,7 @@ namespace EnergyMonitoringWebAPI.Controllers
             IHttpActionResult ret = null;
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
+                db.Configuration.LazyLoadingEnabled = false;
                 var sensor = db.Sensors.Find(id);
 
                 sensor.LowerLimit = value.LowerLimit;

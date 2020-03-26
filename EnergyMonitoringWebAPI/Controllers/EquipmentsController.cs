@@ -20,20 +20,35 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Equipments
         public IQueryable<Equipment> GetEquipment()
         {
-            return db.Equipments;
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                return db.Equipments;
+
+            }
         }
 
         // GET: api/Equipments/5
         [ResponseType(typeof(Equipment))]
         public async Task<IHttpActionResult> GetEquipment(int id)
         {
-            Equipment equipment = await db.Equipments.FindAsync(id);
-            if (equipment == null)
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                return NotFound();
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                Equipment equipment = await db.Equipments.FindAsync(id);
+                if (equipment == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(equipment);
+
             }
 
-            return Ok(equipment);
         }
 
 
@@ -41,24 +56,44 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/equipments/count")]
         public int GetEquipmentsCount()
         {
-            //int count = db.Equipments.Count();
 
-            var sql = "SELECT COUNT(*) FROM Equipment";
-            var item = db.Database.SqlQuery<int>(sql).Single();
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
 
-            return item;
+                db.Configuration.LazyLoadingEnabled = false;
+
+                //int count = db.Equipments.Count();
+
+                var sql = "SELECT COUNT(*) FROM Equipment";
+                var item = db.Database.SqlQuery<int>(sql).Single();
+
+                return item;
+
+            }
+
+
         }
 
         //GET: api/groups/2/equipments
         [Route("api/groups/{GroupId}/equipments")]
         public IEnumerable<Equipment> GetEquipmentsByGroup(int GroupId)
         {
-            var items = db.Equipments.Where(x => x.GroupID == GroupId)
-                 .Include(x => x.Group)
-                 .Include(x => x.Devices.Select(d => d.Sensors))
-                 .ToList();
 
-            return items;
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var items = db.Equipments.Where(x => x.GroupID == GroupId)
+                     .Include(x => x.Group)
+                     .Include(x => x.Devices.Select(d => d.Sensors))
+                     .ToList();
+
+                return items;
+
+            }
+
         }
 
 

@@ -21,7 +21,7 @@ function postGroup(group) {
 
     $.post(url, group)
         .done(function (data) {
-            showGroups(data);
+            
         })
         .fail(function (error) {
             alert("ERROR: " + error.status + ' ' + error.statusText);

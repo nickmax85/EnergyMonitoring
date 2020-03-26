@@ -190,7 +190,6 @@
     <Content Include="app\js\chartjs\2.9.3\Chart.min.css" />
     <Content Include="app\js\chartjs\2.9.3\Chart.min.js" />
     <Content Include="app\js\chartjs\2.9.3\utils.js" />
-    <Content Include="app\js\records.js" />
     <Content Include="app\js\devices.js" />
     <Content Include="app\js\equipments.js" />
     <Content Include="app\js\sensors.js" />
@@ -1757,7 +1756,6 @@
     <Content Include="app\plugins\toastr\toastr.css" />
     <Content Include="app\plugins\toastr\toastr.min.css" />
     <Content Include="app\plugins\toastr\toastr.min.js" />
-    <Content Include="app\devices.html" />
     <Content Include="app\preload.html" />
     <Content Include="app\starter.html" />
     <Content Include="app\sensor.html" />

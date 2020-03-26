@@ -24,6 +24,7 @@
 .content-wrapper {
     background-image: url('../img/background.gif');
     background-size: cover;
+    background-attachment: fixed;
     /*width: 100%;*/
     /*background-repeat: no-repeat;*/
 }

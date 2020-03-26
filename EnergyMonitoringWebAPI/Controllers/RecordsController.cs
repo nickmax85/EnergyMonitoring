@@ -17,9 +17,19 @@ namespace EnergyMonitoringWebAPI.Controllers
         private EnergyMonitoringContext db = new EnergyMonitoringContext();
 
         // GET: api/Records
-        public IQueryable<Record> GetRecord()
+        public IEnumerable<Record> GetRecord()
         {
-            return db.Records.Take(1000);
+
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                return db.Records.Take(1000).ToList();
+
+            }
+
         }
 
         // GET: api/Records/5
@@ -39,20 +49,26 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/records/{deviceId}/{startDate}/{endDate}")]
         public IEnumerable<Record> GetRecordsByDevice(int deviceId, DateTime startDate, DateTime endDate)
         {
-            var items = db.Records
-                 .Where(x => x.Sensor.DeviceID == deviceId)
-                .Where(x => DbFunctions.TruncateTime(x.CreateDate) >= DbFunctions.TruncateTime(startDate)
-                && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate)).OrderBy(x => x.CreateDate)
-                .ToList();
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
 
-            return items;
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var items = db.Records
+                     .Where(x => x.Sensor.DeviceID == deviceId)
+                    .Where(x => DbFunctions.TruncateTime(x.CreateDate) >= DbFunctions.TruncateTime(startDate)
+                    && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate)).OrderBy(x => x.CreateDate)
+                    .ToList();
+
+                return items;
+            }
 
         }
 
         //GET: api/records/count
         [Route("api/records/count")]
         public int GetRecordsCount()
-        {          
+        {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
                 int count = db.Records.Count();
@@ -71,7 +87,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-              var item =  db.spGetLastDaysSumRecords(days).ToList();
+                var item = db.spGetLastDaysSumRecords(days).ToList();
 
                 return item;
 

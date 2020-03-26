@@ -45,14 +45,8 @@ function showDevicesDiagnosis(data) {
         col1.append(img);
 
         let col2 = $('<div class="col-md-8">');
-      
-        let labelUnit1 = $('<label>' + item.Sensors[0].Unit.Name + ":&nbsp" +'</label>');
-        let labelSensor1Limit = $('<label>' + item.Sensors[0].LowerLimit + ' - ' + item.Sensors[0].UpperLimit + ' ' + item.Sensors[0].Unit.Sign + '</label><br/>');
-        let labelUnit2 = $('<label>' + item.Sensors[1].Unit.Name + ":&nbsp" + '</label>');
-        let labelSensor2Limit = $('<label>' + item.Sensors[1].LowerLimit + ' - ' + item.Sensors[1].UpperLimit + ' ' + item.Sensors[1].Unit.Sign + '</label><br/>');
-        col2.append(labelUnit1, labelSensor1Limit, labelUnit2, labelSensor2Limit);
-
-        row1.append(col1, col2);
+             
+        row1.append(col1);
         body.append(row1);
 
         let row2 = $('<div class="row">');

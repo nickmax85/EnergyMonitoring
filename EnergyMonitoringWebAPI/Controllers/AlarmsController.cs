@@ -17,39 +17,42 @@ namespace EnergyMonitoringWebAPI.Controllers
         // GET: api/Alarms
         public IEnumerable<Alarm> Get()
         {
-
             //var items = DbHelper.GetNativeSql();
             //var items = DbHelper.GetJson2();
             //var items = GetSensorsFromDB();
             //return new string[] { "value1", "value2" };
 
-
             //db.Database.Log = Console.Write;
 
-            var items = db.Alarms
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var items = db.Alarms
                  .Include(x => x.Record.Sensor.Unit)
-                 .Include(x => x.Record.Sensor.Device.Equipment.Group)
-                 .Where(x => (bool)x.Record.Sensor.Device.Active)
-                 ;
+                 .Include(x => x.Record.Equipment.Group)
+                 .ToList();
 
-            var units = db.Units;
-            foreach (var alarm in items)
-            {
-                foreach (var item in units)
-                {
-                    if (alarm.Record.Sensor.UnitID == item.UnitID)
-                        alarm.Record.Sensor.Unit = item;
-                }
+                //.Where(x => (bool)x.Record.Sensor.Device.Active).ToList();
 
+                //var units = db.Units;
+                //foreach (var alarm in items)
+                //{
+                //    foreach (var item in units)
+                //    {
+                //        if (alarm.Record.Sensor.UnitID == item.UnitID)
+                //            alarm.Record.Sensor.Unit = item;
+                //    }
+
+                //}
+
+                //foreach (var item in items)
+                //{
+                //    System.Diagnostics.Debug.Write(item.Record.Sensor);
+                //}
+
+                return items;
             }
-
-            foreach (var item in items)
-            {
-                System.Diagnostics.Debug.Write(item.Record.Sensor);
-            }
-
-            return items;
-
         }
 
 
@@ -129,8 +132,29 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
         // PUT: api/Alarms/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut()]
+        public IHttpActionResult Put(int id, Alarm value)
         {
+            IHttpActionResult ret = null;
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var alarm = db.Alarms.Find(id);
+
+                alarm.Remark = value.Remark;
+                alarm.Confirmed = value.Confirmed;
+                alarm.UpdateDate = DateTime.Now;
+
+                db.SaveChanges();
+
+                ret = Ok(alarm);
+
+
+            }
+
+            return ret;
         }
 
         // DELETE: api/Alarms/5

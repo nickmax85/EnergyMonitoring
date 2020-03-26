@@ -20,8 +20,6 @@ namespace EnergyMonitoringWebAPI
         public EnergyMonitoringContext()
             : base("name=EnergyMonitoringContext")
         {
-            this.Configuration.LazyLoadingEnabled = false;
-
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

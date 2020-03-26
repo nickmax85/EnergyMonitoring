@@ -62,7 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-    with font-awesome or any other icon font library -->
+                        with font-awesome or any other icon font library -->
                         <!-- Dashboard -->
                         <li class="nav-item">
                             <a href="dashboard.html" class="nav-link">
@@ -147,23 +147,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="content">
                 <div class="container-fluid">
 
-
+                    <!-- Alarme -->
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Responsive Hover Table</h3>
+                                    <h3 class="card-title"></h3>
 
                                     <div class="card-tools">
-                                        <div class="input-group input-group-sm" style="width: 150px;">
-                                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="control-label" for="start">Start</label>
+                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control" value="2019-12-01">
+                                            </div>
+                                            <div class="col">
+                                                <label class="control-label" for="end">Ende</label>
+                                                <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-primary btn-block h-100" name="submit" type="submit">Suche</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- /.card-header -->
                                 <div class="card-body table-responsive p-0">
                                     <table id="alarm-table" class="table table-hover text-nowrap">
@@ -174,7 +181,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th>Equipment</th>
                                                 <th>Sensor</th>
                                                 <th>Wert</th>
-                                                <!--<th>Bemerkung</th>-->
+                                                <th>Bemerkung</th>
+                                                <th>Quittiert</th>
+                                                <th>Bearbeiten</th>
                                             </tr>
                                         </thead>
                                         <tbody id="alarm-table-row">
@@ -186,12 +195,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <!-- /.card -->
                         </div>
                     </div>
+                </div>
 
-
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content -->
+                <!-- Modal -->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+                    <div class="modal-dialog  modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Alarm</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="remark">Bemerkung</label><br />
+                                    <input id="remark" type="text" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmed">Quittiert</label><br />
+                                    <input id="confirmed" type="checkbox" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="saveButton" class="btn btn-primary">OK</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
         </div>
+        <!-- /.content -->
         <!-- /.content-wrapper -->
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -224,7 +259,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
 
-        getJQuery();
+        let ddata;
+        let alarm;
+
+        $(document).ready(function () {
+
+
+            getDate();
+            getJQuery();
+
+            $('#saveButton').click(function () {
+
+                save();
+
+            });
+
+
+
+        });
+
+
 
         function getJQuery() {
 
@@ -234,7 +288,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 .done(function (data) {
 
                     showData(data);
-                    console.log(data);
+
+                    ddata = data;
                 })
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
@@ -252,19 +307,87 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             data.forEach(function (item, i) {
 
+                let confirmedIcon;
+
+                if (item.Confirmed)
+                    confirmedIcon = '<span class="badge bg-success">&nbsp&nbspJa&nbsp&nbsp</span>';
+                else
+                    confirmedIcon = '<span class="badge bg-danger">&nbspNein&nbsp</span>';
+
                 let tr = "<tr>" +
-                    "<td>" + item.CreateDate.substring(0,10) + "</td>" +
-                    "<td>" + item.Record.Sensor.Device.Equipment.Group.Name + "</td>" +
-                    "<td>" + item.Record.Sensor.Device.Equipment.Name + "</td>" +
+                    "<td>" + item.CreateDate.substring(0, 10) + ' ' + item.CreateDate.substring(11, 22) + "</td>" +
+                    "<td>" + item.Record.Equipment.Group.Name + "</td>" +
+                    "<td>" + item.Record.Equipment.Name + "</td>" +
                     "<td>" + item.Record.Sensor.Unit.Name + "</td>" +
                     "<td>" + item.Record.Value + " " + item.Record.Sensor.Unit.Sign + "</td>" +
-                    //"<td>" +
-                    //'<button type="button" class="btn"><i class="fas fa-edit"></i></button>' +
-                    //"</td > " +
+                    "<td>" + item.Remark + "</td>" +
+                    "<td>" + confirmedIcon + "</td>" +
+                    "<td>" +
+                    '<button type="button"' + 'id="btn' + item.AlarmID + '"class="btn">' +
+                    '<i class="fas fa-edit"></i></button>' +
+                    "</td > " +
                     "</tr>";
 
                 container.append(tr);
+
+
+                $('#btn' + item.AlarmID).attr('item', item);
+
+                $('#btn' + item.AlarmID).click(function () {
+
+                    $(this).attr('data-toggle', "modal");
+                    $(this).attr('data-target', "#editModal");
+
+                    $('#editModal #remark').val(item.Remark);
+                    $('#editModal #confirmed').prop('checked', item.Confirmed);
+                    alarm = item;
+                });
+
             });
+        }
+
+        function save() {
+
+            data = new Object();
+            data.Remark = $('#editModal #remark').val();
+            data.Confirmed = $('#editModal #confirmed').prop('checked');
+
+            console.log(alarm.AlarmID);
+
+            let url = '/api/alarms/' + alarm.AlarmID;
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (data) {
+
+                    $('#editModal').modal('toggle');
+
+                    getJQuery();
+
+                },
+                error: function (request, message, error) {
+
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                }
+            });
+
+        }
+
+
+        function getDate() {
+            let today = new Date();
+
+            let startXdaysBefore = 6;
+
+            let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + (today.getDate() - startXdaysBefore)).slice(-2);
+            let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+            $('#start').val(start);
+            $('#end').val(end);
+
+
         }
 
 

@@ -18,23 +18,38 @@ namespace EnergyMonitoringWebAPI.Controllers
         private EnergyMonitoringContext db = new EnergyMonitoringContext();
 
         // GET: api/Groups
-        public IQueryable<Group> GetGroup()
+        public IEnumerable<Group> GetGroup()
         {
-           
-            return db.Groups.OrderBy(x => x.Name);
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                return db.Groups.OrderBy(x => x.Name).ToList();
+
+            }
         }
 
         // GET: api/Groups/5
         [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> GetGroup(int id)
         {
-            Group group = await db.Groups.FindAsync(id);
-            if (group == null)
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                return NotFound();
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                Group group = await db.Groups.FindAsync(id);
+                if (group == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(group);
+
             }
 
-            return Ok(group);
         }
 
         // PUT: api/Groups/5

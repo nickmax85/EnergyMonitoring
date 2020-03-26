@@ -11,8 +11,10 @@
           </Key>
           <Property Name="AlarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RecordID" Type="bigint" Nullable="false" />
+          <Property Name="Confirmed" Type="bit" />
           <Property Name="Remark" Type="varchar" MaxLength="100" />
-          <Property Name="CreateDate" Type="date" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
@@ -282,9 +284,11 @@
           </Key>
           <Property Name="AlarmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RecordID" Type="Int64" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="0" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" Nullable="false" />
           <NavigationProperty Name="Record" Relationship="Self.FK_Alarm_Record" FromRole="Alarm" ToRole="Record" />
           <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Confirmed" Type="Boolean" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
@@ -554,10 +558,10 @@
             <End Role="Sensor" EntitySet="Sensors" />
           </AssociationSet>
           <FunctionImport Name="spGetLastDaysAvgRecords" ReturnType="Collection(EnergyMonitoringModel.spGetLastDaysAvgRecords_Result)">
-            <Parameter Name="days" Mode="In" Type="Int32" />
+          <Parameter Name="days" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetLastDaysSumRecords" ReturnType="Collection(EnergyMonitoringModel.spGetLastDaysSumRecords_Result)">
-            <Parameter Name="days" Mode="In" Type="Int32" />
+          <Parameter Name="days" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetSensors" ReturnType="Collection(EnergyMonitoringModel.spGetSensors_Result)" />
         </EntityContainer>
@@ -588,6 +592,8 @@
           <EntitySetMapping Name="Alarms">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Alarm">
               <MappingFragment StoreEntitySet="Alarm">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="AlarmID" ColumnName="AlarmID" />
                 <ScalarProperty Name="RecordID" ColumnName="RecordID" />

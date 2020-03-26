@@ -25,7 +25,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 db.Configuration.LazyLoadingEnabled = false;
 
                 var items = db.Devices
-                    .Include(x => x.Sensors.Select(y => y.Unit))
+                    //.Include(x => x.Sensors.Select(y => y.Unit))
                     .Include(x => x.Equipment)
                    .ToList();
 
