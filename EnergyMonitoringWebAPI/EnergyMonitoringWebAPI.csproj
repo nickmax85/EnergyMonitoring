@@ -114,14 +114,11 @@
   <ItemGroup>
     <Content Include="app\css\animate.css" />
     <Content Include="app\css\style.css" />
-    <Content Include="app\img\488.gif" />
     <Content Include="app\img\dna.gif" />
     <Content Include="app\img\background.gif" />
     <Content Include="app\img\webio.png" />
     <Content Include="app\diagnosis.html" />
     <Content Include="app\alarms.html" />
-    <Content Include="app\img\house40.png" />
-    <Content Include="app\img\industr.jpg" />
     <Content Include="app\css\bootstrap.min.css" />
     <Content Include="app\css\custom.css" />
     <Content Include="app\dist\css\adminlte.css" />
@@ -178,10 +175,9 @@
     <Content Include="app\dist\js\pages\dashboard3.js" />
     <Content Include="app\favicon.ico" />
     <Content Include="app\img\favicon.ico" />
-    <Content Include="app\img\industry40.png" />
-    <Content Include="app\img\industry50.jpg" />
     <Content Include="app\img\velocity.png" />
     <Content Include="app\charts.html" />
+    <Content Include="app\img\wheel.gif" />
     <Content Include="app\js\bootstrap.min.js" />
     <Content Include="app\js\chartjs\2.9.3\Chart.bundle.js" />
     <Content Include="app\js\chartjs\2.9.3\Chart.bundle.min.js" />
