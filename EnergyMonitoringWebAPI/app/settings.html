@@ -22,11 +22,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link href="css/custom.css" rel="stylesheet" />
 
-    <script src="js/highcharts/8.0/highcharts.js"></script>
-    <script src="js/highcharts/8.0/highcharts-more.js"></script>
-
-    <script src="js/devices.js"></script>
-
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -85,7 +80,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                         <!-- diagnosis -->
                         <li class="nav-item">
-                            <a href="diagnosis.html" class="nav-link active">
+                            <a href="diagnosis.html" class="nav-link">
                                 <i class="nav-icon fas fa-diagnoses"></i>
                                 <p>
                                     Diagnose
@@ -113,10 +108,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </li>
 
                             </ul>
-                            <!-- Settings -->
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="settings.html" class="nav-link">
+                                    <a href="settings.html" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Einstellungen</p>
                                     </a>
@@ -139,12 +133,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Diagnose</h1>
+                            <h1 class="m-0 text-dark">Einstellungen</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
-                                <li class="breadcrumb-item active">Diagnose</li>
+                                <li class="breadcrumb-item active">Einstellungen</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -156,11 +150,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
 
                     <div class="row">
-                        <!-- Info  -->
-                        <div id="info" class="col-md-12">
-                            <div class="card card-gray">
+                        <div class="col-md-4">
+                            <div class="card card-warning">
                                 <div class="card-header">
-                                    <h3 class="card-title">Devices</h3>
+                                    <h3 class="card-title">Einstellungen</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -170,14 +163,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="card-body" style="display: block;">
-
-                                    <!-- Devices -->
-                                    <div class="row" id="devices">
-
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <h3>Datenaufzeichnung</h3>
+                                        <label for="scheduleTime">Speicherintervall</label><br>
+                                        <input type="number" id="scheduleTime" style="width: 50px; text-align:right" />
+                                        <label style="font-weight: normal">Minuten</label>
                                     </div>
+                                    <div class="form-group">
+                                        <h3>Alarme</h3>
+                                        <label for="auditDay">Tag der Prüfung</label><br>
+                                        <select>
+                                            <option value="">Auswahl</option>
+                                            <option value="monday">Montag</option>
+                                            <option value="tuesday">Dienstag</option>
+                                            <option value="wednesday">Mittwoch</option>
+                                            <option value="thursday">Donnerstag</option>
+                                            <option value="friday">Freitag</option>
+                                            <option value="saturday">Samstag</option>
+                                            <option value="sunday">Sonntag</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Uhrzeit</label><br />
+                                        <label for="auditStartTime" style="font-weight:normal">Start</label>
+                                        <input type="time" id="auditStartTime" />
+                                        <label>&nbsp;</label>
+                                        <label for="auditEndTime" style="font-weight:normal">Ende</label>
+                                        <input type="time" id="auditEndTime" />
+                                    </div>
+
+                                    <div class="form-group float-right">
+                                        <button type="submit" class="btn bg-gradient-warning btn-flat" id="saveButton">
+                                            <i class="fas fa-save"></i>
+                                            Speichern
+                                        </button>
+                                    </div>
+
                                 </div>
+                                <!-- /.card-body -->
                             </div>
+                            <!-- /.card -->
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -229,19 +255,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
 
 
-        function getDevices() {
+        function getSettings() {
 
-            let url = '/api/devices';
+            let url = '/api/settings';
 
             $.getJSON(url)
                 .done(function (data) {
 
-                    showDevicesDiagnosis(data);
+                    showData(data);
 
                 })
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
+
+        }
+
+        function showData(data) {
+
+
+
 
         }
 

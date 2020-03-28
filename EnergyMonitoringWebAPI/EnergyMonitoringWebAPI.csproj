@@ -114,6 +114,7 @@
   <ItemGroup>
     <Content Include="app\css\animate.css" />
     <Content Include="app\css\style.css" />
+    <Content Include="app\settings.html" />
     <Content Include="app\img\dna.gif" />
     <Content Include="app\img\background.gif" />
     <Content Include="app\img\webio.png" />
@@ -1783,6 +1784,7 @@
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AlarmsController.cs" />
+    <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\DevicesController.cs" />
     <Compile Include="Controllers\EquipmentsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
