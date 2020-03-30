@@ -10,7 +10,7 @@ namespace EnergyMonitoringWebAPI.Controllers
     public class ConfigsController : ApiController
     {
         // GET: api/Configs
-        public IEnumerable<Config> Get()
+        public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
