@@ -21,9 +21,10 @@
             <PropertyRef Name="ConfigID" />
           </Key>
           <Property Name="ConfigID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AuditDay" Type="int" />
-          <Property Name="AuditTime" Type="datetime" />
-          <Property Name="CostPerUnit" Type="decimal" Precision="6" Scale="1" />
+          <Property Name="RecordInterval" Type="int" Nullable="false" />
+          <Property Name="AuditDayOfWeek" Type="int" />
+          <Property Name="AuditTimeStart" Type="time" Precision="7" />
+          <Property Name="AuditTimeEnd" Type="time" Precision="7" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
@@ -295,11 +296,12 @@
             <PropertyRef Name="ConfigID" />
           </Key>
           <Property Name="ConfigID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AuditDay" Type="Int32" />
-          <Property Name="AuditTime" Type="DateTime" Precision="3" />
-          <Property Name="CostPerUnit" Type="Decimal" Precision="6" Scale="1" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="RecordInterval" Type="Int32" Nullable="false" />
+          <Property Name="AuditDayOfWeek" Type="Int32" />
+          <Property Name="AuditTimeStart" Type="Time" Precision="7" />
+          <Property Name="AuditTimeEnd" Type="Time" Precision="7" />
         </EntityType>
         <EntityType Name="Device">
           <Key>
@@ -604,10 +606,11 @@
           <EntitySetMapping Name="Configs">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Config">
               <MappingFragment StoreEntitySet="Config">
+                <ScalarProperty Name="AuditTimeEnd" ColumnName="AuditTimeEnd" />
+                <ScalarProperty Name="AuditTimeStart" ColumnName="AuditTimeStart" />
+                <ScalarProperty Name="AuditDayOfWeek" ColumnName="AuditDayOfWeek" />
+                <ScalarProperty Name="RecordInterval" ColumnName="RecordInterval" />
                 <ScalarProperty Name="ConfigID" ColumnName="ConfigID" />
-                <ScalarProperty Name="AuditDay" ColumnName="AuditDay" />
-                <ScalarProperty Name="AuditTime" ColumnName="AuditTime" />
-                <ScalarProperty Name="CostPerUnit" ColumnName="CostPerUnit" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>

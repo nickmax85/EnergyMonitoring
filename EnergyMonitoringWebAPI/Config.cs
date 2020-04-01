@@ -15,10 +15,11 @@ namespace EnergyMonitoringWebAPI
     public partial class Config
     {
         public int ConfigID { get; set; }
-        public Nullable<int> AuditDay { get; set; }
-        public Nullable<System.DateTime> AuditTime { get; set; }
-        public Nullable<decimal> CostPerUnit { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public int RecordInterval { get; set; }
+        public Nullable<int> AuditDayOfWeek { get; set; }
+        public Nullable<System.TimeSpan> AuditTimeStart { get; set; }
+        public Nullable<System.TimeSpan> AuditTimeEnd { get; set; }
     }
 }

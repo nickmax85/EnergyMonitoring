@@ -10,15 +10,32 @@ namespace EnergyMonitoringWebAPI.Controllers
     public class ConfigsController : ApiController
     {
         // GET: api/Configs
-        public IEnumerable<string> Get()
+        public IEnumerable<Config> Get()
         {
-            return new string[] { "value1", "value2" };
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var items = db.Configs.ToList();
+
+                return items;
+            }
         }
 
         // GET: api/Configs/5
-        public string Get(int id)
+        public Config Get(int id)
         {
-            return "value";
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var item = db.Configs.Find(id);
+
+
+                return item;
+            }
         }
 
         // POST: api/Configs
@@ -27,8 +44,34 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
         // PUT: api/Configs/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut()]
+        public IHttpActionResult Put(int id, Config value)
         {
+            IHttpActionResult ret = null;
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                var config = db.Configs.Find(id);
+
+                config.RecordInterval = value.RecordInterval;
+                config.AuditDayOfWeek = value.AuditDayOfWeek;
+                config.AuditTimeStart = value.AuditTimeStart;
+                config.AuditTimeEnd = value.AuditTimeEnd;
+
+                config.UpdateDate = DateTime.Now;
+
+                db.SaveChanges();
+
+                ret = Ok(config);
+
+
+            }
+
+
+            return ret;
+
+
+
         }
 
         // DELETE: api/Configs/5

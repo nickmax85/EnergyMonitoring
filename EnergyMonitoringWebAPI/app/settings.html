@@ -166,31 +166,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="card-body">
                                     <div class="form-group">
                                         <h3>Datenaufzeichnung</h3>
-                                        <label for="scheduleTime">Speicherintervall</label><br>
-                                        <input type="number" id="scheduleTime" style="width: 50px; text-align:right" />
+                                        <label for="recordInterval">Speicherintervall</label><br>
+                                        <input type="number" id="recordInterval" style="width: 50px; text-align:right" />
                                         <label style="font-weight: normal">Minuten</label>
                                     </div>
                                     <div class="form-group">
                                         <h3>Alarme</h3>
-                                        <label for="auditDay">Tag der Prüfung</label><br>
-                                        <select>
-                                            <option value="">Auswahl</option>
-                                            <option value="monday">Montag</option>
-                                            <option value="tuesday">Dienstag</option>
-                                            <option value="wednesday">Mittwoch</option>
-                                            <option value="thursday">Donnerstag</option>
-                                            <option value="friday">Freitag</option>
-                                            <option value="saturday">Samstag</option>
-                                            <option value="sunday">Sonntag</option>
+                                        <label for="auditDayOfWeek">Tag der Prüfung</label><br>
+                                        <select class="form-control" id="auditDayOfWeek">
+                                            <option value="0">Sonntag</option>
+                                            <option value="1">Montag</option>
+                                            <option value="2">Dienstag</option>
+                                            <option value="3">Mittwoch</option>
+                                            <option value="4">Donnerstag</option>
+                                            <option value="5">Freitag</option>
+                                            <option value="6">Samstag</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label>Uhrzeit</label><br />
-                                        <label for="auditStartTime" style="font-weight:normal">Start</label>
-                                        <input type="time" id="auditStartTime" />
+                                        <label for="auditTimeStart" style="font-weight:normal">Start</label>
+                                        <input type="time" id="auditTimeStart" />
                                         <label>&nbsp;</label>
-                                        <label for="auditEndTime" style="font-weight:normal">Ende</label>
-                                        <input type="time" id="auditEndTime" />
+                                        <label for="auditTimeEnd" style="font-weight:normal">Ende</label>
+                                        <input type="time" id="auditTimeEnd" />
                                     </div>
 
                                     <div class="form-group float-right">
@@ -248,21 +247,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
 
+
+        let config;
+
         $(document).ready(function () {
 
-            getDevices();
+            getSettings();
+
+            $("#saveButton").click(function () {
+
+                saveConfig();
+            }
+            );
 
         });
 
 
         function getSettings() {
 
-            let url = '/api/settings';
+            let url = '/api/configs';
 
             $.getJSON(url)
                 .done(function (data) {
-
-                    showData(data);
+                    config = data[0];
+                    showData(data[0]);
 
                 })
                 .fail(function (error) {
@@ -273,9 +281,73 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         function showData(data) {
 
+            $('#recordInterval').val(data.RecordInterval);
+            $('#auditDayOfWeek').val(data.AuditDayOfWeek);
+            $('#auditTimeStart').val(data.AuditTimeStart);
+            $('#auditTimeEnd').val(data.AuditTimeEnd);
+
+        }
 
 
+        function validateInput() {
 
+            if (isNaN($('#recordInterval').val()))
+                return false;
+
+            if (isNaN($('#auditDayOfWeek').val()))
+                return false;
+
+
+            if (!isTimeString($('#auditTimeStart').val()))
+                return false;
+
+            if (!isTimeString($('#auditTimeEnd').val()))
+                return false;
+
+            return true;
+
+        }
+
+        function saveConfig() {
+
+
+            if (!validateInput())
+                return;
+
+            //let item = JSON.parse(localStorage.getItem('sensor'));
+            let url = '/api/configs/' + config.ConfigID;
+
+
+            item = new Object();
+            item.RecordInterval = $('#recordInterval').val();
+            item.AuditDayOfWeek = $('#auditDayOfWeek').val();
+            item.AuditTimeStart = $('#auditTimeStart').val();
+            item.AuditTimeEnd = $('#auditTimeEnd').val();
+
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(item),
+                success: function (item) {
+
+                },
+                error: function (request, message, error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                }
+            });
+        }
+
+        function isTimeString(str) {
+            regexp = /^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/;
+
+            if (regexp.test(str)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
 
 
