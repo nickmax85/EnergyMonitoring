@@ -109,6 +109,21 @@ namespace EnergyMonitoringWebAPI.Controllers
             }
         }
 
+        // GET: api/records/2
+        [Route("api/records/avg/{startDate}/{endDate}")]
+        public IEnumerable<object> GetFilterRecords(DateTime startDate, DateTime endDate)
+        {
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                var item = db.spGetFilterRecords(startDate, endDate).ToList();
+
+                return item;
+
+            }
+
+        }
+
         // PUT: api/Records/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutRecord(long id, Record record)

@@ -60,5 +60,18 @@ namespace EnergyMonitoringWebAPI
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetSensors_Result>("spGetSensors");
         }
+    
+        public virtual ObjectResult<spGetFilterRecords_Result> spGetFilterRecords(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
+        {
+            var startParameter = start.HasValue ?
+                new ObjectParameter("start", start) :
+                new ObjectParameter("start", typeof(System.DateTime));
+    
+            var endParameter = end.HasValue ?
+                new ObjectParameter("end", end) :
+                new ObjectParameter("end", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFilterRecords_Result>("spGetFilterRecords", startParameter, endParameter);
+        }
     }
 }

@@ -1828,6 +1828,9 @@
     <Compile Include="Sensor.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
+    <Compile Include="spGetFilterRecords_Result.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
     <Compile Include="spGetLastDaysAvgRecords_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>

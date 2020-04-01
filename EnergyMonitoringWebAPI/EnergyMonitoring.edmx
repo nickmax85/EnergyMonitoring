@@ -220,6 +220,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spGetFilterRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="start" Type="date" Mode="In" />
+          <Parameter Name="end" Type="date" Mode="In" />
+        </Function>
         <Function Name="spGetLastDaysAvgRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="days" Type="int" Mode="In" />
         </Function>
@@ -566,6 +570,10 @@
           <Parameter Name="days" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetSensors" ReturnType="Collection(EnergyMonitoringModel.spGetSensors_Result)" />
+          <FunctionImport Name="spGetFilterRecords" ReturnType="Collection(EnergyMonitoringModel.spGetFilterRecords_Result)">
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="end" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetLastDaysAvgRecords_Result">
           <Property Type="Decimal" Name="average" Nullable="true" Precision="38" Scale="6" />
@@ -584,6 +592,10 @@
           <Property Type="String" Name="Device" Nullable="true" MaxLength="101" />
           <Property Type="String" Name="Equipment" Nullable="true" MaxLength="61" />
           <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="spGetFilterRecords_Result">
+          <Property Type="Decimal" Name="average" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Int32" Name="unitId" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -735,6 +747,14 @@
                 <ScalarProperty Name="Device" ColumnName="Device" />
                 <ScalarProperty Name="Equipment" ColumnName="Equipment" />
                 <ScalarProperty Name="Group" ColumnName="Group" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetFilterRecords" FunctionName="EnergyMonitoringModel.Store.spGetFilterRecords">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetFilterRecords_Result">
+                <ScalarProperty Name="average" ColumnName="average" />
+                <ScalarProperty Name="unitId" ColumnName="unitId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -19,6 +19,8 @@ namespace EnergyMonitoringService
 
         private readonly ILogger<Worker> _logger;
 
+        private Config Config;
+
         public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
@@ -34,71 +36,26 @@ namespace EnergyMonitoringService
 
                 int oneMinute = 1000 * 60;
 
-                int recordInterval = GetRecordIntervall();
+                int recordInterval = 1;
+                if (Config != null)
+                    recordInterval = Config.RecordInterval;
 
                 await Task.Delay(oneMinute * recordInterval, stoppingToken);
 
             }
-         
-        }
-
-
-
-        private void GenerateTestdata()
-        {
-            using (var context = new EnergyMonitoringContext())
-            {
-
-                for (int i = 0; i < 1000; i++)
-                {
-                    Random r = new Random();
-                    int rInt = r.Next(0, 100); //for ints
-                    int range = 100;
-                    double rDouble = r.NextDouble() * range; //for doubles
-
-
-                    Record record = new Record();
-                    record.EquipmentId = 2;
-                    record.SensorId = 1;
-
-
-                    record.Value = (decimal)Math.Round(rDouble, 1);
-                    record.CreateDate = DateTime.Now;
-
-                    //context.Record.Add(record);
-                    //context.SaveChanges();
-                    log.Info(record.Value);
-
-                }
-
-
-
-            }
-
 
         }
 
-
-        private int GetRecordIntervall()
-        {
-            using (var context = new EnergyMonitoringContext())
-            {
-
-                var items = context.Config.ToList();
-
-                var item = items.FirstOrDefault().RecordInterval;
-                log.Info($"RecordInterval={item};");
-
-                return item;
-            }
-
-
-        }
         private async void InitData()
         {
             // access database context with EF
             using (var context = new EnergyMonitoringContext())
             {
+
+                var config = context.Config.ToList().FirstOrDefault();
+                Config = config;
+                log.Info($"RecordInterval={config} Minuten;");
+
                 // read devices with relation entities from database
                 var devices = context.Device.Include(device => device.Sensor)
                .ThenInclude(sensor => sensor.Unit)
@@ -181,17 +138,16 @@ namespace EnergyMonitoringService
             }
         }
 
-        private async void CheckAlarm(Record record)
+        private void CheckAlarm(Record record)
         {
             using (var context = new EnergyMonitoringContext())
             {
-                var config = context.Config.FirstOrDefault();
 
                 DateTime dt = DateTime.Now;
 
-                if ((int)dt.DayOfWeek == config.AuditDayOfWeek)
+                if ((int)dt.DayOfWeek == Config.AuditDayOfWeek)
                 {
-                    if (dt.TimeOfDay >= config.AuditTimeStart && dt.TimeOfDay <= config.AuditTimeEnd)
+                    if (dt.TimeOfDay >= Config.AuditTimeStart && dt.TimeOfDay <= Config.AuditTimeEnd)
                     {
                         if (record.Value < record.Sensor.LowerLimit || record.Value > record.Sensor.UpperLimit)
                         {
@@ -202,7 +158,7 @@ namespace EnergyMonitoringService
                             log.Info($"Alarm: {alarm.AlarmId};");
                             context.Alarm.Add(alarm);
 
-                            await context.SaveChangesAsync();
+                            context.SaveChanges();
                         }
 
                     }

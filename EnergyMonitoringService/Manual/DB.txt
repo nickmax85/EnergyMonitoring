@@ -1,0 +1,3 @@
+﻿--DELETE FROM Record;
+
+--DBCC CHECKIDENT (Record, RESEED, 0)

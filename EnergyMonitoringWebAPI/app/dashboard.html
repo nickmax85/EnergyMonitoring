@@ -190,9 +190,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     <!-- Durchschnittswerte -->
                     <div class="row">
-
-                        <div class="col-md-0"></div>
-
                         <div id="info" class="col-md-6">
                             <div class="card card-primary">
                                 <div class="card-header">
@@ -207,6 +204,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body" style="display: block;">
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <label class="control-label" for="start">Start</label>
+                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control">
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label class="control-label" for="end">Ende</label>
+                                                <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-primary btn-block h-100" onclick="showFilterRecords()">Suche</button>
+                                            </div>
+                                        </div>
+                                        <!--<div class="row">
+
+                                            <label for="btnDays">letzte </label>
+                                            <input id="btnDays" type="number" value="1" style="width:50px;" />
+                                            <label for="btnDays">Tag(e)</label>
+                                            <button class="btn-primary" onclick="showRecords()">anzeigen</button>
+                                        </div>-->
+                                        <!--<div align="right">
+                                            <label for="btnDays">letzte </label>
+                                            <input id="btnDays" type="number" value="1" style="width:50px;" />
+                                            <label for="btnDays">Tag(e)</label>
+                                            <button class="btn-primary" onclick="showRecords()">anzeigen</button>
+                                        </div>-->
+
+                                    </div>
+
 
                                     <div class="form-group">
                                         <div class="row">
@@ -243,12 +271,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </div>
                                     </div>
 
-                                    <div align="right">
-                                        <label for="btnDays">letzte </label>
-                                        <input id="btnDays" type="number" value="1" style="width:50px;" />
-                                        <label for="btnDays">Tag(e)</label>
-                                        <button class="btn-primary" onclick="showRecords()">anzeigen</button>
-                                    </div>
+
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -323,8 +346,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <!-- /.card-body -->
                         </div>
 
-
-
                     </div>
                     <!-- /.row -->
                     <!-- Info  -->
@@ -373,11 +394,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
         $(document).ready(function () {
-
+            getDate();
             getGroups();
 
             showInfo();
-            showRecords();
+            //showRecords();
 
         });
 
@@ -421,14 +442,51 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         }
 
-        function showRecords() {
+        function getDate() {
+            let today = new Date();
 
-            days = $('#btnDays').val();
+            let startXdaysBefore = 6;
+
+            //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + (today.getDate() - startXdaysBefore)).slice(-2);
+            let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+            let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+
+            $('#start').val(start);
+            $('#end').val(end);
+
+
+        }
+
+        //function showRecords() {
+
+        //    days = $('#btnDays').val();
+
+        //    $('#pressureAvg').html('0 bar');
+        //    $('#flowAvg').html('0 l/min');
+
+        //    let url = '/api/records/avg/' + days;
+        //    $.getJSON(url)
+        //        .done(function (data) {
+
+        //            if (typeof data[0] != 'undefined')
+        //                $('#pressureAvg').html(data[0].average + ' bar');
+        //            if (typeof data[1] != 'undefined')
+        //                $('#flowAvg').html(data[1].average + ' l/min');
+
+        //        })
+        //        .fail(function (error) {
+        //            alert("ERROR: " + error.status + ' ' + error.statusText);
+        //        });
+
+        //}
+
+        function showFilterRecords() {
 
             $('#pressureAvg').html('0 bar');
             $('#flowAvg').html('0 l/min');
 
-            let url = '/api/records/avg/' + days;
+            let url = '/api/records/avg/' + '/' + $('#start').val() + '/' + $('#end').val();
             $.getJSON(url)
                 .done(function (data) {
 
