@@ -52,9 +52,13 @@ function showDevicesDiagnosis(data) {
         let row2 = $('<div class="row">');
 
         let labelEquipment = $('<label>' + item.Equipment.Number + ' - ' + item.Equipment.Name + '</label>');
+        row2.append(labelEquipment);
+
+        let row3 = $('<div class="row">');
         let labelStatus = $('<label id="' + item.DeviceID + '"></label>');
-        row2.append(labelEquipment, labelStatus);
-        body.append(row2);
+        row3.append(labelStatus);
+
+        body.append(row2, row3);
 
         showDeviceState(img, labelStatus, item);
 
@@ -83,11 +87,11 @@ function showDeviceState(img, labelStatus, item) {
             .done(function (data) {
                 state = true;
                 //labelStatus.html(data.system.diagarchive[0].msg);          
-                labelStatus.html("Gerät antwortet");
+                labelStatus.html("Gerät erreichbar");
             })
             .fail(function (error) {
                 state = false;
-                labelStatus.html("Gerät antwortet nicht");
+                labelStatus.html("Gerät nicht erreichbar");
             });
 
         if (state == false)
@@ -99,7 +103,7 @@ function showDeviceState(img, labelStatus, item) {
 
 
     setInterval(function () {
-        //data();
+        data();
 
 
 

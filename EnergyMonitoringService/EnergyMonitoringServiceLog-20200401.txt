@@ -1,0 +1,8 @@
+2020-04-01 13:37:27.097 +02:00 [Information] Worker running at: 04/01/2020 13:37:27 +02:00
+2020-04-01 13:50:54.870 +02:00 [Information] Worker running at: 04/01/2020 13:50:54 +02:00
+2020-04-01 13:50:56.804 +02:00 [Information] Application started. Press Ctrl+C to shut down.
+2020-04-01 13:50:56.808 +02:00 [Information] Hosting environment: "Production"
+2020-04-01 13:50:56.810 +02:00 [Information] Content root path: "C:\Users\thalerm\Source\Repos\nickmax85\EnergyMonitoring\EnergyMonitoringService"
+2020-04-01 13:50:58.347 +02:00 [Information] Application is shutting down...
+2020-04-01 13:51:15.083 +02:00 [Information] Worker running at: 04/01/2020 13:51:15 +02:00
+2020-04-01 13:51:16.651 +02:00 [Information] Application is shutting down...

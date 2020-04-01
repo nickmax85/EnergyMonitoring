@@ -34,41 +34,12 @@ namespace EnergyMonitoringService
 
                 int oneMinute = 1000 * 60;
 
-                await Task.Delay(oneMinute * 15, stoppingToken);
+                int recordInterval = GetRecordIntervall();
+
+                await Task.Delay(oneMinute * recordInterval, stoppingToken);
 
             }
-
-
-            //while (!stoppingToken.IsCancellationRequested)
-            //{
-            //    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-
-            //    DateTime dt = DateTime.Now;
-            //    if (dt.DayOfWeek == DayOfWeek.Sunday)
-            //    {
-            //        if (dt.Hour == 12)
-            //        {
-            //            log.Info("Hallo");
-
-            //        }
-            //    }
-
-
-            //    int oneMinute = 1000 * 60;
-
-            //    Record record = new Record();
-            //    record.RecordId = 2;
-            //    record.Sensor = new Sensor { SensorId = 1, LowerLimit = 0, UpperLimit = 10 };
-
-            //    record.Value = (decimal)Math.Round(15.0f, 1);
-            //    record.CreateDate = DateTime.Now;
-
-            //    CheckAlarm(record);
-
-            //    await Task.Delay(oneMinute * 1, stoppingToken);
-
-            //}
-
+         
         }
 
 
@@ -107,6 +78,22 @@ namespace EnergyMonitoringService
 
         }
 
+
+        private int GetRecordIntervall()
+        {
+            using (var context = new EnergyMonitoringContext())
+            {
+
+                var items = context.Config.ToList();
+
+                var item = items.FirstOrDefault().RecordInterval;
+                log.Info($"RecordInterval={item};");
+
+                return item;
+            }
+
+
+        }
         private async void InitData()
         {
             // access database context with EF
@@ -198,10 +185,13 @@ namespace EnergyMonitoringService
         {
             using (var context = new EnergyMonitoringContext())
             {
+                var config = context.Config.FirstOrDefault();
+
                 DateTime dt = DateTime.Now;
-                if (dt.DayOfWeek == DayOfWeek.Sunday)
+
+                if ((int)dt.DayOfWeek == config.AuditDayOfWeek)
                 {
-                    if (dt.Hour == 12)
+                    if (dt.TimeOfDay >= config.AuditTimeStart && dt.TimeOfDay <= config.AuditTimeEnd)
                     {
                         if (record.Value < record.Sensor.LowerLimit || record.Value > record.Sensor.UpperLimit)
                         {

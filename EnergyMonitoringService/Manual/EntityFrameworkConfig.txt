@@ -1,4 +1,4 @@
-﻿  //optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC2\PRODRBS;Database=EnergyMonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
+﻿     optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=energymonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
 
   Scaffold-DbContext "Server=localhost;Database=energymonitoring;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -f
  
