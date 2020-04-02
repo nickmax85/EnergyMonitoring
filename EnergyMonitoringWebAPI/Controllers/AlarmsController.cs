@@ -31,7 +31,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 var items = db.Alarms
                  .Include(x => x.Record.Sensor.Unit)
                  .Include(x => x.Record.Equipment.Group)
-                 .ToList();
+                 .ToList().Take(10);
 
                 //.Where(x => (bool)x.Record.Sensor.Device.Active).ToList();
 
@@ -53,6 +53,21 @@ namespace EnergyMonitoringWebAPI.Controllers
 
                 return items;
             }
+        }
+
+        // GET: api/alarms/2
+        [Route("api/alarms/{startDate}/{endDate}")]
+        public IEnumerable<object> GetFilterAlarms(DateTime startDate, DateTime endDate)
+        {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var items = db.spGetFilterAlarms(startDate, endDate).ToList();
+
+                return items;
+            }
+
         }
 
 

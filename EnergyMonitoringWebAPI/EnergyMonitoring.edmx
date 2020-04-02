@@ -220,6 +220,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spGetFilterAlarms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="start" Type="date" Mode="In" />
+          <Parameter Name="end" Type="date" Mode="In" />
+        </Function>
         <Function Name="spGetFilterRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="start" Type="date" Mode="In" />
           <Parameter Name="end" Type="date" Mode="In" />
@@ -574,6 +578,10 @@
             <Parameter Name="start" Mode="In" Type="DateTime" />
             <Parameter Name="end" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="spGetFilterAlarms" ReturnType="Collection(EnergyMonitoringModel.spGetFilterAlarms_Result)">
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="end" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetLastDaysAvgRecords_Result">
           <Property Type="Decimal" Name="average" Nullable="true" Precision="38" Scale="6" />
@@ -596,6 +604,18 @@
         <ComplexType Name="spGetFilterRecords_Result">
           <Property Type="Decimal" Name="average" Nullable="true" Precision="38" Scale="6" />
           <Property Type="Int32" Name="unitId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spGetFilterAlarms_Result">
+          <Property Type="Int32" Name="AlarmID" Nullable="false" />
+          <Property Type="String" Name="Remark" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="Confirmed" Nullable="true" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="Value" Nullable="false" Precision="6" Scale="1" />
+          <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Unit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -755,6 +775,22 @@
               <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetFilterRecords_Result">
                 <ScalarProperty Name="average" ColumnName="average" />
                 <ScalarProperty Name="unitId" ColumnName="unitId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetFilterAlarms" FunctionName="EnergyMonitoringModel.Store.spGetFilterAlarms">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetFilterAlarms_Result">
+                <ScalarProperty Name="AlarmID" ColumnName="AlarmID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Sign" ColumnName="Sign" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

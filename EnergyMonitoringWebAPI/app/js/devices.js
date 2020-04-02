@@ -77,37 +77,36 @@ function showDeviceState(img, labelStatus, item) {
 
     function data() {
 
-        img.css("padding", "5px");
+        img.css("padding", "8px");
         img.css("border", "1px transparent");
         img.css("border-radius", "5px");
+        img.css("background-color", "yellow");
+        labelStatus.html("Verbindungsaufbau ...");
 
         url = 'http://' + item.IP + '/rest/json/system';
 
         $.getJSON(url)
             .done(function (data) {
                 state = true;
-                //labelStatus.html(data.system.diagarchive[0].msg);          
+                img.css("background-color", "lightgreen");
                 labelStatus.html("Gerät erreichbar");
+                //labelStatus.html(data.system.diagarchive[0].time);          
+
             })
             .fail(function (error) {
                 state = false;
+                img.css("background-color", "coral");
                 labelStatus.html("Gerät nicht erreichbar");
             });
-
-        if (state == false)
-            img.css("background-color", "coral");
-        else
-            img.css("background-color", "lightgreen");
 
     }
 
 
     setInterval(function () {
+
         data();
 
-
-
-    }, 2000);
+    }, 4000);
 
 }
 

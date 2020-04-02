@@ -168,14 +168,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <div class="row">
                                             <div class="col">
                                                 <label class="control-label" for="start">Start</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control" value="2019-12-01">
+                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control">
                                             </div>
                                             <div class="col">
                                                 <label class="control-label" for="end">Ende</label>
                                                 <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
                                             </div>
                                             <div class="col">
-                                                <button class="btn btn-primary btn-block h-100" name="submit" type="submit">Suche</button>
+                                                <button id="searchButton" class="btn btn-primary btn-block h-100" name="submit" type="submit">Suche</button>
                                             </div>
                                         </div>
                                     </div>
@@ -274,13 +274,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         $(document).ready(function () {
 
-
             getDate();
+
             getJQuery();
 
             $('#saveButton').click(function () {
 
                 save();
+
+            });
+
+            $('#searchButton').click(function () {
+
+                getJQuery();
 
             });
 
@@ -292,7 +298,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         function getJQuery() {
 
-            let url = '/api/alarms';
+            //let url = '/api/alarms';
+            let url = '/api/alarms/' + $('#start').val() + '/' + $('#end').val();
 
             $.getJSON(url)
                 .done(function (data) {
@@ -326,10 +333,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 let tr = "<tr>" +
                     "<td>" + item.CreateDate.substring(0, 10) + ' ' + item.CreateDate.substring(11, 22) + "</td>" +
-                    "<td>" + item.Record.Equipment.Group.Name + "</td>" +
-                    "<td>" + item.Record.Equipment.Name + "</td>" +
-                    "<td>" + item.Record.Sensor.Unit.Name + "</td>" +
-                    "<td>" + item.Record.Value + " " + item.Record.Sensor.Unit.Sign + "</td>" +
+                    "<td>" + item.Group + "</td>" +
+                    "<td>" + item.Number + "-"+ item.Name +"</td>" +
+                    "<td>" + item.Unit + "</td>" +
+                    "<td>" + item.Value + " " + item.Sign + "</td>" +
                     "<td>" + item.Remark + "</td>" +
                     "<td>" + confirmedIcon + "</td>" +
                     "<td>" +
@@ -337,7 +344,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     '<i class="fas fa-edit"></i></button>' +
                     "</td > " +
                     "</tr>";
-
+                console.log(item.Sign);
                 container.append(tr);
 
 

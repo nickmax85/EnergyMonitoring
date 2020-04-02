@@ -205,36 +205,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <!-- /.card-header -->
                                 <div class="card-body" style="display: block;">
 
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <label class="control-label" for="start">Start</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control">
-                                            </div>
-                                            <div class="col-md-5">
-                                                <label class="control-label" for="end">Ende</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button class="btn btn-primary btn-block h-100" onclick="showFilterRecords()">Suche</button>
-                                            </div>
-                                        </div>
-                                        <!--<div class="row">
-
-                                            <label for="btnDays">letzte </label>
-                                            <input id="btnDays" type="number" value="1" style="width:50px;" />
-                                            <label for="btnDays">Tag(e)</label>
-                                            <button class="btn-primary" onclick="showRecords()">anzeigen</button>
-                                        </div>-->
-                                        <!--<div align="right">
-                                            <label for="btnDays">letzte </label>
-                                            <input id="btnDays" type="number" value="1" style="width:50px;" />
-                                            <label for="btnDays">Tag(e)</label>
-                                            <button class="btn-primary" onclick="showRecords()">anzeigen</button>
-                                        </div>-->
-
-                                    </div>
-
 
                                     <div class="form-group">
                                         <div class="row">
@@ -249,8 +219,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="fas fa-circle"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>-->
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-6">
@@ -264,13 +234,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="fas fa-gas-pump"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>-->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <label class="control-label" for="start">Start</label>
+                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control">
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label class="control-label" for="end">Ende</label>
+                                                <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-primary btn-block h-100" onclick="showFilterRecords()">Suche</button>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -398,8 +382,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             getGroups();
 
             showInfo();
-            //showRecords();
-
+            showFilterRecords();
         });
 
         function showInfo(data) {
@@ -457,29 +440,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
         }
-
-        //function showRecords() {
-
-        //    days = $('#btnDays').val();
-
-        //    $('#pressureAvg').html('0 bar');
-        //    $('#flowAvg').html('0 l/min');
-
-        //    let url = '/api/records/avg/' + days;
-        //    $.getJSON(url)
-        //        .done(function (data) {
-
-        //            if (typeof data[0] != 'undefined')
-        //                $('#pressureAvg').html(data[0].average + ' bar');
-        //            if (typeof data[1] != 'undefined')
-        //                $('#flowAvg').html(data[1].average + ' l/min');
-
-        //        })
-        //        .fail(function (error) {
-        //            alert("ERROR: " + error.status + ' ' + error.statusText);
-        //        });
-
-        //}
 
         function showFilterRecords() {
 
