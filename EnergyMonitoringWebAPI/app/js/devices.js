@@ -80,7 +80,7 @@ function showDeviceState(img, labelStatus, item) {
         img.css("padding", "8px");
         img.css("border", "1px transparent");
         img.css("border-radius", "5px");
-        img.css("background-color", "yellow");
+        //img.css("background-color", "yellow");
         labelStatus.html("Verbindungsaufbau ...");
 
         url = 'http://' + item.IP + '/rest/json/system';
