@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +37,8 @@ namespace EnergyMonitoringService
 
                 int oneMinute = 1000 * 60;
 
-                int recordInterval = 1;
+                int recordInterval = 10;
+
                 if (Config != null)
                     recordInterval = Config.RecordInterval;
 
@@ -45,6 +47,8 @@ namespace EnergyMonitoringService
             }
 
         }
+
+
 
         private async void InitData()
         {
@@ -71,49 +75,64 @@ namespace EnergyMonitoringService
                         // read json
                         var url = "http://" + device.Ip + "/rest/json";
 
-                        HttpClient request = new HttpClient();
-                        var json = await request.GetStringAsync(url);
+                        // ping device
+                        Ping ping = new Ping();
+                        PingReply reply = ping.Send(device.Ip, 3000);
 
-                        WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
-                        log.Info(device.Name);
-                        // iterate over sensor list                
-                        foreach (var sensor in device.Sensor)
+                        if (reply.Status == IPStatus.Success)
                         {
-                            // iterate over inputs
-                            foreach (var item in obj.iostate.input)
+                            HttpClient request = new HttpClient();
+                            var json = await request.GetStringAsync(url);
+
+                            WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
+                            log.Info(device.Name);
+                            // iterate over sensor list                
+                            foreach (var sensor in device.Sensor)
                             {
-                                if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
+                                // iterate over inputs
+                                foreach (var item in obj.iostate.input)
                                 {
-                                    StringBuilder sb = new StringBuilder();
+                                    if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
+                                    {
+                                        StringBuilder sb = new StringBuilder();
 
-                                    sb.Append(Environment.NewLine);
-                                    sb.Append($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
-                                    sb.Append(Environment.NewLine);
-                                    sb.Append($"Device: ip={device.Ip}; name={device.Name}; ");
-                                    sb.Append(Environment.NewLine);
-                                    sb.Append($"Sensor: id={sensor.SensorId}; ");
-                                    sb.Append(Environment.NewLine);
-                                    sb.Append($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}; ");
-                                    sb.Append($"Input: {item.value}; ");
-                                    sb.Append(Environment.NewLine);
+                                        sb.Append(Environment.NewLine);
+                                        sb.Append($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
+                                        sb.Append(Environment.NewLine);
+                                        sb.Append($"Device: ip={device.Ip}; name={device.Name}; ");
+                                        sb.Append(Environment.NewLine);
+                                        sb.Append($"Sensor: id={sensor.SensorId}; ");
+                                        sb.Append(Environment.NewLine);
+                                        sb.Append($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}; ");
+                                        sb.Append($"Input: {item.value}; ");
+                                        sb.Append(Environment.NewLine);
 
-                                    log.Info(sb);
+                                        log.Info(sb);
 
-                                    Record record = new Record();
-                                    record.Equipment = device.Equipment;
-                                    record.Sensor = sensor;
-                                    record.Value = (decimal)Math.Round(item.value, 1);
-                                    record.CreateDate = DateTime.Now;
+                                        Record record = new Record();
+                                        record.Equipment = device.Equipment;
+                                        record.Sensor = sensor;
+                                        record.Value = (decimal)Math.Round(item.value, 1);
+                                        record.CreateDate = DateTime.Now;
 
-                                    context.Record.Add(record);
+                                        context.Record.Add(record);
 
-                                    await context.SaveChangesAsync();
+                                        await context.SaveChangesAsync();
 
-                                    CheckAlarm(record);
+                                        CheckAlarm(record);
 
+                                    }
                                 }
                             }
+
+
                         }
+                        else
+                        {
+                            log.Error($"Fehler Verbindung: Status={device.Ip}; {reply.Status} DeviceName={device.Name};");
+                        }
+
+
 
                     }
                     catch (JsonSerializationException ex)
@@ -138,7 +157,7 @@ namespace EnergyMonitoringService
             }
         }
 
-        private void CheckAlarm(Record record)
+        private async void CheckAlarm(Record record)
         {
             using (var context = new EnergyMonitoringContext())
             {
@@ -155,10 +174,11 @@ namespace EnergyMonitoringService
                             alarm.RecordId = record.RecordId;
                             alarm.CreateDate = DateTime.Now;
 
-                            log.Info($"Alarm: {alarm.AlarmId};");
+                            log.Info($"Alarm: {record.Equipment.Name};");
+
                             context.Alarm.Add(alarm);
 
-                            context.SaveChanges();
+                            await context.SaveChangesAsync();
                         }
 
                     }

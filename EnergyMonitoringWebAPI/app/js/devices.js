@@ -80,10 +80,11 @@ function showDeviceState(img, labelStatus, item) {
         img.css("padding", "8px");
         img.css("border", "1px transparent");
         img.css("border-radius", "5px");
-        //img.css("background-color", "yellow");
+        img.css("background-color", "coral");
         labelStatus.html("Verbindungsaufbau ...");
 
         url = 'http://' + item.IP + '/rest/json/system';
+
 
         $.getJSON(url)
             .done(function (data) {
@@ -125,7 +126,7 @@ function showDevices(data) {
         let li = $('<li class="list-group-item">');
         let label = $('<label>').html(item.Name + "; <br/>");
         let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a> <br/>');
-
+     
         let button = $('<button class="btn btn-info">').click(function () {
 
             localStorage.setItem("DeviceID", item.DeviceID);

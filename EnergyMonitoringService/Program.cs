@@ -35,15 +35,18 @@ namespace EnergyMonitoringService
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseWindowsService()
-                //.ConfigureLogging(loggerFactory => loggerFactory.AddEventLog())
+                .ConfigureLogging(loggerFactory => loggerFactory.AddEventLog())
+            .ConfigureLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+            })
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
-
-
                     var serilogLogger = new LoggerConfiguration()
-            .WriteTo.RollingFile("EnergyMonitoringServiceLog.txt")
-            .CreateLogger();
+                        .WriteTo.RollingFile("EnergyMonitoringServiceLog.txt")
+                        .CreateLogger();
 
                     services.AddLogging(builder =>
                     {
@@ -53,5 +56,6 @@ namespace EnergyMonitoringService
 
 
                 });
+
     }
 }
