@@ -38,40 +38,18 @@ namespace EnergyMonitoringWebAPI
         public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<User> Users { get; set; }
     
-        public virtual ObjectResult<spGetLastDaysAvgRecords_Result> spGetLastDaysAvgRecords(Nullable<int> days)
+        public virtual int spGetLastDaysAvgRecords(Nullable<int> days)
         {
             var daysParameter = days.HasValue ?
                 new ObjectParameter("days", days) :
                 new ObjectParameter("days", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLastDaysAvgRecords_Result>("spGetLastDaysAvgRecords", daysParameter);
-        }
-    
-        public virtual ObjectResult<spGetLastDaysSumRecords_Result> spGetLastDaysSumRecords(Nullable<int> days)
-        {
-            var daysParameter = days.HasValue ?
-                new ObjectParameter("days", days) :
-                new ObjectParameter("days", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLastDaysSumRecords_Result>("spGetLastDaysSumRecords", daysParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetLastDaysAvgRecords", daysParameter);
         }
     
         public virtual ObjectResult<spGetSensors_Result> spGetSensors()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetSensors_Result>("spGetSensors");
-        }
-    
-        public virtual ObjectResult<spGetFilterRecords_Result> spGetFilterRecords(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
-        {
-            var startParameter = start.HasValue ?
-                new ObjectParameter("start", start) :
-                new ObjectParameter("start", typeof(System.DateTime));
-    
-            var endParameter = end.HasValue ?
-                new ObjectParameter("end", end) :
-                new ObjectParameter("end", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFilterRecords_Result>("spGetFilterRecords", startParameter, endParameter);
         }
     
         public virtual ObjectResult<spGetFilterAlarms_Result> spGetFilterAlarms(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
@@ -85,6 +63,27 @@ namespace EnergyMonitoringWebAPI
                 new ObjectParameter("end", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFilterAlarms_Result>("spGetFilterAlarms", startParameter, endParameter);
+        }
+    
+        public virtual ObjectResult<spGetFilterRecordsAvg_Result> spGetFilterRecordsAvg(Nullable<System.DateTime> start, Nullable<System.DateTime> end, Nullable<int> groupId, Nullable<int> equipmentId)
+        {
+            var startParameter = start.HasValue ?
+                new ObjectParameter("start", start) :
+                new ObjectParameter("start", typeof(System.DateTime));
+    
+            var endParameter = end.HasValue ?
+                new ObjectParameter("end", end) :
+                new ObjectParameter("end", typeof(System.DateTime));
+    
+            var groupIdParameter = groupId.HasValue ?
+                new ObjectParameter("groupId", groupId) :
+                new ObjectParameter("groupId", typeof(int));
+    
+            var equipmentIdParameter = equipmentId.HasValue ?
+                new ObjectParameter("equipmentId", equipmentId) :
+                new ObjectParameter("equipmentId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFilterRecordsAvg_Result>("spGetFilterRecordsAvg", startParameter, endParameter, groupIdParameter, equipmentIdParameter);
         }
     }
 }

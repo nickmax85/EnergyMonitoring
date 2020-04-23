@@ -1831,13 +1831,7 @@
     <Compile Include="spGetFilterAlarms_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetFilterRecords_Result.cs">
-      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
-    </Compile>
-    <Compile Include="spGetLastDaysAvgRecords_Result.cs">
-      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
-    </Compile>
-    <Compile Include="spGetLastDaysSumRecords_Result.cs">
+    <Compile Include="spGetFilterRecordsAvg_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="spGetSensors_Result.cs">

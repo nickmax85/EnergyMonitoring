@@ -446,7 +446,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#pressureAvg').html('0 bar');
             $('#flowAvg').html('0 l/min');
 
-            let url = '/api/records/avg/' + '/' + $('#start').val() + '/' + $('#end').val();
+            let url = '/api/records/avg/' + '/' + $('#start').val() + '/' + $('#end').val() + '/' + 0 + '/' + 0;
             $.getJSON(url)
                 .done(function (data) {
 

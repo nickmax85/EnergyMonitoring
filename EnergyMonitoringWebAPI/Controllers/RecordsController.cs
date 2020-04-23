@@ -81,49 +81,20 @@ namespace EnergyMonitoringWebAPI.Controllers
             }
         }
 
-        //GET: api/records/sum/1
-        [Route("api/records/sum/{days}")]
-        public IEnumerable<object> GetLastDaysSumRecords(int days)
+        // GET: api/records/avg/{startDate}/{endDate}/{groupId}/{equipmentId}
+        [Route("api/records/avg/{startDate}/{endDate}/{groupId}/{equipmentId}")]
+        public IEnumerable<object> GetFilterRecordsAvg(DateTime startDate, DateTime endDate, int groupId, int equipmentId)
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                var item = db.spGetLastDaysSumRecords(days).ToList();
-
-                return item;
-
-            }
-        }
-
-        //GET: api/records/avg/1
-        [Route("api/records/avg/{days}")]
-        public IEnumerable<object> GetLastDaysAvgRecords(int days)
-        {
-
-
-            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
-            {
-                var item = db.spGetLastDaysAvgRecords(days).ToList();
-
-                return item;
-
-            }
-        }
-
-        // GET: api/records/2
-        [Route("api/records/avg/{startDate}/{endDate}")]
-        public IEnumerable<object> GetFilterRecords(DateTime startDate, DateTime endDate)
-        {
-
-            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
-            {
-                var item = db.spGetFilterRecords(startDate, endDate).ToList();
+                var item = db.spGetFilterRecordsAvg(startDate, endDate, groupId, equipmentId).ToList();
 
                 return item;
 
             }
 
         }
-
+       
         // PUT: api/Records/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutRecord(long id, Record record)
