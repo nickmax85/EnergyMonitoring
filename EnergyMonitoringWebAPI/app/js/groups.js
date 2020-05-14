@@ -44,9 +44,9 @@ function showSelectGroups(data) {
 
     });
 
+    let group = JSON.parse(localStorage.getItem('Group')); 
+    let id = group.GroupID;
 
-    //let id = localStorage.getItem('Group');
-    let id = 0;
     if ($("#selectGroup").prop('selectedIndex') > 0 || id > 0) {
 
         $('#selectGroup').val(id);

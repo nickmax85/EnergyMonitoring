@@ -135,10 +135,10 @@ function showCardCollapsable(data) {
         header.append($('<h3 class="card-title">Expandable</h3>').html(item.Number + ' - ' + item.Name));
 
         let tools = ($('<div class="card-tools">'));
-        tools.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>'));
+        tools.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>'));
         header.append(tools);
 
-        let body = $('<div class="card-body" style="display: block;"></div >');
+        let body = $('<div class="card-body" style="display: none;"></div >');
 
         //console.log(item.Name);
         //console.log(item.Device[0].Sensor[0].LowerLimit);
@@ -155,6 +155,7 @@ function showCardCollapsable(data) {
         let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Auswertung</a>').click(function () {
 
             localStorage.setItem('Equipment', JSON.stringify(item));
+            localStorage.setItem('Group', JSON.stringify(item.Group));
             window.location.href = "charts.html";
 
         });
