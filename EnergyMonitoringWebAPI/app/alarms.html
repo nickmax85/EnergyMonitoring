@@ -25,6 +25,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="js/highcharts/8.0/highcharts.js"></script>
     <script src="js/highcharts/8.0/highcharts-more.js"></script>
 
+    <script src="js/moment/moment.min.js"></script>
+
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
 
@@ -190,8 +192,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th>Bereich</th>
                                                 <th>Equipment</th>
                                                 <th>Sensor</th>
-                                                <th>Wert</th>
-                                                <th>Bemerkung</th>
+                                                <th>Wert</th>                                              
                                                 <th>Quittiert</th>
                                                 <th>Bearbeiten</th>
                                             </tr>
@@ -337,7 +338,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     "<td>" + item.Number + "-"+ item.Name +"</td>" +
                     "<td>" + item.Unit + "</td>" +
                     "<td>" + item.Value + " " + item.Sign + "</td>" +
-                    "<td>" + item.Remark + "</td>" +
                     "<td>" + confirmedIcon + "</td>" +
                     "<td>" +
                     '<button type="button"' + 'id="btn' + item.AlarmID + '"class="btn">' +
@@ -396,12 +396,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
         function getDate() {
             let today = new Date();
 
-            let startXdaysBefore = 6;
+            let timeFormat = 'YYYY-MM-DD';
+            let now = window.moment();
 
-            //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + (today.getDate() - startXdaysBefore)).slice(-2);
-            let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-            let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+            let start = now.clone().add(-6, 'd').format(timeFormat);
+            let end = now.format(timeFormat);
 
+
+            //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+            //let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
 
             $('#start').val(start);
             $('#end').val(end);
