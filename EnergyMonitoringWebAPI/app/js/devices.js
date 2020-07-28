@@ -58,9 +58,13 @@ function showDevicesDiagnosis(data) {
         let labelStatus = $('<label id="' + item.DeviceID + '"></label>');
         row3.append(labelStatus);
 
-        body.append(row2, row3);
+        let row4 = $('<div class="row">');
+        let labelSystemTime = $('<label id="' + item.DeviceID + ' systemtime"></label>');
+        row4.append(labelSystemTime);
 
-        showDeviceState(img, labelStatus, item);
+        body.append(row2, row3, row4);
+
+        showDeviceState(img, labelStatus, labelSystemTime, item);
 
         card.append(header, body);
         container.append(col);
@@ -69,7 +73,7 @@ function showDevicesDiagnosis(data) {
 
 }
 
-function showDeviceState(img, labelStatus, item) {
+function showDeviceState(img, labelStatus, labelSystemTime, item) {
 
     let state;
 
@@ -80,8 +84,9 @@ function showDeviceState(img, labelStatus, item) {
         img.css("padding", "8px");
         img.css("border", "1px transparent");
         img.css("border-radius", "5px");
-        img.css("background-color", "coral");
+        img.css("background-color", "lightgreen");
         labelStatus.html("Verbindungsaufbau ...");
+        labelSystemTime.html("Verbindungsaufbau ...");
 
         url = 'http://' + item.IP + '/rest/json/system';
 
@@ -91,13 +96,14 @@ function showDeviceState(img, labelStatus, item) {
                 state = true;
                 img.css("background-color", "lightgreen");
                 labelStatus.html("Gerät erreichbar");
-                //labelStatus.html(data.system.diagarchive[0].time);          
+                labelSystemTime.html("Systemzeit:  <br />" + data.system.diagarchive[0].time);
 
             })
             .fail(function (error) {
                 state = false;
                 img.css("background-color", "coral");
                 labelStatus.html("Gerät nicht erreichbar");
+                labelSystemTime.html("Systemzeit: <br />" + "##.##.#### ##:##:##");
             });
 
     }
@@ -126,7 +132,7 @@ function showDevices(data) {
         let li = $('<li class="list-group-item">');
         let label = $('<label>').html(item.Name + "; <br/>");
         let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a> <br/>');
-     
+
         let button = $('<button class="btn btn-info">').click(function () {
 
             localStorage.setItem("DeviceID", item.DeviceID);
