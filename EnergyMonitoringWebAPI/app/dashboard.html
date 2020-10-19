@@ -157,10 +157,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <div class="container-fluid">
 
-
-
-
-
                     <!-- Durchschnittswerte -->
                     <div class="row">
                         <div id="info" class="col-md-6">
@@ -192,8 +188,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="fas fa-circle"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                    </a>-->
+                                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                                    </a>-->
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-6">
@@ -207,8 +203,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="fas fa-gas-pump"></i>
                                                     </div>
                                                     <!--<a href="#" class="small-box-footer">
-                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                    </a>-->
+                                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                                    </a>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -325,7 +321,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="form-group">
                                         <!--<label for="selectArea">Group</label>-->
                                         <select class="form-control" id="selectGroup" onchange="groupSelectionChange(this)">
-                                            <option>auswählen</option>
+                                            <option value="0">auswählen</option>
                                         </select>
                                         <br />
                                         <div id="equipments" class="row"></div>
@@ -451,7 +447,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#pressureAvg').html('0 bar');
             $('#flowAvg').html('0 l/min');
 
+            //let selectedGroup = $("#selectGroup option:selected").val();
+            //console.log(selectedGroup);
             let url = '/api/records/avg/' + '/' + $('#start').val() + '/' + $('#end').val() + '/' + 0 + '/' + 0;
+
             $.getJSON(url)
                 .done(function (data) {
 
