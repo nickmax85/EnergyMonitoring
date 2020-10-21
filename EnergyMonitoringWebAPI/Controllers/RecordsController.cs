@@ -65,6 +65,20 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         }
 
+        // GET: api/records/2
+        [Route("api/records/maxvalues/{startDate}/{endDate}")]
+        public IEnumerable<object> GetMaxValues(DateTime startDate, DateTime endDate)
+        {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                var item = db.spGetMaxValues(startDate, endDate).ToList();
+
+                return item;
+
+            }
+
+        }
+
         //GET: api/records/count
         [Route("api/records/count")]
         public int GetRecordsCount()
@@ -94,7 +108,7 @@ namespace EnergyMonitoringWebAPI.Controllers
             }
 
         }
-       
+
         // PUT: api/Records/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutRecord(long id, Record record)

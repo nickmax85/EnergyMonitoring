@@ -160,21 +160,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <!-- Durchschnittswerte -->
                     <div class="row">
                         <div id="info" class="col-md-6">
-                            <div class="card card-primary">
+                            <div class="card card-primary collapsed-card">
                                 <div class="card-header">
                                     <h3 class="card-title">Durchschnittswerte</h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
+                                            <i class="fas fa-plus"></i>
                                         </button>
 
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="card-body" style="display: block;">
-
-
+                                <div class="card-body" style="display: none;">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-6 col-6">
@@ -232,19 +230,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
                         <div id="info" class="col-md-6">
-                            <div class="card card-gray">
+                            <div class="card card-gray collapsed-card">
                                 <div class="card-header">
                                     <h3 class="card-title">Info</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
+                                            <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="card-body" style="display: block;">
+                                <div class="card-body" style="display: none;">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-4 col-6">
@@ -301,6 +299,89 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     </div>
 
+                    <div class="row">
+                        <div id="info" class="col-md-12">
+                            <div class="card card-primary collapsed-card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Maximalwerte Durchfluss</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" style="display: none;">
+
+                                    <div class="form-group">
+                                        <div class="row">
+
+                                            <div class="col-lg-9">
+                                                <!--<div class="loading"></div>-->
+                                                <table id="table" class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Bereich</th>
+                                                            <th scope="col">Equipment</th>
+                                                            <th scope="col">Durchfluss</th>
+                                                            <th scope="col">Zeitstempel</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="sensor-row">
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="card mb-3">
+                                                    <div class="card-header">
+                                                        <i class="fas fa-calendar-day"></i>
+                                                        Datum
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="form-group">
+                                                            <!-- Date input -->
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <label class="control-label" for="start">Start</label>
+                                                                    <input type="date" data-format="yyyy-MM-dd" id="startMaxValue" class="form-control" value="2019-12-01">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <!-- Date input -->
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <label class="control-label" for="end">Ende</label>
+                                                                    <input type="date" data-format="yyyy-MM-dd" id="endMaxValue" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <!-- Submit button -->
+                                                            <button class="btn btn-primary btn-block " name="submit" type="submit" onclick="getJQueryMaxValues()">Suche</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+
+                    </div>
+
 
                     <!-- Groups -->
                     <div class="row">
@@ -334,9 +415,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     <!-- /.row -->
                     <!-- Info  -->
-                    <div class="row">
 
-                    </div>
 
 
 
@@ -379,7 +458,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
         $(document).ready(function () {
-            getDate();
+            getDates();
             getGroups();
 
             showInfo();
@@ -426,7 +505,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         }
 
-        function getDate() {
+        function getDates() {
             let today = new Date();
 
             let startXdaysBefore = 6;
@@ -438,6 +517,67 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $('#start').val(start);
             $('#end').val(end);
+            $('#startMaxValue').val(start);
+            $('#endMaxValue').val(end);
+
+
+        }
+
+        function getJQueryMaxValues() {
+            let url = '/api/records/maxvalues' + '/' + $('#startMaxValue').val() + '/' + $('#endMaxValue').val();
+
+            $.ajax({
+                url: url,
+                dataType: "json",
+                beforeSend: function () {
+                    $('.loading').show();
+                    $('#table').hide();
+                },
+                success: function (data) {
+
+                },
+                complete: function () {
+                    $('.loading').hide();
+                    $('#table').show();
+                }
+            })
+                .done(function (data) {
+                    showMaxValues(data);
+                })
+                .fail(function (data) {
+                    alert("ERROR: " + data.status + ' ' + data.statusText);
+                });
+
+        }
+
+        function showMaxValues(data) {
+            let container = $('#sensor-row');
+            container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+
+            console.log(data);
+            data.forEach(function (item, i) {
+
+                let tr = "<tr>" +
+                    "<td>" + item.Area + "</td>" +
+                    "<td>" + item.Name + "</td>" +
+                    "<td>" + item.Value + ' l/min' + "</td>" +
+                    "<td>" + item.CreateDate + "</td>" +
+                    "</tr>";
+
+                container.append(tr);
+
+
+                //let btn = $('#btn' + item.EquipmentID).click(function () {
+                //    localStorage.setItem('equipmentID', JSON.stringify(item));
+                //    window.location.href = "sensor.html";
+
+                //});
+
+            });
 
 
         }

@@ -85,5 +85,18 @@ namespace EnergyMonitoringWebAPI
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFilterRecordsAvg_Result>("spGetFilterRecordsAvg", startParameter, endParameter, groupIdParameter, equipmentIdParameter);
         }
+    
+        public virtual ObjectResult<spGetMaxValues_Result> spGetMaxValues(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
+        {
+            var startParameter = start.HasValue ?
+                new ObjectParameter("start", start) :
+                new ObjectParameter("start", typeof(System.DateTime));
+    
+            var endParameter = end.HasValue ?
+                new ObjectParameter("end", end) :
+                new ObjectParameter("end", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMaxValues_Result>("spGetMaxValues", startParameter, endParameter);
+        }
     }
 }

@@ -1837,6 +1837,9 @@
     <Compile Include="spGetFilterRecordsAvg_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
+    <Compile Include="spGetMaxValues_Result.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
     <Compile Include="spGetSensors_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
