@@ -14,6 +14,7 @@ namespace EnergyMonitoringWebAPI
     public partial class spGetMaxValues_Result
     {
         public decimal Value { get; set; }
+        public string Number { get; set; }
         public string Name { get; set; }
         public string Area { get; set; }
         public Nullable<int> EquipmentID { get; set; }

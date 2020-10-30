@@ -272,8 +272,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             equipment = JSON.parse(localStorage.getItem('Equipment'));
 
             $('#group').html(equipment.Group.Name);
-            $('#equipment').html(equipment.Name);
-            $('#header').html(equipment.Number + " - " + equipment.Name);
+            $('#equipment').html(equipment.Number + " - " + equipment.Name);                   
 
             sensors = getSensors(equipment.Devices[0].DeviceID);
 

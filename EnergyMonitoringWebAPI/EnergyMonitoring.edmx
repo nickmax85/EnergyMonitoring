@@ -614,6 +614,7 @@
         </ComplexType>
         <ComplexType Name="spGetMaxValues_Result">
           <Property Type="Decimal" Name="Value" Nullable="false" Precision="6" Scale="1" />
+          <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Area" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="EquipmentID" Nullable="true" />
@@ -784,6 +785,7 @@
             <ResultMapping>
               <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetMaxValues_Result">
                 <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Area" ColumnName="Area" />
                 <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />

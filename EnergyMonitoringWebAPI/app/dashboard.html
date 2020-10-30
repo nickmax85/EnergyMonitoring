@@ -318,9 +318,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="form-group">
                                         <div class="row">
 
-                                            <div class="col-lg-9">
+                                            <div class="table-wrapper-scroll-y my-custom-scrollbar col-lg-9">
                                                 <!--<div class="loading"></div>-->
-                                                <table id="table" class="table table-bordered table-hover">
+                                                <table id="table" class="table table-bordered table-striped mb-0">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Bereich</th>
@@ -373,7 +373,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                         </div>
                                     </div>
-                                    
+
 
                                 </div>
                             </div>
@@ -463,6 +463,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             showInfo();
             showFilterRecords();
+            getJQueryMaxValues();
         });
 
         function showInfo(data) {
@@ -557,13 +558,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
             if (!Array.isArray(data))
                 return;
 
-
-            console.log(data);
             data.forEach(function (item, i) {
-
+                
                 let tr = "<tr>" +
                     "<td>" + item.Area + "</td>" +
-                    "<td>" + item.Name + "</td>" +
+                    "<td>" + item.Number + ' - ' + item.Name + "</td>" +
                     "<td>" + item.Value + ' l/min' + "</td>" +
                     "<td>" + item.CreateDate + "</td>" +
                     "</tr>";
