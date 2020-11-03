@@ -326,6 +326,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <th scope="col">Bereich</th>
                                                             <th scope="col">Equipment</th>
                                                             <th scope="col">Durchfluss</th>
+                                                            <th scope="col">Kosten/Jahr</th>
                                                             <th scope="col">Zeitstempel</th>
                                                         </tr>
                                                     </thead>
@@ -559,11 +560,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 return;
 
             data.forEach(function (item, i) {
-                
+
+                const kubikmeteryear = 525.6;
+                const costkubikmeter = 0.01046;
+
                 let tr = "<tr>" +
                     "<td>" + item.Area + "</td>" +
                     "<td>" + item.Number + ' - ' + item.Name + "</td>" +
                     "<td>" + item.Value + ' l/min' + "</td>" +
+                    "<td>" + Math.round(item.Value * kubikmeteryear * costkubikmeter) + ' Euro' + "</td>" +
                     "<td>" + item.CreateDate + "</td>" +
                     "</tr>";
 
