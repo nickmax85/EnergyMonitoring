@@ -25,6 +25,7 @@
           <Property Name="AuditDayOfWeek" Type="int" />
           <Property Name="AuditTimeStart" Type="time" Precision="7" />
           <Property Name="AuditTimeEnd" Type="time" Precision="7" />
+          <Property Name="AirPressurePrice" Type="decimal" Precision="9" Scale="6" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
@@ -310,6 +311,7 @@
           <Property Name="AuditDayOfWeek" Type="Int32" />
           <Property Name="AuditTimeStart" Type="Time" Precision="7" />
           <Property Name="AuditTimeEnd" Type="Time" Precision="7" />
+          <Property Name="AirPressurePrice" Type="Decimal" Precision="9" Scale="6" />
         </EntityType>
         <EntityType Name="Device">
           <Key>
@@ -641,6 +643,7 @@
           <EntitySetMapping Name="Configs">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Config">
               <MappingFragment StoreEntitySet="Config">
+                <ScalarProperty Name="AirPressurePrice" ColumnName="AirPressurePrice" />
                 <ScalarProperty Name="AuditTimeEnd" ColumnName="AuditTimeEnd" />
                 <ScalarProperty Name="AuditTimeStart" ColumnName="AuditTimeStart" />
                 <ScalarProperty Name="AuditDayOfWeek" ColumnName="AuditDayOfWeek" />

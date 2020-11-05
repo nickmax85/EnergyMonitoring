@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Web.Infrastructure.DynamicValidationHelper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -57,7 +58,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 config.AuditDayOfWeek = value.AuditDayOfWeek;
                 config.AuditTimeStart = value.AuditTimeStart;
                 config.AuditTimeEnd = value.AuditTimeEnd;
-
+                config.AirPressurePrice = value.AirPressurePrice;
                 config.UpdateDate = DateTime.Now;
 
                 db.SaveChanges();

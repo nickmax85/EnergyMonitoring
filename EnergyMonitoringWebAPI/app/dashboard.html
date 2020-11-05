@@ -4,6 +4,7 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,6 +30,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="js/equipments.js"></script>
 
 </head>
+
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
@@ -49,8 +51,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="/index.html" class="brand-link">
-                <img src="img/wheel.gif" alt="Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
+                <img src="img/wheel.gif" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">EnergyMonitoring</span>
             </a>
 
@@ -59,7 +60,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
                         <!-- Dashboard -->
@@ -160,19 +162,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <!-- Durchschnittswerte -->
                     <div class="row">
                         <div id="info" class="col-md-6">
-                            <div class="card card-primary collapsed-card">
+                            <div class="card card-primary">
                                 <div class="card-header">
                                     <h3 class="card-title">Durchschnittswerte</h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-plus"></i>
+                                            <i class="fas fa-minus"></i>
                                         </button>
 
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="card-body" style="display: none;">
+                                <div class="card-body" style="display: block;">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-6 col-6">
@@ -211,14 +213,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <label class="control-label" for="start">Start</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control">
+                                                <input type="date" data-format="yyyy-MM-dd" id="start"
+                                                    class="form-control">
                                             </div>
                                             <div class="col-md-5">
                                                 <label class="control-label" for="end">Ende</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
+                                                <input type="date" data-format="yyyy-MM-dd" id="end"
+                                                    class="form-control">
                                             </div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-primary btn-block h-100" onclick="showFilterRecords()">Suche</button>
+                                                <button class="btn btn-primary btn-block h-100"
+                                                    onclick="showFilterRecords()">Suche</button>
                                             </div>
                                         </div>
                                     </div>
@@ -230,19 +235,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
                         <div id="info" class="col-md-6">
-                            <div class="card card-gray collapsed-card">
+                            <div class="card card-gray">
                                 <div class="card-header">
                                     <h3 class="card-title">Info</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-plus"></i>
+                                            <i class="fas fa-minus"></i>
                                         </button>
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="card-body" style="display: none;">
+                                <div class="card-body" style="display: block;">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-4 col-6">
@@ -296,28 +301,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                             <!-- /.card-body -->
                         </div>
-
                     </div>
 
                     <div class="row">
                         <div id="info" class="col-md-12">
-                            <div class="card card-primary collapsed-card">
+                            <div class="card card-warning">
                                 <div class="card-header">
-                                    <h3 class="card-title">Maximalwerte Durchfluss</h3>
+                                    <h3 class="card-title">Maximalwerte</h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-plus"></i>
+                                            <i class="fas fa-minus"></i>
                                         </button>
 
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="card-body" style="display: none;">
-
+                                <div class="card-body" style="display: block;">
                                     <div class="form-group">
                                         <div class="row">
-
                                             <div class="table-wrapper-scroll-y my-custom-scrollbar col-lg-9">
                                                 <!--<div class="loading"></div>-->
                                                 <table id="table" class="table table-bordered table-striped mb-0">
@@ -347,8 +349,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <!-- Date input -->
                                                             <div class="row">
                                                                 <div class="col">
-                                                                    <label class="control-label" for="start">Start</label>
-                                                                    <input type="date" data-format="yyyy-MM-dd" id="startMaxValue" class="form-control" value="2019-12-01">
+                                                                    <label class="control-label"
+                                                                        for="start">Start</label>
+                                                                    <input type="date" data-format="yyyy-MM-dd"
+                                                                        id="startMaxValue" class="form-control"
+                                                                        value="2019-12-01">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -358,14 +363,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <label class="control-label" for="end">Ende</label>
-                                                                    <input type="date" data-format="yyyy-MM-dd" id="endMaxValue" class="form-control">
+                                                                    <input type="date" data-format="yyyy-MM-dd"
+                                                                        id="endMaxValue" class="form-control">
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div class="form-group">
                                                             <!-- Submit button -->
-                                                            <button class="btn btn-primary btn-block " name="submit" type="submit" onclick="getJQueryMaxValues()">Suche</button>
+                                                            <button class="btn btn-primary btn-block " name="submit"
+                                                                type="submit"
+                                                                onclick="getJQueryMaxValues()">Suche</button>
 
                                                         </div>
                                                     </div>
@@ -387,7 +395,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <!-- Groups -->
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card card-primary">
+                            <div class="card card-success">
                                 <div class="card-header">
                                     <h3 class="card-title">Bereiche</h3>
 
@@ -402,7 +410,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="card-body" style="display: block;">
                                     <div class="form-group">
                                         <!--<label for="selectArea">Group</label>-->
-                                        <select class="form-control" id="selectGroup" onchange="groupSelectionChange(this)">
+                                        <select class="form-control" id="selectGroup"
+                                            onchange="groupSelectionChange(this)">
                                             <option value="0">auswählen</option>
                                         </select>
                                         <br />
@@ -457,8 +466,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
 
+        let configs;
 
         $(document).ready(function () {
+            getConfig();
+
             getDates();
             getGroups();
 
@@ -466,6 +478,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
             showFilterRecords();
             getJQueryMaxValues();
         });
+
+        function getConfig() {
+
+            let url = '/api/configs';
+            $.getJSON(url)
+                .done(function (data) {
+
+                    configs = data;
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+
+        }
 
         function showInfo(data) {
 
@@ -561,14 +589,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             data.forEach(function (item, i) {
 
-                const kubikmeteryear = 525.6;
-                const costkubikmeter = 0.01046;
+                const lMinInKubikMeterYear = 525.6;
+
+
 
                 let tr = "<tr>" +
                     "<td>" + item.Area + "</td>" +
                     "<td>" + item.Number + ' - ' + item.Name + "</td>" +
                     "<td>" + item.Value + ' l/min' + "</td>" +
-                    "<td>" + Math.round(item.Value * kubikmeteryear * costkubikmeter) + ' Euro' + "</td>" +
+                    "<td>" + Math.round(item.Value * lMinInKubikMeterYear * configs[0].AirPressurePrice) + ' Euro' + "</td>" +
                     "<td>" + item.CreateDate + "</td>" +
                     "</tr>";
 
@@ -614,4 +643,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </script>
 
 </body>
+
 </html>

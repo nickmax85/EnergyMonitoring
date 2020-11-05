@@ -4,6 +4,7 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,6 +36,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 </head>
+
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
@@ -56,8 +58,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="/index.html" class="brand-link">
-                <img src="img/wheel.gif" alt="Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
+                <img src="img/wheel.gif" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">EnergyMonitoring</span>
             </a>
 
@@ -66,7 +67,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
                         <!-- Dashboard -->
@@ -197,7 +199,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <div class="row">
                                             <div class="col">
                                                 <label class="control-label" for="start">Start</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="start" class="form-control" value="2019-12-01">
+                                                <input type="date" data-format="yyyy-MM-dd" id="start"
+                                                    class="form-control" value="2019-12-01">
                                             </div>
                                         </div>
                                     </div>
@@ -207,21 +210,68 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <div class="row">
                                             <div class="col">
                                                 <label class="control-label" for="end">Ende</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="end" class="form-control">
+                                                <input type="date" data-format="yyyy-MM-dd" id="end"
+                                                    class="form-control">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <!-- Submit button -->
-                                        <button class="btn btn-primary btn-block " name="submit" type="submit" onclick="getRecordsByDate()">Suche</button>
+                                        <button class="btn btn-primary btn-block " name="submit" type="submit"
+                                            onclick="getRecordsByDate()">Suche</button>
 
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area"></i>
+                                    Durchschnittswerte
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6">
+                                            <!-- small card -->
+                                            <div class="small-box bg-gradient-primary">
+                                                <div class="inner">
+                                                    <h3 id="pressureAvg">0 l/min</h3>
+                                                    <p>Druck</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fas fa-circle"></i>
+                                                </div>
+                                                <!--<a href="#" class="small-box-footer">
+                                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                                </a>-->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-6">
+                                            <!-- small card -->
+                                            <div class="small-box bg-gradient-info">
+                                                <div class="inner">
+                                                    <h3 id="flowAvg">0 bar</h3>
+                                                    <p>Durchfluss</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fas fa-gas-pump"></i>
+                                                </div>
+                                                <!--<a href="#" class="small-box-footer">
+                                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                                </a>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+
+                    </div>
 
 
                     <!-- /.row -->
@@ -272,11 +322,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             equipment = JSON.parse(localStorage.getItem('Equipment'));
 
             $('#group').html(equipment.Group.Name);
-            $('#equipment').html(equipment.Number + " - " + equipment.Name);                   
+            $('#equipment').html(equipment.Number + " - " + equipment.Name);
 
             sensors = getSensors(equipment.Devices[0].DeviceID);
 
             getRecordsByDate();
+
+            showFilterRecords();
 
         });
 
@@ -293,7 +345,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
             //let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-         
+
             $('#start').val(start);
             $('#end').val(end);
 
@@ -301,6 +353,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
 
         function getRecordsByDate() {
+
+
 
             let url = '/api/records/' + equipment.Devices[0].DeviceID + '/' + $('#start').val() + '/' + $('#end').val();
 
@@ -318,6 +372,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
+            showFilterRecords();
+
         }
 
         function getSensors(deviceId) {
@@ -346,6 +402,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
+        }
+
+        function showFilterRecords() {
+
+            $('#pressureAvg').html('0 bar');
+            $('#flowAvg').html('0 l/min');
+
+          
+            let url = '/api/records/avg' + '/' + $('#start').val() + '/' + $('#end').val() + '/' + 0 + '/' + equipment.EquipmentID;
+          
+            $.getJSON(url)
+                .done(function (data) {
+
+                    if (typeof data[0] != 'undefined')
+                        $('#pressureAvg').html(data[0].average + ' bar');
+                    if (typeof data[1] != 'undefined')
+                        $('#flowAvg').html(data[1].average + ' l/min');
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
         }
 
         function showData(data) {
@@ -487,4 +566,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </script>
 
 </body>
+
 </html>

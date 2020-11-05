@@ -4,6 +4,7 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,6 +24,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="css/custom.css" rel="stylesheet" />
 
 </head>
+
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
@@ -43,8 +45,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="/index.html" class="brand-link">
-                <img src="img/wheel.gif" alt="Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
+                <img src="img/wheel.gif" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">EnergyMonitoring</span>
             </a>
 
@@ -53,7 +54,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
                         <!-- Dashboard -->
@@ -148,98 +150,90 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
-
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-md-12">
                             <div class="card card-warning">
                                 <div class="card-header">
-                                    <h3 class="card-title">Alarme</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /.card-tools -->
+                                    <h3 class="card-title">Einstellungen</h3>
+                                   
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
+                                    <form role="form">
+                                        <div class="row">
+                                            <div class="col-lg-3 bg-gradient-light" style="margin: 5px;">
+                                                <h3>Alarme</h3>
+                                                <div class="form-group">
+                                                    <label for="auditDayOfWeek">Tag der Prüfung</label><br>
+                                                    <select class="form-control" id="auditDayOfWeek">
+                                                        <option value="0">Sonntag</option>
+                                                        <option value="1">Montag</option>
+                                                        <option value="2">Dienstag</option>
+                                                        <option value="3">Mittwoch</option>
+                                                        <option value="4">Donnerstag</option>
+                                                        <option value="5">Freitag</option>
+                                                        <option value="6">Samstag</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Uhrzeit</label><br />
+                                                    <label for="auditTimeStart" style="font-weight:normal">Start</label>
+                                                    <input type="time" id="auditTimeStart" />
+                                                    <label>&nbsp;</label>
+                                                    <label for="auditTimeEnd" style="font-weight:normal">Ende</label>
+                                                    <input type="time" id="auditTimeEnd" />
+                                                </div>
 
-                                    <div class="form-group">
+                                            </div>
 
-                                        <label for="auditDayOfWeek">Tag der Prüfung</label><br>                                      
-                                        <select class="form-control" id="auditDayOfWeek">
-                                            <option value="0">Sonntag</option>
-                                            <option value="1">Montag</option>
-                                            <option value="2">Dienstag</option>
-                                            <option value="3">Mittwoch</option>
-                                            <option value="4">Donnerstag</option>
-                                            <option value="5">Freitag</option>
-                                            <option value="6">Samstag</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Uhrzeit</label><br />
-                                        <label for="auditTimeStart" style="font-weight:normal">Start</label>
-                                        <input type="time" id="auditTimeStart" />
-                                        <label>&nbsp;</label>
-                                        <label for="auditTimeEnd" style="font-weight:normal">Ende</label>
-                                        <input type="time" id="auditTimeEnd" />
-                                    </div>
+                                            <div class="col-lg-4 bg-gradient-light" style="margin: 5px;">
+                                                <h3>Datenaufzeichnung</h3>
+                                                <div class="form-group">
+                                                    <label for="recordInterval">Speicherintervall</label><br>
+                                                    <h8>Zeitabstand zur Erfassung der Messwerte.</h8>
+                                                    <br />
+                                                    <br />
+                                                    <input type="number" id="recordInterval"
+                                                        style="width: 50px; text-align:right" />
+                                                    <label style="font-weight: normal">Minuten</label>
+                                                </div>
+                                            </div>
 
-                                    <div class="form-group float-right">
-                                        <button type="button" class="btn bg-gradient-warning btn-flat" id="saveButton1">
-                                            <i class="fas fa-save"></i>
-                                            Speichern
-                                        </button>
-                                    </div>
+                                            <div class="col-lg-4 bg-gradient-light" style="margin: 5px;">
+                                                <h3>Kosten</h3>
+                                                <div class="form-group">
+                                                    <label for="airPressurePrice">Druckluft</label>
 
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="number" id="airPressurePrice"
+                                                        style="width: 100px; text-align:right" />
+                                                    <label style="font-weight: normal">Euro/m³</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group float-right" style="padding: 10px;">
+                                                <button type="button" class="btn bg-gradient-success btn-flat" id="saveButton">
+                                                    <i class="fas fa-save"></i>
+                                                    Speichern
+                                                </button>
+                                            </div>
+
+                                        </div>
                                 </div>
-                                <!-- /.card-body -->
+                                </form>
+
                             </div>
-                            <!-- /.card -->
+                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card-body -->
 
-                        <div class="col-md-4">
-                            <div class="card card-warning">
-                                <div class="card-header">
-                                    <h3 class="card-title">Datenaufzeichnung</h3>
 
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /.card-tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="recordInterval">Speicherintervall</label><br>
-                                        <h8>Zeitabstand zur Erfassung der Messwerte.</h8>
-                                        <br />
-                                        <br />
-                                        <input type="number" id="recordInterval" style="width: 50px; text-align:right" />
-                                        <label style="font-weight: normal">Minuten</label>
-                                    </div>
-                                    <div class="form-group float-right">
-                                        <button type="button" class="btn bg-gradient-warning btn-flat" id="saveButton2">
-                                            <i class="fas fa-save"></i>
-                                            Speichern
-                                        </button>
-                                    </div>
-
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
                     </div>
-
                     <!-- /.row -->
-
-
-
                 </div><!-- /.container-fluid -->
             </div>
             <!-- /.content -->
@@ -285,14 +279,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $(document).ready(function () {
 
             getSettings();
-            console.log("Ready");
 
-            $("#saveButton1").click(function () {
-
-                saveConfig();
-            });
-
-            $("#saveButton2").click(function () {
+            $("#saveButton").click(function () {
 
                 saveConfig();
             });
@@ -322,6 +310,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#auditDayOfWeek').val(data.AuditDayOfWeek);
             $('#auditTimeStart').val(data.AuditTimeStart);
             $('#auditTimeEnd').val(data.AuditTimeEnd);
+            $('#airPressurePrice').val(data.AirPressurePrice);
+            console.log(data);
 
         }
 
@@ -332,6 +322,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 return false;
 
             if (isNaN($('#auditDayOfWeek').val()))
+                return false;
+
+            if (isNaN($('#airPressurePrice').val()))
                 return false;
 
             return true;
@@ -353,6 +346,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             item.AuditDayOfWeek = $('#auditDayOfWeek').val();
             item.AuditTimeStart = $('#auditTimeStart').val();
             item.AuditTimeEnd = $('#auditTimeEnd').val();
+            item.AirPressurePrice = $('#airPressurePrice').val();
 
 
             $.ajax({
@@ -387,4 +381,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </script>
 
 </body>
+
 </html>

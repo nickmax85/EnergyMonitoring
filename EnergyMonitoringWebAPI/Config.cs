@@ -21,5 +21,6 @@ namespace EnergyMonitoringWebAPI
         public Nullable<int> AuditDayOfWeek { get; set; }
         public Nullable<System.TimeSpan> AuditTimeStart { get; set; }
         public Nullable<System.TimeSpan> AuditTimeEnd { get; set; }
+        public Nullable<decimal> AirPressurePrice { get; set; }
     }
 }
