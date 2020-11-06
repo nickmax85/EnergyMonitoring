@@ -28,7 +28,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
-    <script src="js/constants.js"></script>
+
 
 </head>
 
@@ -160,99 +160,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <div class="container-fluid">
 
-                    <!-- Durchschnittswerte -->
+                    <!--  -->
                     <div class="row">
-                        <div id="info" class="col-md-8">
-                            <div class="card card-primary collapsed-card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Durchschnittswerte</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
+                        <div class="col-md-6">
 
-                                    </div>
-                                    <!-- /.card-tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body" style="display: none;">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-4 col-4">
-                                                <!-- small card -->
-                                                <div class="small-box bg-gradient-primary">
-                                                    <div class="inner">
-                                                        <h3 id="pressureAvg">0 l/min</h3>
-                                                        <p>Druck</p>
-                                                    </div>
-                                                    <div class="icon">
-                                                        <i class="fas fa-circle"></i>
-                                                    </div>
-                                                    <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-4">
-                                                <!-- small card -->
-                                                <div class="small-box bg-gradient-info">
-                                                    <div class="inner">
-                                                        <h3 id="flowAvg">0 bar</h3>
-                                                        <p>Durchfluss</p>
-                                                    </div>
-                                                    <div class="icon">
-                                                        <i class="fas fa-gas-pump"></i>
-                                                    </div>
-                                                    <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-4">
-                                                <!-- small card -->
-                                                <div class="small-box bg-gradient-warning">
-                                                    <div class="inner">
-                                                        <h3 id="price">0 Euro/Jahr</h3>
-                                                        <p>Kosten</p>
-                                                    </div>
-                                                    <div class="icon">
-                                                        <i class="fas fa-coins"></i>
-                                                    </div>
-                                                    <!--<a href="#" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <label class="control-label" for="start">Start</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="start"
-                                                       class="form-control">
-                                            </div>
-                                            <div class="col-md-5">
-                                                <label class="control-label" for="end">Ende</label>
-                                                <input type="date" data-format="yyyy-MM-dd" id="end"
-                                                       class="form-control">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button class="btn btn-primary btn-block h-100"
-                                                        onclick="showFilterRecords()">
-                                                    Suche
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
                         </div>
-
-
-                        <div id="info" class="col-md-4">
+                        <div id="info" class="col-md-6">
                             <div class="card card-gray collapsed-card">
                                 <div class="card-header">
                                     <h3 class="card-title">Info</h3>
@@ -332,7 +246,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <th scope="col">Bereich</th>
                                                             <th scope="col">Equipment</th>
                                                             <th scope="col">Durchfluss</th>
-                                                            <th scope="col">Kosten/Jahr</th>
                                                             <th scope="col">Zeitstempel</th>
                                                         </tr>
                                                     </thead>
@@ -481,7 +394,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             getGroups();
 
             showInfo();
-            showFilterRecords();
+
             getJQueryMaxValues();
         });
 
@@ -600,7 +513,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     "<td>" + item.Area + "</td>" +
                     "<td>" + item.Number + ' - ' + item.Name + "</td>" +
                     "<td>" + item.Value + ' l/min' + "</td>" +
-                    "<td>" + Math.round(item.Value * lMinInKubikMeterYear * config.AirPressurePrice) + ' Euro' + "</td>" +
                     "<td>" + item.CreateDate + "</td>" +
                     "</tr>";
 
@@ -631,34 +543,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
 
-
         }
-
-        function showFilterRecords() {
-
-            $('#pressureAvg').html('0 bar');
-            $('#flowAvg').html('0 l/min');
-
-            //let selectedGroup = $("#selectGroup option:selected").val();
-            //console.log(selectedGroup);
-            let url = '/api/records/avg/' + '/' + $('#start').val() + '/' + $('#end').val() + '/' + 0 + '/' + 0;
-
-            $.getJSON(url)
-                .done(function (data) {
-
-                    if (typeof data[0] != 'undefined')
-                        $('#pressureAvg').html(data[0].average + ' bar');
-                    if (typeof data[1] != 'undefined')
-                        $('#flowAvg').html(data[1].average + ' l/min');
-                    if (typeof data[1] != 'undefined')
-                        $('#price').html(Math.round(data[1].average * lMinInKubikMeterYear * config.AirPressurePrice) + ' Euro/Jahr');
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-        }
-
 
     </script>
 
