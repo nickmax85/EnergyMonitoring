@@ -33,6 +33,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
+    <script src="js/constants.js"></script>
+    <!-- summernote -->
+    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+
 
 
 </head>
@@ -200,7 +204,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <div class="col">
                                                 <label class="control-label" for="start">Start</label>
                                                 <input type="date" data-format="yyyy-MM-dd" id="start"
-                                                    class="form-control" value="2019-12-01">
+                                                       class="form-control" value="2019-12-01">
                                             </div>
                                         </div>
                                     </div>
@@ -211,7 +215,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <div class="col">
                                                 <label class="control-label" for="end">Ende</label>
                                                 <input type="date" data-format="yyyy-MM-dd" id="end"
-                                                    class="form-control">
+                                                       class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -219,7 +223,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="form-group">
                                         <!-- Submit button -->
                                         <button class="btn btn-primary btn-block " name="submit" type="submit"
-                                            onclick="getRecordsByDate()">Suche</button>
+                                                onclick="getRecordsByDate()">
+                                            Suche
+                                        </button>
 
                                     </div>
                                 </div>
@@ -235,46 +241,98 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-lg-6 col-6">
+                                        <div class="col-lg-4 col-6">
                                             <!-- small card -->
                                             <div class="small-box bg-gradient-primary">
                                                 <div class="inner">
-                                                    <h3 id="pressureAvg">0 l/min</h3>
+                                                    <h3 id="pressureAvg">0 bar</h3>
                                                     <p>Druck</p>
                                                 </div>
                                                 <div class="icon">
                                                     <i class="fas fa-circle"></i>
                                                 </div>
                                                 <!--<a href="#" class="small-box-footer">
-                                                    More info <i class="fas fa-arrow-circle-right"></i>
-                                                </a>-->
+                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                </a>-->
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-6">
+                                        <div class="col-lg-4 col-6">
                                             <!-- small card -->
                                             <div class="small-box bg-gradient-info">
                                                 <div class="inner">
-                                                    <h3 id="flowAvg">0 bar</h3>
+                                                    <h3 id="flowAvg">0 l/min</h3>
                                                     <p>Durchfluss</p>
                                                 </div>
                                                 <div class="icon">
                                                     <i class="fas fa-gas-pump"></i>
                                                 </div>
                                                 <!--<a href="#" class="small-box-footer">
-                                                    More info <i class="fas fa-arrow-circle-right"></i>
-                                                </a>-->
+                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                </a>-->
                                             </div>
                                         </div>
+                                        <div class="col-lg-4 col-6">
+                                            <!-- small card -->
+                                            <div class="small-box bg-gradient-warning">
+                                                <div class="inner">
+                                                    <h3 id="price">0 Euro/Jahr</h3>
+                                                    <p>Kosten</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fas fa-coins"></i>
+                                                </div>
+                                                <!--<a href="#" class="small-box-footer">
+                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                </a>-->
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-outline card-info collapsed-card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        Fehleranalyse
+                                        <small>(in Bearbeitung)</small>
+                                    </h3>
+                                    <!-- tools box -->
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" data-toggle="tooltip"
+                                                title="Collapse">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool btn-sm" data-card-widget="remove" data-toggle="tooltip"
+                                                title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /. tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body pad">
+                                    <div class="mb-3">
+                                        <textarea class="textarea" placeholder="Place some text here"
+                                                  style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                    </div>
+                                    <p class="text-sm mb-0">
+                                        Editor <a href="https://github.com/summernote/summernote">
+                                            Documentation and license
+                                            information.
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-->
                     </div>
 
 
-                    <!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
             <!-- /.content -->
@@ -307,15 +365,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
+    <!-- Summernote -->
+    <script src="plugins/summernote/summernote-bs4.min.js"></script>
 
 
 
     <script>
-
+        getConfig();
         getDate();
 
         let equipment;
         let sensors;
+        let config;
+
+        $(function () {
+            // Summernote
+            $('.textarea').summernote()
+        })
 
         $(document).ready(function () {
 
@@ -353,8 +419,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
 
         function getRecordsByDate() {
-
-
 
             let url = '/api/records/' + equipment.Devices[0].DeviceID + '/' + $('#start').val() + '/' + $('#end').val();
 
@@ -404,14 +468,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 });
         }
 
+        function getConfig() {
+
+            let url = '/api/configs';
+            $.getJSON(url)
+                .done(function (data) {
+
+                    config = data[0];
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+
+        }
+
         function showFilterRecords() {
 
             $('#pressureAvg').html('0 bar');
             $('#flowAvg').html('0 l/min');
 
-          
             let url = '/api/records/avg' + '/' + $('#start').val() + '/' + $('#end').val() + '/' + 0 + '/' + equipment.EquipmentID;
-          
+
             $.getJSON(url)
                 .done(function (data) {
 
@@ -419,6 +498,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         $('#pressureAvg').html(data[0].average + ' bar');
                     if (typeof data[1] != 'undefined')
                         $('#flowAvg').html(data[1].average + ' l/min');
+                    if (typeof data[1] != 'undefined')
+                        $('#price').html(Math.round(data[1].average * lMinInKubikMeterYear * config.AirPressurePrice) + ' Euro/Jahr');
+
+
 
                 })
                 .fail(function (error) {
@@ -451,7 +534,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         }
 
-
         function updateChart() {
 
             window.myLine.update();
@@ -463,8 +545,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         let labels1 = [];
         let labels2 = [];
 
-
-        var config = {
+        var chartConfig = {
             type: 'line',
             data: {
                 labels: labels1,
@@ -559,7 +640,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         window.onload = function () {
             var ctx = document.getElementById('canvas').getContext('2d');
-            window.myLine = new Chart(ctx, config);
+            window.myLine = new Chart(ctx, chartConfig);
         };
 
 

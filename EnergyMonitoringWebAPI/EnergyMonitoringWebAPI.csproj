@@ -115,6 +115,7 @@
     <Content Include="app\css\animate.css" />
     <Content Include="app\css\style.css" />
     <Content Include="app\js\chartjs\chartjs-plugin-zoom.min.js" />
+    <Content Include="app\js\constants.js" />
     <Content Include="app\js\hammer\hammer.min.js" />
     <Content Include="app\js\moment\moment.min.js" />
     <Content Include="app\index.html" />

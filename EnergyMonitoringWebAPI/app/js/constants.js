@@ -1,0 +1,1 @@
+﻿const lMinInKubikMeterYear = 525.6;
