@@ -31,8 +31,8 @@ namespace EnergyMonitoringService.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=energymonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
                 //optionsBuilder.UseSqlServer("Server=localhost;Database=energymonitoring;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=energymonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
             }
         }
 
@@ -65,6 +65,8 @@ namespace EnergyMonitoringService.Models
             modelBuilder.Entity<Config>(entity =>
             {
                 entity.Property(e => e.ConfigId).HasColumnName("ConfigID");
+
+                entity.Property(e => e.AirPressurePrice).HasColumnType("decimal(9, 6)");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
@@ -171,6 +173,8 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.SensorId).HasColumnName("SensorID");
 
+                entity.Property(e => e.UnitId).HasColumnName("UnitID");
+
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasColumnType("decimal(6, 1)");
@@ -185,6 +189,11 @@ namespace EnergyMonitoringService.Models
                     .HasForeignKey(d => d.SensorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Record_Sensor");
+
+                entity.HasOne(d => d.Unit)
+                    .WithMany(p => p.Record)
+                    .HasForeignKey(d => d.UnitId)
+                    .HasConstraintName("FK_Record_Unit");
             });
 
             modelBuilder.Entity<Sensor>(entity =>

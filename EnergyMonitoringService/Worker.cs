@@ -112,6 +112,7 @@ namespace EnergyMonitoringService
                                         Record record = new Record();
                                         record.Equipment = device.Equipment;
                                         record.Sensor = sensor;
+                                        record.UnitId = sensor.UnitId;
                                         record.Value = (decimal)Math.Round(item.value, 1);
                                         record.CreateDate = DateTime.Now;
 
