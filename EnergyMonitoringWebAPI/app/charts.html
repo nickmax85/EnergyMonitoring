@@ -204,7 +204,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <div class="col">
                                                 <label class="control-label" for="start">Start</label>
                                                 <input type="date" data-format="yyyy-MM-dd" id="start"
-                                                       class="form-control" value="2019-12-01">
+                                                    class="form-control" value="2019-12-01">
                                             </div>
                                         </div>
                                     </div>
@@ -215,7 +215,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <div class="col">
                                                 <label class="control-label" for="end">Ende</label>
                                                 <input type="date" data-format="yyyy-MM-dd" id="end"
-                                                       class="form-control">
+                                                    class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +223,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="form-group">
                                         <!-- Submit button -->
                                         <button class="btn btn-primary btn-block " name="submit" type="submit"
-                                                onclick="getRecordsByDate()">
+                                            onclick="getRecordsByDate()">
                                             Suche
                                         </button>
 
@@ -294,38 +294,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="card card-outline card-info collapsed-card">
+                        <div class="col-md-9">
+                            <div class="card card-outline card-info">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Fehleranalyse
-                                        <small>(in Bearbeitung)</small>
+                                        Aktivitäten                                      
                                     </h3>
                                     <!-- tools box -->
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" data-toggle="tooltip"
-                                                title="Collapse">
-                                            <i class="fas fa-plus"></i>
+                                        <button type="button" id="saveActivities" class="btn btn-tool btn-sm"
+                                            data-card-widget="save" data-toggle="tooltip" title="Save">
+                                            <i class="fas fa-save"></i>
                                         </button>
-                                        <button type="button" class="btn btn-tool btn-sm" data-card-widget="remove" data-toggle="tooltip"
-                                                title="Remove">
-                                            <i class="fas fa-times"></i>
+                                        <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse"
+                                            data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
                                         </button>
                                     </div>
                                     <!-- /. tools -->
                                 </div>
                                 <!-- /.card-header -->
+
                                 <div class="card-body pad">
                                     <div class="mb-3">
-                                        <textarea class="textarea" placeholder="Place some text here"
-                                                  style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                        <textarea class="form-control" id="activities" rows="10"
+                                            aria-label="With textarea">123</textarea>
                                     </div>
-                                    <p class="text-sm mb-0">
-                                        Editor <a href="https://github.com/summernote/summernote">
-                                            Documentation and license
-                                            information.
-                                        </a>
-                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -378,14 +372,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         let sensors;
         let config;
 
-        $(function () {
-            // Summernote
-            $('.textarea').summernote()
-        })
-
         $(document).ready(function () {
 
             equipment = JSON.parse(localStorage.getItem('Equipment'));
+
 
             $('#group').html(equipment.Group.Name);
             $('#equipment').html(equipment.Number + " - " + equipment.Name);
@@ -396,7 +386,53 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             showFilterRecords();
 
+            showActivities(equipment.EquipmentID);
+
+            $('#saveActivities').click(function () {
+
+                saveActivities();
+
+            });
+
         });
+
+
+        function showActivities(id) {
+
+            let url = '/api/equipments/' + id;
+
+            $.getJSON(url)
+                .done(function (data) {
+          
+                    $('#activities').val(data.Activities);
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+
+        }
+
+        function saveActivities() {
+
+            let url = '/api/equipments/' + equipment.EquipmentID;
+
+            Equipment = new Object();
+            Equipment.Activities = $('#activities').val();
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(Equipment),
+                success: function (Equipment) {
+                    alert("Daten erfolgreich gespeichert.");
+                },
+                error: function (request, message, error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                }
+            });
+        }
 
 
         function getDate() {

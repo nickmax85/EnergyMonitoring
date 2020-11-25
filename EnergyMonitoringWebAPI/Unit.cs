@@ -18,6 +18,7 @@ namespace EnergyMonitoringWebAPI
         public Unit()
         {
             this.Sensors = new HashSet<Sensor>();
+            this.Record = new HashSet<Record>();
         }
     
         public int UnitID { get; set; }
@@ -28,5 +29,7 @@ namespace EnergyMonitoringWebAPI
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sensor> Sensors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Record> Record { get; set; }
     }
 }

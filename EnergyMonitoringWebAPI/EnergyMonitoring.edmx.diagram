@@ -24,6 +24,7 @@
         <AssociationConnector Association="EnergyMonitoringModel.FK_User_MailDistribution" ManuallyRouted="false" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Sensor" ManuallyRouted="false" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Unit" ManuallyRouted="false" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Unit" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

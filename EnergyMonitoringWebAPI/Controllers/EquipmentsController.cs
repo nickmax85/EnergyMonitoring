@@ -97,41 +97,31 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
 
-
-        // PUT: api/Equipments/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutEquipment(int id, Equipment equipment)
+        // PUT: api/Sensors/5
+        [HttpPut()]
+        public IHttpActionResult Put(int id, Equipment value)
         {
-            if (!ModelState.IsValid)
+            IHttpActionResult ret = null;
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                return BadRequest(ModelState);
+                db.Configuration.LazyLoadingEnabled = false;
+                var item = db.Equipments.Find(id);
+
+                item.Activities = value.Activities;
+             
+                item.UpdateDate = DateTime.Now;
+
+                db.SaveChanges();
+
+                ret = Ok(item);
+
+
             }
 
-            if (id != equipment.EquipmentID)
-            {
-                return BadRequest();
-            }
 
-            db.Entry(equipment).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EquipmentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return ret;
         }
+
 
         // POST: api/Equipments
         [ResponseType(typeof(Equipment))]
