@@ -25,6 +25,8 @@
         <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Sensor" ManuallyRouted="false" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Unit" ManuallyRouted="false" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Unit" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Activity" Width="1.5" PointX="5.25" PointY="11" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Activity_Equipment" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

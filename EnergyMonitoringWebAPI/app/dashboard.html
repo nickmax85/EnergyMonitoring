@@ -128,7 +128,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                             </ul>
                         </li>
-
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -159,83 +158,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="content">
 
                 <div class="container-fluid">
-
                     <!--  -->
                     <div class="row">
-                        <div class="col-md-6">
-
-
+                        <div class="col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="far fa-flag"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Anlagen</span>
+                                    <span class="info-box-number" id="machinecount">1,410</span>
+                                </div>
+                            </div>
                         </div>
-                        <div id="info" class="col-md-6">
-                            <div class="card card-gray collapsed-card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Info</h3>
 
+                        <div class="col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning"><i class="far fa-bookmark"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Sensoren</span>
+                                    <span class="info-box-number" id="sensorcount">1,410</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success"><i class="fas fa-comments"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Messwerte</span>
+                                    <span class="info-box-number" id="recordcount">1,410</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div id="info" class="col-md-12">
+                            <div class="card card-warning collapsed-card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Maximalwerte</h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas fa-plus"></i>
                                         </button>
+
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body" style="display: none;">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-6">
-                                                <!-- small card -->
-                                                <div class="small-box bg-info">
-                                                    <div class="inner">
-                                                        <h3 id="machinecount">0</h3>
-                                                        <p>Anlagen</p>
-                                                    </div>
-                                                    <div class="icon">
-                                                        <i class="fas fa-chart-pie"></i>
-                                                    </div>
-                                                    <a href="tables.html" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-6">
-                                                <!-- small card -->
-                                                <div class="small-box bg-gradient-yellow">
-                                                    <div class="inner">
-                                                        <h3 id="sensorcount">0</h3>
-                                                        <p>Sensoren</p>
-                                                    </div>
-                                                    <div class="icon">
-                                                        <i class="far fa-copy"></i>
-                                                    </div>
-                                                    <a href="tables.html" class="small-box-footer">
-                                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div id="info" class="col-md-12">
-                            <div class="card card-warning">
-                                <div class="card-header">
-                                    <h3 class="card-title">Maximalwerte</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-
-                                    </div>
-                                    <!-- /.card-tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body" style="display: block;">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="table-wrapper-scroll-y my-custom-scrollbar col-lg-9">
@@ -267,10 +238,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <label class="control-label"
-                                                                           for="start">Start</label>
+                                                                        for="start">Start</label>
                                                                     <input type="date" data-format="yyyy-MM-dd"
-                                                                           id="startMaxValue" class="form-control"
-                                                                           value="2019-12-01">
+                                                                        id="startMaxValue" class="form-control"
+                                                                        value="2019-12-01">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -281,7 +252,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 <div class="col">
                                                                     <label class="control-label" for="end">Ende</label>
                                                                     <input type="date" data-format="yyyy-MM-dd"
-                                                                           id="endMaxValue" class="form-control">
+                                                                        id="endMaxValue" class="form-control">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -289,8 +260,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <div class="form-group">
                                                             <!-- Submit button -->
                                                             <button class="btn btn-primary btn-block " name="submit"
-                                                                    type="submit"
-                                                                    onclick="getJQueryMaxValues()">
+                                                                type="submit" onclick="getJQueryMaxValues()">
                                                                 Suche
                                                             </button>
 
@@ -330,7 +300,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="form-group">
                                         <!--<label for="selectArea">Group</label>-->
                                         <select class="form-control" id="selectGroup"
-                                                onchange="groupSelectionChange(this)">
+                                            onchange="groupSelectionChange(this)">
                                             <option value="0">auswählen</option>
                                         </select>
                                         <br />

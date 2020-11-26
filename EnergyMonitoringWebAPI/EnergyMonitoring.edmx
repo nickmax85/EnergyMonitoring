@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="EnergyMonitoringModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="ActivityID" />
+          </Key>
+          <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comment" Type="text" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="EquipmentID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Alarm">
           <Key>
             <PropertyRef Name="AlarmID" />
@@ -115,6 +125,18 @@
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
+        <Association Name="FK_Activity_Equipment">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="EquipmentID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="EquipmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Alarm_Record">
           <End Role="Record" Type="Self.Record" Multiplicity="1" />
           <End Role="Alarm" Type="Self.Alarm" Multiplicity="*" />
@@ -251,6 +273,7 @@
         </Function>
         <Function Name="spGetSensors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EnergyMonitoringModelStoreContainer">
+          <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Alarm" EntityType="Self.Alarm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Device" EntityType="Self.Device" Schema="dbo" store:Type="Tables" />
@@ -261,6 +284,10 @@
           <EntitySet Name="Sensor" EntityType="Self.Sensor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Activity_Equipment" Association="Self.FK_Activity_Equipment">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
           <AssociationSet Name="FK_Alarm_Record" Association="Self.FK_Alarm_Record">
             <End Role="Record" EntitySet="Record" />
             <End Role="Alarm" EntitySet="Alarm" />
@@ -359,6 +386,7 @@
           <NavigationProperty Name="Group" Relationship="Self.FK_Equipment_Area" FromRole="Equipment" ToRole="Group" />
           <NavigationProperty Name="Records" Relationship="Self.FK_Record_Equipment" FromRole="Equipment" ToRole="Record" />
           <Property Name="Activities" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Activity" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Equipment" ToRole="Activity" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -613,6 +641,11 @@
             <End Role="Unit" EntitySet="Units" />
             <End Role="Record" EntitySet="Records" />
           </AssociationSet>
+          <EntitySet Name="Activity" EntityType="EnergyMonitoringModel.Activity" />
+          <AssociationSet Name="FK_Activity_Equipment" Association="EnergyMonitoringModel.FK_Activity_Equipment">
+            <End Role="Equipment" EntitySet="Equipments" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="spGetSensors_Result">
           <Property Type="Int32" Name="SensorID" Nullable="false" />
@@ -657,6 +690,29 @@
             </Principal>
             <Dependent Role="Record">
               <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="ActivityID" />
+          </Key>
+          <Property Name="ActivityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="EquipmentID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Activity" ToRole="Equipment" />
+        </EntityType>
+        <Association Name="FK_Activity_Equipment">
+          <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="1" />
+          <End Type="EnergyMonitoringModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="EquipmentID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="EquipmentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -836,6 +892,17 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Activity">
+            <EntityTypeMapping TypeName="EnergyMonitoringModel.Activity">
+              <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

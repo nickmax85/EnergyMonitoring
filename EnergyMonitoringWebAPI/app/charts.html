@@ -286,7 +286,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>-->
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -298,7 +297,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <div class="card card-outline card-info">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Aktivitäten                                      
+                                        Aktivitäten
                                     </h3>
                                     <!-- tools box -->
                                     <div class="card-tools">
@@ -317,15 +316,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                 <div class="card-body pad">
                                     <div class="mb-3">
-                                        <textarea class="form-control" id="activities" rows="10"
-                                            aria-label="With textarea">123</textarea>
+                                        <button type="button" class="btn btn-outline-primary"
+                                            onclick="location.href='activity.html'"><i class="fas fa-plus">Neu</i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary"><i
+                                                class="fas fa-edit">Bearbeiten</i></button>
+                                        <button type="button" disabled class="btn btn-outline-primary"><i
+                                                class="fas fa-trash">Entfernen</i></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- /.col-->
                     </div>
-
 
                 </div><!-- /.container-fluid -->
             </div>
@@ -403,7 +406,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $.getJSON(url)
                 .done(function (data) {
-          
+
                     $('#activities').val(data.Activities);
 
                 })
