@@ -34,10 +34,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
     <script src="js/constants.js"></script>
-    <!-- summernote -->
-    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
-
-
 
 </head>
 
@@ -252,8 +248,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     <i class="fas fa-circle"></i>
                                                 </div>
                                                 <!--<a href="#" class="small-box-footer">
-                                    More info <i class="fas fa-arrow-circle-right"></i>
-                                </a>-->
+                                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                                </a>-->
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-6">
@@ -267,8 +263,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     <i class="fas fa-gas-pump"></i>
                                                 </div>
                                                 <!--<a href="#" class="small-box-footer">
-                                    More info <i class="fas fa-arrow-circle-right"></i>
-                                </a>-->
+                                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                                </a>-->
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-6">
@@ -282,8 +278,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     <i class="fas fa-coins"></i>
                                                 </div>
                                                 <!--<a href="#" class="small-box-footer">
-                                    More info <i class="fas fa-arrow-circle-right"></i>
-                                </a>-->
+                                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                                </a>-->
                                             </div>
                                         </div>
                                     </div>
@@ -293,18 +289,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
 
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <div class="card card-outline card-info">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Aktivitäten
+                                        Tätigkeiten
                                     </h3>
                                     <!-- tools box -->
                                     <div class="card-tools">
-                                        <button type="button" id="saveActivities" class="btn btn-tool btn-sm"
-                                            data-card-widget="save" data-toggle="tooltip" title="Save">
-                                            <i class="fas fa-save"></i>
-                                        </button>
                                         <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse"
                                             data-toggle="tooltip" title="Collapse">
                                             <i class="fas fa-minus"></i>
@@ -314,21 +306,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <!-- /.card-header -->
 
-                                <div class="card-body pad">
-                                    <div class="mb-3">
-                                        <button type="button" class="btn btn-outline-primary"
-                                            onclick="location.href='activity.html'"><i class="fas fa-plus">Neu</i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-primary"><i
-                                                class="fas fa-edit">Bearbeiten</i></button>
-                                        <button type="button" disabled class="btn btn-outline-primary"><i
-                                                class="fas fa-trash">Entfernen</i></button>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <a class="btn btn-app" onclick="location.href='activity.html'">
+                                            <i class="fas fa-plus"></i> Neu
+                                        </a>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="timeline" id="activities"></div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- /.col-->
                     </div>
+
 
                 </div><!-- /.container-fluid -->
             </div>
@@ -362,9 +357,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
-
 
 
     <script>
@@ -389,14 +381,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             showFilterRecords();
 
+            getActivities(equipment.EquipmentID);
+
             showActivities(equipment.EquipmentID);
-
-            $('#saveActivities').click(function () {
-
-                saveActivities();
-
-            });
-
+          
         });
 
 
@@ -416,27 +404,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         }
 
-        function saveActivities() {
 
-            let url = '/api/equipments/' + equipment.EquipmentID;
-
-            Equipment = new Object();
-            Equipment.Activities = $('#activities').val();
-
+        function deleteActivity(id) {
+            let url = '/api/activities/' + id;
+           
             $.ajax({
                 url: url,
-                type: 'PUT',
-                contentType: "application/json;charset=utf-8",
-                data: JSON.stringify(Equipment),
-                success: function (Equipment) {
-                    alert("Daten erfolgreich gespeichert.");
-                },
-                error: function (request, message, error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                }
-            });
-        }
+                type: 'DELETE',
+                         
+            })
+                .done(function (data) {
+                    //let data = JSON.parse(ddata.d);
 
+                    showData(data);
+
+                    //alert(ddata);
+                    //debugger;
+
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });            
+        }
 
         function getDate() {
             let today = new Date();
@@ -446,7 +435,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             let start = now.clone().add(-6, 'd').format(timeFormat);
             let end = now.format(timeFormat);
-
 
             //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
             //let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
@@ -475,6 +463,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
+
             showFilterRecords();
 
         }
@@ -507,6 +496,65 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 });
         }
 
+        function getActivities(equipmentId) {
+
+            let url = '/api/activities/' + equipmentId;
+            $.getJSON(url)
+                .done(function (data) {
+
+                    showActivities(data);
+                })
+                .fail(function (error) {
+                    alert("ERROR: " + error.status + ' ' + error.statusText);
+                });
+        }
+
+        function showActivities(data) {
+
+            let container = $('#activities');
+            container.empty();
+
+            if (!Array.isArray(data))
+                return;
+
+            data.forEach(function (item, i) {
+
+                let timeLabel = $('<div class="time-label">');
+                let date = $('<span class="bg-success"></span>');
+                let d = new Date(item.CreateDate);
+                date.html(d.toISOString().slice(0, 10));
+                timeLabel.append(date);
+                container.append(timeLabel);
+
+                let div = $('<div>');
+                container.append(div);
+
+                let usericon = $('<i class="fas fa-user bg-green"></i>');
+                div.append(usericon);
+                let timelineItem = $('<div class="timeline-item">');
+                div.append(timelineItem);
+
+                let header = $('<h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>');
+                header.html(item.ModifiedBy);
+                timelineItem.append(header);
+
+                let body = $('<div class="timeline-body">Testeintrag</div>');
+                body.html(item.Comment);
+                timelineItem.append(body);
+
+                let footer = $('<div class="timeline-footer">');
+
+                let btnEdit = $('<a class="btn btn-primary btn-sm disabled">Bearbeiten</a>');
+                footer.append(btnEdit);
+
+                let btnDelete = $('<a class="btn btn-danger btn-sm disabled">Entfernen</a></div>');
+                footer.append(btnDelete);
+
+                timelineItem.append(footer);
+
+            });
+        }
+
         function getConfig() {
 
             let url = '/api/configs';
@@ -519,7 +567,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
-
 
         }
 
@@ -540,8 +587,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     if (typeof data[1] != 'undefined')
                         $('#price').html(Math.round(data[1].average * lMinInKubikMeterYear * config.AirPressurePrice) + ' Euro/Jahr');
 
-
-
                 })
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
@@ -554,14 +599,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             if (!Array.isArray(data))
                 return;
 
-
             data.forEach(function (item, i) {
 
                 if (item.SensorID == sensors[1].SensorID) {
 
                     data1.push(item.Value);
                     labels1.push(item.CreateDate);
-
                 }
 
                 if (item.SensorID == sensors[0].SensorID) {
@@ -675,7 +718,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             }
 
         };
-
 
         window.onload = function () {
             var ctx = document.getElementById('canvas').getContext('2d');

@@ -163,19 +163,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="col-md-9">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Aktivität</h3>
+                                    <h3 class="card-title">Tätigkeit</h3>
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
                                 <form role="form">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="textArea">Kommentar</label>
-                                            <textarea class="form-control" id="textArea" rows="10"
-                                                onkeyup="stoppedTyping()" placeholder="Kommentar eingeben ..."
-                                                aria-label="With textarea"></textarea>
+                                            <label for="modifiedBy">Bearbeiter</label>
+                                            <input type="text" class="form-control" id="modifiedBy"
+                                                aria-describedby="emailHelp" placeholder="">
                                         </div>
                                         <div class="form-group">
+                                            <label for="textArea">Kommentar</label>
+                                            <textarea class="form-control" id="textArea" rows="10" onkeyup=""
+                                                placeholder="" aria-label="With textarea"></textarea>
+                                        </div>
+                                        <!-- <div class="form-group">
                                             <label for="attachment">Anhang</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
@@ -187,7 +191,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     <span class="input-group-text" id="">Upload</span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">
@@ -259,46 +263,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
             // let activity = { Title: 'NEW', Room: 'C' };
             let activity = new Object();
             activity.Comment = $('#textArea').val();
+            activity.ModifiedBy = $('#modifiedBy').val();
             activity.EquipmentID = equipment.EquipmentID;
 
-            if ((activity.Comment === "") || (activity.EquipmentID === 0)) {
-                alert("Keine Daten");
+            if ((activity.Comment === "") || (activity.EquipmentID === 0) || (activity.ModifiedBy === 0)) {
+                alert("Eingabe ist unvollständig ... ");
                 return;
 
             }
+            debugger;
+            if (activity.ActivityID == 0)
+                $.post(url, activity)
+                    .done(function (data) {
 
+                        window.location = 'charts.html';
 
+                    })
+                    .fail(function (error) {
+                        alert("ERROR: " + error.status + ' ' + error.statusText);
+                    });
 
-            $.post(url, activity)
-
-                .done(function (data) {
-
-                    window.location = 'charts.html';
-
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
+            else
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(activity),
+                    success: function (activity) {
+                        window.location = 'charts.html';
+                    },
+                    error: function (request, message, error) {
+                        alert("ERROR: " + error.status + ' ' + error.statusText);
+                    }
                 });
 
         }
 
-
-        function stoppedTyping() {
-            if (this.value.length > 0) {
-                document.getElementById('start_button').disabled = false;
-            } else {
-                document.getElementById('start_button').disabled = true;
-            }
-        }
-        function verify() {
-            if ($('#textArea').val())){
-                alert "Put some text in there!"
-                return
-            }
-        else {
-                do button functionality
-        }
-        }
 
     </script>
 

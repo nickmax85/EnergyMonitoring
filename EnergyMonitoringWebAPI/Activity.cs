@@ -16,9 +16,10 @@ namespace EnergyMonitoringWebAPI
     {
         public int ActivityID { get; set; }
         public string Comment { get; set; }
+        public int EquipmentID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public int EquipmentID { get; set; }
+        public string ModifiedBy { get; set; }
     
         public virtual Equipment Equipment { get; set; }
     }

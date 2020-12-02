@@ -11,9 +11,10 @@
           </Key>
           <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Comment" Type="text" Nullable="false" />
+          <Property Name="EquipmentID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" />
-          <Property Name="EquipmentID" Type="int" Nullable="false" />
+          <Property Name="ModifiedBy" Type="nchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Alarm">
           <Key>
@@ -385,7 +386,6 @@
           <NavigationProperty Name="Devices" Relationship="Self.FK_Device_Equipment" FromRole="Equipment" ToRole="Device" />
           <NavigationProperty Name="Group" Relationship="Self.FK_Equipment_Area" FromRole="Equipment" ToRole="Group" />
           <NavigationProperty Name="Records" Relationship="Self.FK_Record_Equipment" FromRole="Equipment" ToRole="Record" />
-          <Property Name="Activities" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Activity" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Equipment" ToRole="Activity" />
         </EntityType>
         <EntityType Name="Group">
@@ -699,9 +699,10 @@
           </Key>
           <Property Name="ActivityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Comment" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="EquipmentID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <Property Name="EquipmentID" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Activity" ToRole="Equipment" />
         </EntityType>
         <Association Name="FK_Activity_Equipment">
@@ -764,7 +765,6 @@
           <EntitySetMapping Name="Equipments">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Equipment">
               <MappingFragment StoreEntitySet="Equipment">
-                <ScalarProperty Name="Activities" ColumnName="Activities" />
                 <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -895,9 +895,10 @@
           <EntitySetMapping Name="Activity">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
-                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
               </MappingFragment>

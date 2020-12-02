@@ -107,7 +107,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 db.Configuration.LazyLoadingEnabled = false;
                 var item = db.Equipments.Find(id);
 
-                item.Activities = value.Activities;
+                item.Activity = value.Activity;
              
                 item.UpdateDate = DateTime.Now;
 

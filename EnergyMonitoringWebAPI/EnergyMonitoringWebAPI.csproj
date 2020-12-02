@@ -112,6 +112,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\activity.html" />
     <Content Include="app\css\animate.css" />
     <Content Include="app\css\style.css" />
     <Content Include="app\js\chartjs\chartjs-plugin-zoom.min.js" />
