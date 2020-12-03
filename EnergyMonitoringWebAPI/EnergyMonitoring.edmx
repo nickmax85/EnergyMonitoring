@@ -14,7 +14,7 @@
           <Property Name="EquipmentID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" />
-          <Property Name="ModifiedBy" Type="nchar" MaxLength="20" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Alarm">
           <Key>
@@ -702,7 +702,7 @@
           <Property Name="EquipmentID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Activity" ToRole="Equipment" />
         </EntityType>
         <Association Name="FK_Activity_Equipment">

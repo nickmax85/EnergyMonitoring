@@ -308,7 +308,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                 <div class="card-body">
                                     <div class="row">
-                                        <a class="btn btn-app" onclick="location.href='activity.html'">
+                                        <a class="btn btn-app" id="newBtn">
                                             <i class="fas fa-plus"></i> Neu
                                         </a>
                                     </div>
@@ -371,9 +371,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             equipment = JSON.parse(localStorage.getItem('Equipment'));
 
-
             $('#group').html(equipment.Group.Name);
             $('#equipment').html(equipment.Number + " - " + equipment.Name);
+
+            $('#newBtn').click(function () {
+
+                localStorage.removeItem('activity');
+                window.location.href = "activity.html";
+
+            });
 
             sensors = getSensors(equipment.Devices[0].DeviceID);
 
@@ -383,48 +389,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             getActivities(equipment.EquipmentID);
 
-            showActivities(equipment.EquipmentID);
-          
         });
 
-
-        function showActivities(id) {
-
-            let url = '/api/equipments/' + id;
-
-            $.getJSON(url)
-                .done(function (data) {
-
-                    $('#activities').val(data.Activities);
+        function deleteActivity(activity) {
+            let url = '/api/activities/' + activity.ActivityID;
+            dataType: "json",
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
 
                 })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
+                    .done(function (data) {
 
-        }
+                        getActivities(equipment.EquipmentID);
 
-
-        function deleteActivity(id) {
-            let url = '/api/activities/' + id;
-           
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                         
-            })
-                .done(function (data) {
-                    //let data = JSON.parse(ddata.d);
-
-                    showData(data);
-
-                    //alert(ddata);
-                    //debugger;
-
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });            
+                    })
+                    .fail(function (error) {
+                        alert("ERROR: " + error.status + ' ' + error.statusText);
+                    });
         }
 
         function getDate() {
@@ -498,7 +480,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         function getActivities(equipmentId) {
 
-            let url = '/api/activities/' + equipmentId;
+            let url = '/api/activities/equipment/' + equipmentId;
             $.getJSON(url)
                 .done(function (data) {
 
@@ -544,10 +526,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 let footer = $('<div class="timeline-footer">');
 
-                let btnEdit = $('<a class="btn btn-primary btn-sm disabled">Bearbeiten</a>');
+                let btnEdit = $('<a class="btn btn-primary btn-sm">Bearbeiten</a>');
+                btnEdit.val(item);
+                btnEdit.click(function () {
+                    localStorage.setItem('activity', JSON.stringify(item));
+                    window.location.href = "activity.html";
+                });
                 footer.append(btnEdit);
 
-                let btnDelete = $('<a class="btn btn-danger btn-sm disabled">Entfernen</a></div>');
+                let btnDelete = $('<a class="btn btn-warning btn-sm" type="submit">Entfernen</a></div>');
+                btnDelete.val(item);
+                btnDelete.click(function () {
+                    deleteActivity(btnDelete.val());
+                });
                 footer.append(btnDelete);
 
                 timelineItem.append(footer);

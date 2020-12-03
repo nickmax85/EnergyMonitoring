@@ -12,7 +12,8 @@ namespace EnergyMonitoringWebAPI.Controllers
     public class ActivitiesController : ApiController
     {
         // GET: api/activities/2
-        [Route("api/activities/{equipmentId}")]
+        [HttpGet]
+        [Route("api/activities/equipment/{equipmentId}")]
         public IEnumerable<Activity> GetActivitiesByEquipment(int equipmentId)
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
@@ -28,13 +29,27 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         }
 
-        // GET: api/Activities/5
-        public string Get(int id)
+        // GET: api/activities/5
+        [HttpGet]
+        //[Route("api/activities/{id}")]
+        public Activity Get(int id)
         {
-            return "value";
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                Activity activity = db.Activity.Find(id);
+
+
+                return activity;
+
+            }
+
         }
 
-        // POST: api/Activities
+        // POST: api/Activities   
+        [HttpPost()]
         public IHttpActionResult Post([FromBody] Activity value)
         {
             IHttpActionResult ret = null;
@@ -45,7 +60,8 @@ namespace EnergyMonitoringWebAPI.Controllers
                 var item = new Activity();
                 item.Comment = value.Comment;
                 item.ModifiedBy = value.ModifiedBy;
-                item.CreateDate = System.DateTime.Now;
+                item.CreateDate = DateTime.Now;
+                item.UpdateDate = DateTime.Now;
                 item.EquipmentID = value.EquipmentID;
 
                 db.Activity.Add(item);
@@ -58,7 +74,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
         // PUT: api/Sensors/5
-        [HttpPut()]
+        [HttpPut()]     
         public IHttpActionResult Put(int id, Activity value)
         {
             IHttpActionResult ret = null;
@@ -81,8 +97,8 @@ namespace EnergyMonitoringWebAPI.Controllers
             return ret;
         }
 
-        // DELETE: api/Activities/5
-        public void Delete(int id)
+     
+        public void Delete (int id)
         {
             IHttpActionResult ret = null;
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
@@ -96,6 +112,8 @@ namespace EnergyMonitoringWebAPI.Controllers
 
                 ret = Ok(item);
             }
+
+            //return ret;
         }
     }
 }
