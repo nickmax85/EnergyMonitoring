@@ -526,7 +526,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 let footer = $('<div class="timeline-footer">');
 
-                let btnEdit = $('<a class="btn btn-primary btn-sm">Bearbeiten</a>');
+                let btnEdit = $('<a class="btn btn-primary btn-sm mr-2">Bearbeiten</a>');
                 btnEdit.val(item);
                 btnEdit.click(function () {
                     localStorage.setItem('activity', JSON.stringify(item));
@@ -534,7 +534,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 });
                 footer.append(btnEdit);
 
-                let btnDelete = $('<a class="btn btn-warning btn-sm" type="submit">Entfernen</a></div>');
+                let btnDelete = $('<a class="btn btn-warning btn-sm mr-2" type="submit">Entfernen</a></div>');
                 btnDelete.val(item);
                 btnDelete.click(function () {
                     deleteActivity(btnDelete.val());
