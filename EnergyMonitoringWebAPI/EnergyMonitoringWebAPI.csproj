@@ -123,7 +123,6 @@
     <Content Include="app\index.html" />
     <Content Include="app\sensors.html" />
     <Content Include="app\settings.html" />
-    <Content Include="app\img\dna.gif" />
     <Content Include="app\img\background.gif" />
     <Content Include="app\img\webio.png" />
     <Content Include="app\diagnosis.html" />
