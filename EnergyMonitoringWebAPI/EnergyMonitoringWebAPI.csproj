@@ -121,6 +121,7 @@
     <Content Include="app\js\hammer\hammer.min.js" />
     <Content Include="app\js\moment\moment.min.js" />
     <Content Include="app\index.html" />
+    <Content Include="app\sensors.html" />
     <Content Include="app\settings.html" />
     <Content Include="app\img\dna.gif" />
     <Content Include="app\img\background.gif" />
@@ -1759,9 +1760,7 @@
     <Content Include="app\plugins\toastr\toastr.css" />
     <Content Include="app\plugins\toastr\toastr.min.css" />
     <Content Include="app\plugins\toastr\toastr.min.js" />
-    <Content Include="app\starter.html" />
     <Content Include="app\sensor.html" />
-    <Content Include="app\tables.html" />
     <Content Include="EnergyMonitoring.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EnergyMonitoring.edmx</DependentUpon>
