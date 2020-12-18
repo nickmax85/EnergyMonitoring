@@ -171,3 +171,9 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+
+/* amcharts */
+#chartdiv {
+    width: 100%;
+    height: 500px;
+  }

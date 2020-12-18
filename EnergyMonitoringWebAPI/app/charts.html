@@ -29,6 +29,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="js/chartjs/2.9.3/Chart.min.js"></script>
     <script src="js/chartjs/2.9.3/utils.js"></script>
     <script src="js/chartjs/chartjs-plugin-zoom.min.js"></script>
+
+    <script src="js/amcharts/core.js"></script>
+    <script src="js/amcharts/charts.js"></script>
+    <script src="js/amcharts/animated.js"></script>
+
     <script src="js/hammer/hammer.min.js"></script>
 
     <script src="js/moment/moment.min.js"></script>
@@ -249,6 +254,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
             </div>
             <div class="row">
+              <div class="col-lg-12">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <i class="fas fa-chart-area"></i>
+                    Kennlinie
+                  </div>
+                  <div class="card-body">
+                    <div id="chartdiv"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-lg-9">
                 <div class="card mb-3">
                   <div class="card-header">
@@ -384,9 +402,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
       let sensors;
       let config;
 
+      let data1 = [];
+      let data2 = [];
+      let labels1 = [];
+      let labels2 = [];
+
       $(document).ready(function () {
         getConfig();
         getDate();
+
         equipment = JSON.parse(localStorage.getItem("Equipment"));
 
         $("#group").html(equipment.Group.Name);
@@ -400,9 +424,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         sensors = getSensors(equipment.Devices[0].DeviceID);
 
         getRecordsByDate();
-
         showFilterRecords();
-
         getActivities(equipment.EquipmentID);
       });
 
@@ -455,7 +477,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             labels2.length = 0;
 
             showData(data);
+
             updateChart();
+            showChart();
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -622,11 +646,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         window.myLine.update();
       }
 
-      let data1 = [];
-      let data2 = [];
-      let labels1 = [];
-      let labels2 = [];
-
       var chartConfig = {
         type: "line",
         data: {
@@ -728,6 +747,60 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var ctx = document.getElementById("canvas").getContext("2d");
         window.myLine = new Chart(ctx, chartConfig);
       };
+
+      function showChart() {
+        //amcharts
+        am4core.ready(function () {
+          // Themes begin
+          am4core.useTheme(am4themes_animated);
+          // Themes end
+
+          var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+          var data = [];
+          for (var i = 0; i < data1.length; i++) {
+            var date = new Date(labels1[i]);
+
+            data.push({ date: date, value1: data1[i], value2: data2[i] });
+          }
+
+          chart.data = data;
+
+          // Create axes
+          var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+          dateAxis.renderer.minGridDistance = 60;
+
+          var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+          valueAxis.title.text = "Flow";
+
+          var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
+          valueAxis2.title.text = "Pressure";
+          valueAxis2.renderer.opposite = true;
+
+          // Create series
+          var series = chart.series.push(new am4charts.LineSeries());
+          series.dataFields.valueY = "value1";
+          series.dataFields.dateX = "date";
+          series.tooltipText = "{value1}";
+          series.name = "Flow";
+
+          var series2 = chart.series.push(new am4charts.LineSeries());
+          series2.dataFields.valueY = "value2";
+          series2.dataFields.dateX = "date";
+          series2.tooltipText = "{value2}";
+          series2.name = "Pressure";
+          console.log(chart.series);
+
+          series.tooltip.pointerOrientation = "vertical";
+
+          chart.cursor = new am4charts.XYCursor();
+          chart.cursor.snapToSeries = series;
+          chart.cursor.xAxis = dateAxis;
+
+          //chart.scrollbarY = new am4core.Scrollbar();
+          chart.scrollbarX = new am4core.Scrollbar();
+        }); // end am4core.ready()
+      }
     </script>
   </body>
 </html>
