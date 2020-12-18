@@ -86,36 +86,6 @@
 
 };
 
-function getEquipments(groupId) {
-
-    let url = '/api/groups/' + groupId + '/equipments';
-
-    $.getJSON(url)
-        .done(function (data) {
-
-            showCardCollapsable(data);
-        })
-        .fail(function (error) {
-            alert("ERROR: " + error.status + ' ' + error.statusText);
-        });
-
-}
-
-function postEquipment(equipment) {
-
-    let url = '/api/equipments';
-
-    $.post(url, area)
-        .done(function (data) {
-            showEquipments(data);
-        })
-        .fail(function (error) {
-            alert("ERROR: " + error.status + ' ' + error.statusText);
-        });
-
-}
-
-
 function showCardCollapsable(data) {
 
     let container = $('#equipments');
@@ -172,7 +142,6 @@ function showCardCollapsable(data) {
     });
 
 }
-
 
 function addGaugeChart1(container, item) {
 
@@ -244,9 +213,6 @@ function addGaugeChart1(container, item) {
     }, 2000);
 }
 
-
-
-
 function addGaugeChart2(container, item) {
 
     var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
@@ -307,5 +273,3 @@ function addGaugeChart2(container, item) {
 
     }, 2000);
 }
-
-

@@ -1,20 +1,4 @@
-﻿function getDevices(equipmentId) {
-
-    let url = '/api/equipments/' + equipmentId + '/devices';
-
-    $.getJSON(url)
-        .done(function (data) {
-
-            showDevices(data);
-
-        })
-        .fail(function (error) {
-            alert("ERROR: " + error.status + ' ' + error.statusText);
-        });
-
-}
-
-function showDevicesDiagnosis(data) {
+﻿function showDevicesDiagnosis(data) {
 
     let container = $('#devices');
     container.empty();
@@ -117,7 +101,6 @@ function showDeviceState(img, labelStatus, labelSystemTime, item) {
 
 }
 
-
 function showDevices(data) {
 
     let container = $('#devices');
@@ -162,6 +145,7 @@ function showDevices(data) {
     });
 
 }
+
 var solidGaugeOptions = {
     chart: {
         type: 'solidgauge'
@@ -215,6 +199,7 @@ var solidGaugeOptions = {
         }
     }
 };
+
 var gaugeOptions = {
 
     chart: {
@@ -301,200 +286,3 @@ var gaugeOptions = {
     },
 
 };
-
-function addGauge1(container, item) {
-
-    var pressureGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 10,
-            title: {
-                text: 'Druck'
-            },
-            plotBands: [{
-                from: 0,
-                to: 7,
-                color: '#55BF3B' // green
-            }, {
-                from: 7,
-                to: 8,
-                color: '#DDDF0D' // yellow
-            }, {
-                from: 8,
-                to: 10,
-                color: '#DF5353' // red
-            }]
-        },
-
-        credits: {
-            enabled: false
-        },
-
-        series: [{
-            name: 'Druck',
-            data: [0],
-            dataLabels: {
-                format:
-                    '<div style="text-align:center">' +
-                    '<span style="font-size:25px">{y}</span><br/>' +
-                    '<span style="font-size:12px;opacity:0.4">bar</span>' +
-                    '</div>'
-            },
-            tooltip: {
-                valueSuffix: ' bar'
-            }
-        }]
-
-
-    }));
-
-
-    setInterval(function () {
-
-        var point;
-
-        url = 'http://' + item.IP + '/rest/json';
-
-        $.getJSON(url)
-            .done(function (data) {
-
-                if (pressureGauge) {
-                    point = pressureGauge.series[0].points[0];
-                    point.update(data.iostate.input[0].value);
-                }
-
-            })
-            .fail(function (error) {
-                // alert("ERROR: " + error.status + ' ' + error.statusText);
-            });
-
-
-    }, 2000);
-
-
-}
-function addGauge2(container, item) {
-
-    //The flow gauge
-    var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 5000,
-            title: {
-                text: 'Durchfluss'
-            },
-            plotBands: [{
-                from: 0,
-                to: 200,
-                color: '#55BF3B' // green
-            }, {
-                from: 200,
-                to: 300,
-                color: '#DDDF0D' // yellow
-            }, {
-                from: 300,
-                to: 5000,
-                color: '#DF5353' // red
-            }]
-        },
-
-        series: [{
-            name: 'Durchfluss',
-            data: [0],
-            dataLabels: {
-                format:
-                    '<div style="text-align:center">' +
-                    '<span style="font-size:25px">{y:.1f}</span><br/>' +
-                    '<span style="font-size:12px;opacity:0.4">' +
-                    ' l / min' +
-                    '</span>' +
-                    '</div>'
-            },
-            tooltip: {
-                valueSuffix: ' revolutions/min'
-            }
-        }]
-
-    }));
-
-    setInterval(function () {
-
-        var point;
-
-        url = 'http://' + item.IP + '/rest/json';
-        $.getJSON(url)
-            .done(function (data) {
-
-                if (flowGauge) {
-                    point = flowGauge.series[0].points[0];
-                    point.update(data.iostate.input[1].value);
-                }
-
-            })
-            .fail(function (error) {
-                //  alert("ERROR: " + error.status + ' ' + error.statusText);
-            });
-
-    }, 2000);
-}
-function addGauge3(container, item) {
-
-    var gauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 20,
-            title: {
-                text: 'Druck'
-            }
-        },
-
-        credits: {
-            enabled: false
-        },
-
-        series: [{
-            name: 'Druck',
-            data: [0],
-            dataLabels: {
-                format:
-                    '<div style="text-align:center">' +
-                    '<span style="font-size:25px">{y}</span><br/>' +
-                    '<span style="font-size:12px;opacity:0.4">bar</span>' +
-                    '</div>'
-            },
-            tooltip: {
-                valueSuffix: ' bar'
-            }
-        }]
-
-    }));
-
-
-    setInterval(function () {
-
-        var point;
-
-        url = 'http://' + item.IP + '/rest/json';
-
-        $.getJSON(url)
-            .done(function (data) {
-
-                if (gauge) {
-                    point = gauge.series[0].points[0];
-                    point.update(data.iostate.input[1].value);
-                }
-
-            })
-            .fail(function (error) {
-                // alert("ERROR: " + error.status + ' ' + error.statusText);
-            });
-
-
-    }, 2000);
-
-
-}
-
-
-
-

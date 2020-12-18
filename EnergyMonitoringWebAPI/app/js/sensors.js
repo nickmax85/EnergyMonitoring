@@ -1,6 +1,4 @@
-﻿
-
-function getSensors() {
+﻿function getSensors() {
 
     let url = '/api/Sensors';
 
@@ -48,5 +46,3 @@ function postSensor(sensor) {
         });
 
 }
-
-

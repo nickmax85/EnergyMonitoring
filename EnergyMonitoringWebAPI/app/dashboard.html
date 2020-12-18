@@ -4,11 +4,10 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
@@ -19,335 +18,373 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>EnergyMonitoring</title>
 
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css" />
     <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+      rel="stylesheet"
+    />
 
     <link href="css/custom.css" rel="stylesheet" />
 
     <script src="js/highcharts/8.0/highcharts.js"></script>
     <script src="js/highcharts/8.0/highcharts-more.js"></script>
 
+    <script src="js/environment.js"></script>
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
+  </head>
 
-
-</head>
-
-<body class="hold-transition sidebar-mini">
+  <body class="hold-transition sidebar-mini">
     <div class="wrapper">
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="/index.html" class="nav-link">Home</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.navbar -->
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/index.html" class="brand-link">
+          <img
+            src="img/wheel.gif"
+            alt="Logo"
+            class="brand-image img-circle elevation-3"
+            style="opacity: 0.8"
+          />
+          <span class="brand-text font-weight-light">EnergyMonitoring</span>
+        </a>
 
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/index.html" class="nav-link">Home</a>
-                </li>
-            </ul>
-        </nav>
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="/index.html" class="brand-link">
-                <img src="img/wheel.gif" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">EnergyMonitoring</span>
-            </a>
-
-            <!-- Sidebar -->
-            <div class="sidebar">
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
-                        <!-- Dashboard -->
-                        <li class="nav-item">
-                            <a href="dashboard.html" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                    <span class="right badge badge-danger"></span>
-                                </p>
-                            </a>
-                        </li>
+              <!-- Dashboard -->
+              <li class="nav-item">
+                <a href="dashboard.html" class="nav-link active">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                    <span class="right badge badge-danger"></span>
+                  </p>
+                </a>
+              </li>
 
-                        <!-- Alarme -->
-                        <li class="nav-item">
-                            <a href="alarms.html" class="nav-link">
-                                <i class="nav-icon fas fa-bell"></i>
-                                <p>
-                                    Alarme
-                                    <span class="right badge badge-danger"></span>
-                                </p>
-                            </a>
-                        </li>
+              <!-- Alarme -->
+              <li class="nav-item">
+                <a href="alarms.html" class="nav-link">
+                  <i class="nav-icon fas fa-bell"></i>
+                  <p>
+                    Alarme
+                    <span class="right badge badge-danger"></span>
+                  </p>
+                </a>
+              </li>
 
-                        <!-- diagnosis -->
-                        <li class="nav-item">
-                            <a href="diagnosis.html" class="nav-link">
-                                <i class="nav-icon fas fa-diagnoses"></i>
-                                <p>
-                                    Diagnose
-                                    <span class="right badge badge-danger"></span>
-                                </p>
-                            </a>
-                        </li>
+              <!-- diagnosis -->
+              <li class="nav-item">
+                <a href="diagnosis.html" class="nav-link">
+                  <i class="nav-icon fas fa-diagnoses"></i>
+                  <p>
+                    Diagnose
+                    <span class="right badge badge-danger"></span>
+                  </p>
+                </a>
+              </li>
 
-                        <!-- Konfiguration -->
-                        <li class="nav-item has-treeview menu">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-wrench"></i>
-                                <p>
-                                    Konfiguration
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <!-- Sensoren -->
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="tables.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Sensoren</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            <!-- Settings -->
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="settings.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Einstellungen</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-        </aside>
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Dashboard</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
-            <!-- Main content -->
-            <div class="content">
-
-                <div class="container-fluid">
-                    <!--  -->
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-info"><i class="far fa-flag"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Anlagen</span>
-                                    <span class="info-box-number" id="machinecount">0</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-warning"><i class="far fa-bookmark"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Sensoren</span>
-                                    <span class="info-box-number" id="sensorcount">0</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-success"><i class="fas fa-comments"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Messwerte</span>
-                                    <span class="info-box-number" id="recordcount">0</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div id="info" class="col-md-12">
-                            <div class="card card-warning collapsed-card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Maximalwerte</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-
-                                    </div>
-                                    <!-- /.card-tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body" style="display: none;">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="table-wrapper-scroll-y my-custom-scrollbar col-lg-9">
-                                                <!--<div class="loading"></div>-->
-                                                <table id="table" class="table table-bordered table-striped mb-0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">Bereich</th>
-                                                            <th scope="col">Equipment</th>
-                                                            <th scope="col">Durchfluss</th>
-                                                            <th scope="col">Zeitstempel</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="sensor-row">
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
-                                            <div class="col-lg-3">
-                                                <div class="card mb-3">
-                                                    <div class="card-header">
-                                                        <i class="fas fa-calendar-day"></i>
-                                                        Datum
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="form-group">
-                                                            <!-- Date input -->
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <label class="control-label"
-                                                                        for="start">Start</label>
-                                                                    <input type="date" data-format="yyyy-MM-dd"
-                                                                        id="startMaxValue" class="form-control"
-                                                                        value="2019-12-01">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <!-- Date input -->
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <label class="control-label" for="end">Ende</label>
-                                                                    <input type="date" data-format="yyyy-MM-dd"
-                                                                        id="endMaxValue" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <!-- Submit button -->
-                                                            <button class="btn btn-primary btn-block " name="submit"
-                                                                type="submit" onclick="getJQueryMaxValues()">
-                                                                Suche
-                                                            </button>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-
-                    </div>
-
-
-                    <!-- Groups -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card card-success">
-                                <div class="card-header">
-                                    <h3 class="card-title">Bereiche</h3>
-
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /.card-tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body" style="display: block;">
-                                    <div class="form-group">
-                                        <!--<label for="selectArea">Group</label>-->
-                                        <select class="form-control" id="selectGroup"
-                                            onchange="groupSelectionChange(this)">
-                                            <option value="0">auswählen</option>
-                                        </select>
-                                        <br />
-                                        <div id="equipments" class="row"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- /.row -->
-                    <!-- Info  -->
-
-
-
-
-
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content -->
+              <!-- Konfiguration -->
+              <li class="nav-item has-treeview menu">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-wrench"></i>
+                  <p>
+                    Konfiguration
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <!-- Sensoren -->
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="sensors.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Sensoren</p>
+                    </a>
+                  </li>
+                </ul>
+                <!-- Settings -->
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Einstellungen</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
         </div>
-        <!-- /.content-wrapper -->
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Sidebar content</p>
-            </div>
-        </aside>
-        <!-- /.control-sidebar -->
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
-            <div class="float-right d-none d-sm-inline">
+        <!-- /.sidebar -->
+      </aside>
 
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Dashboard</h1>
+              </div>
+              <!-- /.col -->
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item">
+                    <a href="/index.html">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+              </div>
+              <!-- /.col -->
             </div>
-            <!-- Default to the left -->
-            <strong>Copyright &copy; 2019 <a>Markus Thaler</a>.</strong> All rights reserved.
-        </footer>
+            <!-- /.row -->
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+        <!-- Main content -->
+        <div class="content">
+          <div class="container-fluid">
+            <!--  -->
+            <div class="row">
+              <div class="col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-info"
+                    ><i class="far fa-flag"></i
+                  ></span>
+                  <div class="info-box-content">
+                    <span class="info-box-text">Anlagen</span>
+                    <span class="info-box-number" id="machinecount">0</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-warning"
+                    ><i class="far fa-bookmark"></i
+                  ></span>
+                  <div class="info-box-content">
+                    <span class="info-box-text">Sensoren</span>
+                    <span class="info-box-number" id="sensorcount">0</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-success"
+                    ><i class="fas fa-comments"></i
+                  ></span>
+                  <div class="info-box-content">
+                    <span class="info-box-text">Messwerte</span>
+                    <span class="info-box-number" id="recordcount">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div id="info" class="col-md-12">
+                <div class="card card-warning collapsed-card">
+                  <div class="card-header">
+                    <h3 class="card-title">Maximalwerte</h3>
+                    <div class="card-tools">
+                      <button
+                        type="button"
+                        class="btn btn-tool"
+                        data-card-widget="collapse"
+                      >
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    <!-- /.card-tools -->
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body" style="display: none">
+                    <div class="form-group">
+                      <div class="row">
+                        <div
+                          class="table-wrapper-scroll-y my-custom-scrollbar col-lg-9"
+                        >
+                          <!--<div class="loading"></div>-->
+                          <table
+                            id="table"
+                            class="table table-bordered table-striped mb-0"
+                          >
+                            <thead>
+                              <tr>
+                                <th scope="col">Bereich</th>
+                                <th scope="col">Equipment</th>
+                                <th scope="col">Durchfluss</th>
+                                <th scope="col">Zeitstempel</th>
+                              </tr>
+                            </thead>
+                            <tbody id="sensor-row"></tbody>
+                          </table>
+                        </div>
+
+                        <div class="col-lg-3">
+                          <div class="card mb-3">
+                            <div class="card-header">
+                              <i class="fas fa-calendar-day"></i>
+                              Datum
+                            </div>
+                            <div class="card-body">
+                              <div class="form-group">
+                                <!-- Date input -->
+                                <div class="row">
+                                  <div class="col">
+                                    <label class="control-label" for="start"
+                                      >Start</label
+                                    >
+                                    <input
+                                      type="date"
+                                      data-format="yyyy-MM-dd"
+                                      id="startMaxValue"
+                                      class="form-control"
+                                      value="2019-12-01"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <!-- Date input -->
+                                <div class="row">
+                                  <div class="col">
+                                    <label class="control-label" for="end"
+                                      >Ende</label
+                                    >
+                                    <input
+                                      type="date"
+                                      data-format="yyyy-MM-dd"
+                                      id="endMaxValue"
+                                      class="form-control"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <!-- Submit button -->
+                                <button
+                                  class="btn btn-primary btn-block"
+                                  name="submit"
+                                  type="submit"
+                                  onclick="getJQueryMaxValues()"
+                                >
+                                  Suche
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>
+
+            <!-- Groups -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-success">
+                  <div class="card-header">
+                    <h3 class="card-title">Bereiche</h3>
+
+                    <div class="card-tools">
+                      <button
+                        type="button"
+                        class="btn btn-tool"
+                        data-card-widget="collapse"
+                      >
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                    <!-- /.card-tools -->
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body" style="display: block">
+                    <div class="form-group">
+                      <!--<label for="selectArea">Group</label>-->
+                      <select
+                        class="form-control"
+                        id="selectGroup"
+                        onchange="groupSelectionChange(this)"
+                      >
+                        <option value="0">auswählen</option>
+                      </select>
+                      <br />
+                      <div id="equipments" class="row"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- /.row -->
+            <!-- Info  -->
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+          <h5>Title</h5>
+          <p>Sidebar content</p>
+        </div>
+      </aside>
+      <!-- /.control-sidebar -->
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline"></div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2019 <a>Markus Thaler</a>.</strong> All rights
+        reserved.
+      </footer>
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
@@ -358,171 +395,187 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
 
-
     <script>
+      let server = env.server;
+      let config;
 
-        let config;
+      $(document).ready(function () {
+        getConfig();
 
-        $(document).ready(function () {
-            getConfig();
+        getDates();
+        getGroups();
 
-            getDates();
-            getGroups();
+        showInfo();
 
-            showInfo();
+        getJQueryMaxValues();
+      });
 
-            getJQueryMaxValues();
+      function getConfig() {
+        let url = server + "/api/configs";
+        $.getJSON(url)
+          .done(function (data) {
+            config = data[0];
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function getGroups() {
+        let url = server + "/api/Groups";
+
+        $.getJSON(url)
+          .done(function (data) {
+            showSelectGroups(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function getEquipments(groupId) {
+        let url = server + "/api/groups/" + groupId + "/equipments";
+
+        $.getJSON(url)
+          .done(function (data) {
+            showCardCollapsable(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function postEquipment(equipment) {
+        let url = server + "/api/equipments";
+
+        $.post(url, area)
+          .done(function (data) {
+            showEquipments(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function showInfo(data) {
+        let url = server + "/api/equipments/count";
+        $.getJSON(url)
+          .done(function (data) {
+            $("#machinecount").html(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+
+        url = server + "/api/sensors/count";
+        $.getJSON(url)
+          .done(function (data) {
+            $("#sensorcount").html(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+
+        url = server + "/api/records/count";
+        $.getJSON(url)
+          .done(function (data) {
+            $("#recordcount").html(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function getDates() {
+        let today = new Date();
+
+        let startXdaysBefore = 6;
+
+        //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + (today.getDate() - startXdaysBefore)).slice(-2);
+        let start =
+          today.getFullYear() +
+          "-" +
+          ("0" + (today.getMonth() + 1)).slice(-2) +
+          "-" +
+          ("0" + today.getDate()).slice(-2);
+        let end =
+          today.getFullYear() +
+          "-" +
+          ("0" + (today.getMonth() + 1)).slice(-2) +
+          "-" +
+          ("0" + today.getDate()).slice(-2);
+
+        $("#start").val(start);
+        $("#end").val(end);
+        $("#startMaxValue").val(start);
+        $("#endMaxValue").val(end);
+      }
+
+      function getJQueryMaxValues() {
+        let url =
+          server +
+          "/api/records/maxvalues" +
+          "/" +
+          $("#startMaxValue").val() +
+          "/" +
+          $("#endMaxValue").val();
+
+        $.ajax({
+          url: url,
+          dataType: "json",
+          beforeSend: function () {
+            $(".loading").show();
+            $("#table").hide();
+          },
+          success: function (data) {},
+          complete: function () {
+            $(".loading").hide();
+            $("#table").show();
+          },
+        })
+          .done(function (data) {
+            showMaxValues(data);
+          })
+          .fail(function (data) {
+            alert("ERROR: " + data.status + " " + data.statusText);
+          });
+      }
+
+      function showMaxValues(data) {
+        let container = $("#sensor-row");
+        container.empty();
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          let tr =
+            "<tr>" +
+            "<td>" +
+            item.Area +
+            "</td>" +
+            "<td>" +
+            item.Number +
+            " - " +
+            item.Name +
+            "</td>" +
+            "<td>" +
+            item.Value +
+            " l/min" +
+            "</td>" +
+            "<td>" +
+            item.CreateDate +
+            "</td>" +
+            "</tr>";
+
+          container.append(tr);
+
+          //let btn = $('#btn' + item.EquipmentID).click(function () {
+          //    localStorage.setItem('equipmentID', JSON.stringify(item));
+          //    window.location.href = "sensor.html";
+
+          //});
         });
-
-        function getConfig() {
-
-            let url = '/api/configs';
-            $.getJSON(url)
-                .done(function (data) {
-
-                    config = data[0];
-
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-
-        }
-
-        function showInfo(data) {
-
-            let url = '/api/equipments/count';
-            $.getJSON(url)
-                .done(function (data) {
-
-                    $('#machinecount').html(data);
-
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-
-            url = '/api/sensors/count';
-            $.getJSON(url)
-                .done(function (data) {
-
-                    $('#sensorcount').html(data);
-
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-
-
-            url = '/api/records/count';
-            $.getJSON(url)
-                .done(function (data) {
-
-                    $('#recordcount').html(data);
-
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-        }
-
-        function getDates() {
-            let today = new Date();
-
-            let startXdaysBefore = 6;
-
-            //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + (today.getDate() - startXdaysBefore)).slice(-2);
-            let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-            let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-
-
-            $('#start').val(start);
-            $('#end').val(end);
-            $('#startMaxValue').val(start);
-            $('#endMaxValue').val(end);
-
-
-        }
-
-        function getJQueryMaxValues() {
-            let url = '/api/records/maxvalues' + '/' + $('#startMaxValue').val() + '/' + $('#endMaxValue').val();
-
-            $.ajax({
-                url: url,
-                dataType: "json",
-                beforeSend: function () {
-                    $('.loading').show();
-                    $('#table').hide();
-                },
-                success: function (data) {
-
-                },
-                complete: function () {
-                    $('.loading').hide();
-                    $('#table').show();
-                }
-            })
-                .done(function (data) {
-                    showMaxValues(data);
-                })
-                .fail(function (data) {
-                    alert("ERROR: " + data.status + ' ' + data.statusText);
-                });
-
-        }
-
-        function showMaxValues(data) {
-            let container = $('#sensor-row');
-            container.empty();
-
-            if (!Array.isArray(data))
-                return;
-
-            data.forEach(function (item, i) {
-
-
-                let tr = "<tr>" +
-                    "<td>" + item.Area + "</td>" +
-                    "<td>" + item.Number + ' - ' + item.Name + "</td>" +
-                    "<td>" + item.Value + ' l/min' + "</td>" +
-                    "<td>" + item.CreateDate + "</td>" +
-                    "</tr>";
-
-                container.append(tr);
-
-
-                //let btn = $('#btn' + item.EquipmentID).click(function () {
-                //    localStorage.setItem('equipmentID', JSON.stringify(item));
-                //    window.location.href = "sensor.html";
-
-                //});
-
-            });
-
-
-        }
-
-        function getConfig() {
-
-            let url = '/api/configs';
-            $.getJSON(url)
-                .done(function (data) {
-
-                    config = data[0];
-
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-        }
-
+      }
     </script>
-
-</body>
-
+  </body>
 </html>

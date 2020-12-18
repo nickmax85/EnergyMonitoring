@@ -4,184 +4,206 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
     <title>EnergyMonitoring</title>
 
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css" />
     <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+      rel="stylesheet"
+    />
 
     <link href="css/custom.css" rel="stylesheet" />
 
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
     <script src="js/constants.js"></script>
+  </head>
 
-</head>
-
-<body class="hold-transition sidebar-mini">
+  <body class="hold-transition sidebar-mini">
     <div class="wrapper">
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="/index.html" class="nav-link">Home</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.navbar -->
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/index.html" class="brand-link">
+          <img
+            src="img/wheel.gif"
+            alt="Logo"
+            class="brand-image img-circle elevation-3"
+            style="opacity: 0.8"
+          />
+          <span class="brand-text font-weight-light">EnergyMonitoring</span>
+        </a>
 
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/index.html" class="nav-link">Home</a>
-                </li>
-            </ul>
-
-        </nav>
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="/index.html" class="brand-link">
-                <img src="img/wheel.gif" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">EnergyMonitoring</span>
-            </a>
-
-            <!-- Sidebar -->
-            <div class="sidebar">
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
-                        <!-- Dashboard -->
-                        <li class="nav-item">
-                            <a href="dashboard.html" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                    <span class="right badge badge-danger"></span>
-                                </p>
-                            </a>
-                        </li>
+              <!-- Dashboard -->
+              <li class="nav-item">
+                <a href="dashboard.html" class="nav-link active">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                    <span class="right badge badge-danger"></span>
+                  </p>
+                </a>
+              </li>
 
-                        <!-- Alarme -->
-                        <li class="nav-item">
-                            <a href="alarms.html" class="nav-link ">
-                                <i class="nav-icon fas fa-bell"></i>
-                                <p>
-                                    Alarme
-                                    <span class="right badge badge-danger"></span>
-                                </p>
-                            </a>
-                        </li>
+              <!-- Alarme -->
+              <li class="nav-item">
+                <a href="alarms.html" class="nav-link">
+                  <i class="nav-icon fas fa-bell"></i>
+                  <p>
+                    Alarme
+                    <span class="right badge badge-danger"></span>
+                  </p>
+                </a>
+              </li>
 
-                        <!-- diagnosis -->
-                        <li class="nav-item">
-                            <a href="diagnosis.html" class="nav-link">
-                                <i class="nav-icon fas fa-diagnoses"></i>
-                                <p>
-                                    Diagnose
-                                    <span class="right badge badge-danger"></span>
-                                </p>
-                            </a>
-                        </li>
+              <!-- diagnosis -->
+              <li class="nav-item">
+                <a href="diagnosis.html" class="nav-link">
+                  <i class="nav-icon fas fa-diagnoses"></i>
+                  <p>
+                    Diagnose
+                    <span class="right badge badge-danger"></span>
+                  </p>
+                </a>
+              </li>
 
-                        <!-- Konfiguration -->
-                        <li class="nav-item has-treeview menu">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-wrench"></i>
-                                <p>
-                                    Konfiguration
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <!-- Sensoren -->
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="tables.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Sensoren</p>
-                                    </a>
-                                </li>
+              <!-- Konfiguration -->
+              <li class="nav-item has-treeview menu">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-wrench"></i>
+                  <p>
+                    Konfiguration
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <!-- Sensoren -->
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="sensors.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Sensoren</p>
+                    </a>
+                  </li>
+                </ul>
+                <!-- Settings -->
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Einstellungen</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
 
-                            </ul>
-                            <!-- Settings -->
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="settings.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Einstellungen</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Dashboard</h1>
+              </div>
+              <!-- /.col -->
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item">
+                    <a href="/index.html">Dashboard</a>
+                  </li>
+                  <li class="breadcrumb-item">Aktivität</li>
+                  <li class="breadcrumb-item" id="group">Group</li>
+                  <li class="breadcrumb-item active" id="equipment">
+                    Equipment
+                  </li>
+                </ol>
+              </div>
+              <!-- /.col -->
             </div>
-            <!-- /.sidebar -->
-        </aside>
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Dashboard</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">
-                                    <a href="/index.html">Dashboard</a>
-                                </li>
-                                <li class="breadcrumb-item">Aktivität</li>
-                                <li class="breadcrumb-item" id="group">Group</li>
-                                <li class="breadcrumb-item active" id="equipment">Equipment</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
-            <!-- Main content -->
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <h3 class="card-title">Tätigkeit</h3>
-                                </div>
-                                <!-- /.card-header -->
-                                <!-- form start -->
-                                <form role="form">
-                                    <div class="card-body">
-                                        <div class="form-group row">
-                                            <div class="col-xs-3">
-                                                <label for="modifiedBy">Bearbeiter</label>
-                                                <input type="text" class="form-control" id="modifiedBy" maxlength="50"
-                                                    placeholder="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="textArea">Kommentar</label>
-                                            <textarea class="form-control" id="textArea" rows="5" onkeyup=""
-                                                placeholder="" aria-label="With textarea"></textarea>
-                                        </div>
-                                        <!-- <div class="form-group">
+            <!-- /.row -->
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+        <!-- Main content -->
+        <div class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-9">
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Tätigkeit</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <!-- form start -->
+                  <form role="form">
+                    <div class="card-body">
+                      <div class="form-group row">
+                        <div class="col-xs-3">
+                          <label for="modifiedBy">Bearbeiter</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="modifiedBy"
+                            maxlength="50"
+                            placeholder=""
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="textArea">Kommentar</label>
+                        <textarea
+                          class="form-control"
+                          id="textArea"
+                          rows="5"
+                          onkeyup=""
+                          placeholder=""
+                          aria-label="With textarea"
+                        ></textarea>
+                      </div>
+                      <!-- <div class="form-group">
                                             <label for="attachment">Anhang</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
@@ -194,40 +216,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </div>
                                             </div>
                                         </div> -->
-                                    </div>
-                                    <!-- /.card-body -->
-                                    <div class="card-footer">
-                                        <button type="button" id="saveActivity"
-                                            class="btn btn-primary">Speichern</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- /.col-->
                     </div>
-                </div><!-- /.container-fluid -->
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                      <button
+                        type="button"
+                        id="saveActivity"
+                        class="btn btn-primary"
+                      >
+                        Speichern
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- /.col-->
             </div>
-            <!-- /.content -->
+          </div>
+          <!-- /.container-fluid -->
         </div>
-        <!-- /.content-wrapper -->
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Sidebar content</p>
-            </div>
-        </aside>
-        <!-- /.control-sidebar -->
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
-            <div class="float-right d-none d-sm-inline">
-
-            </div>
-            <!-- Default to the left -->
-            <strong>Copyright &copy; 2019 <a>Markus Thaler</a>.</strong> All rights reserved.
-        </footer>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+          <h5>Title</h5>
+          <p>Sidebar content</p>
+        </div>
+      </aside>
+      <!-- /.control-sidebar -->
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline"></div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2019 <a>Markus Thaler</a>.</strong> All rights
+        reserved.
+      </footer>
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
@@ -238,106 +265,85 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
 
+    <link href="css/custom.css" rel="stylesheet" />
+
+    <script src="js/environment.js"></script>
+
     <script>
+      let server = env.server;
+      let equipment;
+      let activity;
 
-        let equipment;
-        let activity;
+      $(document).ready(function () {
+        equipment = JSON.parse(localStorage.getItem("Equipment"));
+        activity = JSON.parse(localStorage.getItem("activity"));
+        if (activity != null) getActivity(activity.ActivityID);
 
-        $(document).ready(function () {
+        $("#group").html(equipment.Group.Name);
+        $("#equipment").html(equipment.Number + " - " + equipment.Name);
 
-            equipment = JSON.parse(localStorage.getItem('Equipment'));
-            activity = JSON.parse(localStorage.getItem('activity'));
-            if (activity != null)
-                getActivity(activity.ActivityID);
-
-            $('#group').html(equipment.Group.Name);
-            $('#equipment').html(equipment.Number + " - " + equipment.Name);
-
-            $('#saveActivity').click(function () {
-
-                postActivity();
-
-            });
-
+        $("#saveActivity").click(function () {
+          postActivity();
         });
+      });
 
-        function getActivity(id) {
+      function getActivity(id) {
+        let url = server + "/api/activities/" + id;
+        $.getJSON(url)
+          .done(function (data) {
+            showActivity(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
 
-            let url = '/api/activities/' + id;
-            $.getJSON(url)
-                .done(function (data) {
+      function showActivity(data) {
+        $("#textArea").val(data.Comment);
+        $("#modifiedBy").val(data.ModifiedBy);
+      }
 
-                    showActivity(data);
+      function postActivity() {
+        let url = server + "/api/activities";
 
-                })
-                .fail(function (error) {
-                    alert("ERROR: " + error.status + ' ' + error.statusText);
-                });
-
-
+        if ($("#textArea").val() === "" || $("#modifiedBy").val() === "") {
+          alert("Eingabe unvollständig ... ");
+          return;
         }
 
-        function showActivity(data) {
+        if (activity == null) {
+          let activity = new Object();
+          activity.Comment = $("#textArea").val();
+          activity.ModifiedBy = $("#modifiedBy").val();
+          activity.EquipmentID = equipment.EquipmentID;
 
-            $('#textArea').val(data.Comment);
-            $('#modifiedBy').val(data.ModifiedBy);
+          $.post(url, activity)
+            .done(function (data) {
+              window.location = "charts.html";
+            })
+            .fail(function (error) {
+              alert("ERROR: " + error.status + " " + error.statusText);
+            });
+        } else {
+          activity.Comment = $("#textArea").val();
+          activity.ModifiedBy = $("#modifiedBy").val();
+          activity.EquipmentID = equipment.EquipmentID;
 
+          url = server + "/api/activities/" + activity.ActivityID;
+          $.ajax({
+            url: url,
+            type: "PUT",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(activity),
+            success: function (activity) {
+              window.location = "charts.html";
+            },
+            error: function (request, message, error) {
+              alert("ERROR: " + error.status + " " + error.statusText);
+            },
+          });
         }
-
-
-        function postActivity() {
-
-            let url = '/api/activities';
-
-
-            if (($('#textArea').val() === "") || ($('#modifiedBy').val() === "")) {
-                alert("Eingabe unvollständig ... ");
-                return;
-
-            }
-
-            if (activity == null) {
-
-                let activity = new Object();
-                activity.Comment = $('#textArea').val();
-                activity.ModifiedBy = $('#modifiedBy').val();
-                activity.EquipmentID = equipment.EquipmentID;
-
-                $.post(url, activity)
-                    .done(function (data) {
-
-                        window.location = 'charts.html';
-
-                    })
-                    .fail(function (error) {
-                        alert("ERROR: " + error.status + ' ' + error.statusText);
-                    });
-            }
-            else {
-
-                activity.Comment = $('#textArea').val();
-                activity.ModifiedBy = $('#modifiedBy').val();
-                activity.EquipmentID = equipment.EquipmentID;
-
-                url = '/api/activities/' + activity.ActivityID;
-                $.ajax({
-                    url: url,
-                    type: 'PUT',
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify(activity),
-                    success: function (activity) {
-                        window.location = 'charts.html';
-                    },
-                    error: function (request, message, error) {
-                        alert("ERROR: " + error.status + ' ' + error.statusText);
-                    }
-                });
-            }
-        }
-
-
+      }
     </script>
-
-</body>
-
+  </body>
 </html>

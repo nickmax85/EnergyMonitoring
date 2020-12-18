@@ -117,6 +117,7 @@
     <Content Include="app\css\style.css" />
     <Content Include="app\js\chartjs\chartjs-plugin-zoom.min.js" />
     <Content Include="app\js\constants.js" />
+    <Content Include="app\js\environment.js" />
     <Content Include="app\js\hammer\hammer.min.js" />
     <Content Include="app\js\moment\moment.min.js" />
     <Content Include="app\index.html" />
@@ -200,7 +201,6 @@
     <Content Include="app\js\highcharts\8.0\highcharts-more.js" />
     <Content Include="app\js\highcharts\8.0\highcharts.js" />
     <Content Include="app\js\jquery-3.4.1.min.js" />
-    <Content Include="app\navbar.html" />
     <Content Include="app\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="app\plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
     <Content Include="app\plugins\bootstrap-colorpicker\js\bootstrap-colorpicker.js" />
@@ -1759,7 +1759,6 @@
     <Content Include="app\plugins\toastr\toastr.css" />
     <Content Include="app\plugins\toastr\toastr.min.css" />
     <Content Include="app\plugins\toastr\toastr.min.js" />
-    <Content Include="app\preload.html" />
     <Content Include="app\starter.html" />
     <Content Include="app\sensor.html" />
     <Content Include="app\tables.html" />

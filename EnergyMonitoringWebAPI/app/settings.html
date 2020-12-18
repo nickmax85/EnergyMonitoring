@@ -22,7 +22,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <link href="css/custom.css" rel="stylesheet" />
-
+ 
+    <script src="js/environment.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -71,7 +72,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                         <!-- Alarme -->
                         <li class="nav-item">
-                            <a href="/app/alarms.html" class="nav-link">
+                            <a href="alarms.html" class="nav-link">
                                 <i class="nav-icon fas fa-bell"></i>
                                 <p>
                                     Alarme
@@ -103,7 +104,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <!-- Sensoren -->
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="tables.html" class="nav-link">
+                                    <a href="sensors.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sensoren</p>
                                     </a>
@@ -273,8 +274,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
 
-
         let config;
+        let server = env.server;
 
         $(document).ready(function () {
 
@@ -290,18 +291,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         function getSettings() {
 
-            let url = '/api/configs';
+            let url = server + '/api/configs';
 
             $.getJSON(url)
                 .done(function (data) {
                     config = data[0];
                     showData(data[0]);
-
                 })
                 .fail(function (error) {
                     alert("ERROR: " + error.status + ' ' + error.statusText);
                 });
-
         }
 
         function showData(data) {
@@ -310,9 +309,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#auditDayOfWeek').val(data.AuditDayOfWeek);
             $('#auditTimeStart').val(data.AuditTimeStart);
             $('#auditTimeEnd').val(data.AuditTimeEnd);
-            $('#airPressurePrice').val(data.AirPressurePrice);
-            console.log(data);
-
+            $('#airPressurePrice').val(data.AirPressurePrice);      
         }
 
 
@@ -338,7 +335,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 return;
 
             //let item = JSON.parse(localStorage.getItem('sensor'));
-            let url = '/api/configs/' + config.ConfigID;
+            let url = server + '/api/configs/' + config.ConfigID;
 
 
             item = new Object();
@@ -353,6 +350,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 url: url,
                 type: 'PUT',
                 contentType: "application/json;charset=utf-8",
+                // headers: { 'Access-Control-Allow-Origin': '*'},
                 data: JSON.stringify(item),
                 success: function (item) {
                     alert("Daten erfolgreich gespeichert.");

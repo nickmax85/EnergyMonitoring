@@ -1,20 +1,4 @@
 ﻿
-
-function getGroups() {
-
-    let url = '/api/Groups';
-
-    $.getJSON(url)
-        .done(function (data) {
-
-            showSelectGroups(data);
-        })
-        .fail(function (error) {
-            alert("ERROR: " + error.status + ' ' + error.statusText);
-        });
-
-}
-
 function postGroup(group) {
 
     let url = '/api/Groups';
@@ -28,8 +12,6 @@ function postGroup(group) {
         });
 
 }
-
-
 
 function showSelectGroups(data) {
 
@@ -155,7 +137,6 @@ function showGroups2(data) {
         container.append(card);
     });
 }
-
 
 function showGroups(data) {
 
