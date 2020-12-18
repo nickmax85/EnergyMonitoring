@@ -160,6 +160,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.content-header -->
         <!-- Main content -->
+        <div id="preloader">
+          <div id="status">
+            <div class="status-mes"><h4>Developed by Maintenance ILZ</h4></div>
+          </div>
+        </div>
         <div class="content">
           <div class="container-fluid"></div>
           <!-- /.container-fluid -->
@@ -195,6 +200,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="dist/js/adminlte.min.js"></script>
 
     <script>
+      $(window).on("load", function () {
+        // $("#status").fadeOut();
+        $("#preloader").delay(350).fadeOut("slow");
+      });
+
       $(document).ready(function () {});
     </script>
   </body>
