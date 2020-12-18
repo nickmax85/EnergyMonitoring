@@ -13,7 +13,7 @@
 }
 
 #status, .status-mes {
-     background-image: url(/img/wheel.gif); 
+     background-image: url(../img/wheel.gif); 
     background-position: center;
     background-repeat: no-repeat;
     height: 200px;
