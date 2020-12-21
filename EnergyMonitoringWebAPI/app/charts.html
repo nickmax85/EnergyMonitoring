@@ -192,10 +192,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="card mb-3">
                   <div class="card-header">
                     <i class="fas fa-chart-area"></i>
-                    Kennlinie
+                    Kennlinie:
+                    <span id="datasize"></span>
                   </div>
                   <div class="card-body">
-                    <canvas id="canvas" width="100%" height="50"></canvas>
+                    <div id="chartdiv"></div>
+                    <!-- <canvas id="canvas" width="100%" height="50"></canvas> -->
                   </div>
                 </div>
               </div>
@@ -253,19 +255,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="card mb-3">
-                  <div class="card-header">
-                    <i class="fas fa-chart-area"></i>
-                    Kennlinie
-                  </div>
-                  <div class="card-body">
-                    <div id="chartdiv"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
             <div class="row">
               <div class="col-lg-9">
                 <div class="card mb-3">
@@ -449,7 +439,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         let timeFormat = "YYYY-MM-DD";
         let now = window.moment();
 
-        let start = now.clone().add(-6, "d").format(timeFormat);
+        let start = now.clone().add(-5, "d").format(timeFormat);
         let end = now.format(timeFormat);
 
         //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
@@ -478,7 +468,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             showData(data);
 
-            updateChart();
+            // updateChart();
             showChart();
           })
           .fail(function (error) {
@@ -493,18 +483,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $.getJSON(url)
           .done(function (data) {
             sensors = data;
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
-      }
-
-      function getRecords(deviceId) {
-        let url = server + "/api/records/" + deviceId;
-        $.getJSON(url)
-          .done(function (data) {
-            showData(data);
-            updateChart();
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -744,61 +722,118 @@ scratch. This page gets rid of all links and provides the needed markup only.
       };
 
       window.onload = function () {
+        return;
         var ctx = document.getElementById("canvas").getContext("2d");
         window.myLine = new Chart(ctx, chartConfig);
       };
 
       function showChart() {
-        //amcharts
+        let datasize = $("#datasize").text(
+          data1.length + data2.length + " Messwerte"
+        );
+
         am4core.ready(function () {
           // Themes begin
           am4core.useTheme(am4themes_animated);
           // Themes end
 
           var chart = am4core.create("chartdiv", am4charts.XYChart);
+          // Increase contrast by taking evey second color
+          chart.colors.step = 2;
 
           var data = [];
           for (var i = 0; i < data1.length; i++) {
             var date = new Date(labels1[i]);
+            console.log(date.getDate());
 
-            data.push({ date: date, value1: data1[i], value2: data2[i] });
+            data.push({
+              date: date,
+              value1: data1[i],
+              value2: data2[i],
+            });
           }
 
           chart.data = data;
+
+          var interfaceColors = new am4core.InterfaceColorSet();
 
           // Create axes
           var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
           dateAxis.renderer.minGridDistance = 60;
 
           var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-          valueAxis.title.text = "Flow";
+          valueAxis.title.text = "l/min";
+          valueAxis.syncWithAxis = chart.yAxes.getIndex(0);
 
           var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
-          valueAxis2.title.text = "Pressure";
-          valueAxis2.renderer.opposite = true;
+          valueAxis2.title.text = "bar";
+          valueAxis2.syncWithAxis = chart.yAxes.getIndex(0);
 
           // Create series
           var series = chart.series.push(new am4charts.LineSeries());
           series.dataFields.valueY = "value1";
           series.dataFields.dateX = "date";
-          series.tooltipText = "{value1}";
+          series.tooltipText =
+            "{value1} l/min\n{date.formatDate('yyyy-MM-dd HH:mm:ss')}";
+          series.yAxis = valueAxis;
           series.name = "Flow";
+          series.tensionX = 0.8;
+          series.showOnInit = true;
+
+          series.tooltip.pointerOrientation = "vertical";
+
+          // var bullet = series.bullets.push(new am4charts.CircleBullet());
+          // bullet.circle.stroke = interfaceColors.getFor("background");
+          // bullet.circle.strokeWidth = 2;
 
           var series2 = chart.series.push(new am4charts.LineSeries());
           series2.dataFields.valueY = "value2";
           series2.dataFields.dateX = "date";
-          series2.tooltipText = "{value2}";
+          series2.tooltipText =
+            "{value2} bar\n{date.formatDate('yyyy-MM-dd HH:mm:ss')}";
+          series2.yAxis = valueAxis2;
           series2.name = "Pressure";
-          console.log(chart.series);
+          series2.tensionX = 0.8;
+          series2.showOnInit = true;
 
-          series.tooltip.pointerOrientation = "vertical";
+          series2.tooltip.pointerOrientation = "vertical";
+
+          // var bullet = series2.bullets.push(new am4charts.Bullet());
+          // bullet.width = 10;
+          // bullet.height = 10;
+          // bullet.horizontalCenter = "middle";
+          // bullet.verticalCenter = "middle";
+
+          // var rectangle = bullet.createChild(am4core.Rectangle);
+          // rectangle.stroke = interfaceColors.getFor("background");
+          // rectangle.strokeWidth = 2;
+          // rectangle.width = 10;
+          // rectangle.height = 10;
+
+          // valueAxis.renderer.line.strokeOpacity = 1;
+          // valueAxis.renderer.line.strokeWidth = 2;
+          // valueAxis.renderer.line.stroke = series.stroke;
+          // valueAxis.renderer.labels.template.fill = series.stroke;
+          // valueAxis.renderer.opposite = true;
+
+          // valueAxis2.renderer.line.strokeOpacity = 1;
+          // valueAxis2.renderer.line.strokeWidth = 2;
+          // valueAxis2.renderer.line.stroke = series2.stroke;
+          // valueAxis2.renderer.labels.template.fill = series2.stroke;
+          // valueAxis2.renderer.opposite = false;
+
+          chart.legend = new am4charts.Legend();
+
+          // Add cursor
+          chart.cursor = new am4charts.XYCursor();
 
           chart.cursor = new am4charts.XYCursor();
-          chart.cursor.snapToSeries = series;
+          // chart.cursor.snapToSeries = series;
           chart.cursor.xAxis = dateAxis;
 
           //chart.scrollbarY = new am4core.Scrollbar();
           chart.scrollbarX = new am4core.Scrollbar();
+          chart.scrollbarX.parent = chart.bottomAxesContainer;
         }); // end am4core.ready()
       }
     </script>
