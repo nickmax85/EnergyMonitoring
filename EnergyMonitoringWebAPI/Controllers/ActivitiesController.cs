@@ -58,6 +58,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 System.Diagnostics.Debug.WriteLine(value);
 
                 var item = new Activity();
+                item.Date = value.Date;
                 item.Comment = value.Comment;
                 item.ModifiedBy = value.ModifiedBy;
                 item.CreateDate = DateTime.Now;
@@ -83,6 +84,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 db.Configuration.LazyLoadingEnabled = false;
                 var item = db.Activity.Find(id);
 
+                item.Date = value.Date;
                 item.Comment = value.Comment;
                 item.ModifiedBy = value.ModifiedBy;
                 item.CreateDate = value.CreateDate;

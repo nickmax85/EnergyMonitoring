@@ -32,23 +32,29 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         // GET: api/Equipments/5
         [ResponseType(typeof(Equipment))]
-        public async Task<IHttpActionResult> GetEquipment(int id)
+        [Route("api/equipments/{equipmentnumber}")]
+        public async Task<IHttpActionResult> GetEquipment(string equipmentnumber)
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-
                 db.Configuration.LazyLoadingEnabled = false;
 
-                Equipment equipment = await db.Equipments.FindAsync(id);
-                if (equipment == null)
+                //var sql = "select * from equipment where number like " + equipmentnumber;
+                //var item = await db.Database.SqlQuery<Equipment>(sql).FirstOrDefaultAsync();
+
+                var item = await db.Equipments.Where(x => x.Number.Equals(equipmentnumber))
+                    .Include(x => x.Group)
+                    .Include(x => x.Devices)
+                    .FirstOrDefaultAsync();
+
+                if (item == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(equipment);
+                return Ok(item);
 
             }
-
         }
 
 
@@ -78,8 +84,6 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/groups/{GroupId}/equipments")]
         public IEnumerable<Equipment> GetEquipmentsByGroup(int GroupId)
         {
-
-
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
 
@@ -108,7 +112,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 var item = db.Equipments.Find(id);
 
                 item.Activity = value.Activity;
-             
+
                 item.UpdateDate = DateTime.Now;
 
                 db.SaveChanges();

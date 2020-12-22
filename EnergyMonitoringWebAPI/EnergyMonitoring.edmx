@@ -10,6 +10,7 @@
             <PropertyRef Name="ActivityID" />
           </Key>
           <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" />
           <Property Name="Comment" Type="text" Nullable="false" />
           <Property Name="EquipmentID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
@@ -21,10 +22,10 @@
             <PropertyRef Name="AlarmID" />
           </Key>
           <Property Name="AlarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RecordID" Type="bigint" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="50" />
           <Property Name="Confirmed" Type="bit" />
-          <Property Name="Remark" Type="varchar" MaxLength="100" />
-          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="RecordID" Type="bigint" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Config">
@@ -59,7 +60,6 @@
           <Property Name="EquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Number" Type="nvarchar" MaxLength="10" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Activities" Type="text" />
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -340,9 +340,9 @@
           </Key>
           <Property Name="AlarmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RecordID" Type="Int64" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Record" Relationship="Self.FK_Alarm_Record" FromRole="Alarm" ToRole="Record" />
-          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Confirmed" Type="Boolean" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
         </EntityType>
@@ -704,6 +704,7 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Activity" ToRole="Equipment" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_Activity_Equipment">
           <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="1" />
@@ -895,6 +896,7 @@
           <EntitySetMapping Name="Activity">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />

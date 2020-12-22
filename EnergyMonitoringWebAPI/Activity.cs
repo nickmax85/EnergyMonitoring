@@ -20,6 +20,7 @@ namespace EnergyMonitoringWebAPI
         public System.DateTime CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string ModifiedBy { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
     
         public virtual Equipment Equipment { get; set; }
     }

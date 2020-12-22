@@ -9,6 +9,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
     <title>EnergyMonitoring</title>
 
     <!-- Font Awesome Icons -->
@@ -246,7 +252,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         class="btn btn-primary btn-block"
                         name="submit"
                         type="submit"
-                        onclick="getRecordsByDate()"
+                        onclick="getRecords()"
                       >
                         Suche
                       </button>
@@ -388,35 +394,63 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
       let server = env.server;
+      let config;
       let equipment;
       let sensors;
-      let config;
 
       let data1 = [];
       let data2 = [];
       let labels1 = [];
       let labels2 = [];
 
+      const params = new URLSearchParams(window.location.search);
+
+      for (let param of params) {
+        document.writeln(`key: ${param[0]} Value: ${param[1]}`);
+        //document.writeln(param);
+      }
+
+      let equipmentnumber = params.get("equipmentnumber");
+
       $(document).ready(function () {
         getConfig();
         getDate();
 
-        equipment = JSON.parse(localStorage.getItem("Equipment"));
-
-        $("#group").html(equipment.Group.Name);
-        $("#equipment").html(equipment.Number + " - " + equipment.Name);
+        if (equipmentnumber == null) {
+          equipment = JSON.parse(localStorage.getItem("Equipment"));
+          show();
+        } else {
+          getEquipment(equipmentnumber);
+        }
 
         $("#newBtn").click(function () {
+          localStorage.setItem("Equipment", JSON.stringify(equipment));
           localStorage.removeItem("activity");
           window.location.href = "activity.html";
         });
+      });
 
+      function getEquipment(equipmentnumber) {
+        let url = server + "/api/equipments/" + equipmentnumber;
+
+        $.getJSON(url)
+          .done(function (data) {
+            equipment = data;
+            show();
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function show() {
+        $("#group").html(equipment.Group.Name);
+        $("#equipment").html(equipment.Number + " - " + equipment.Name);
         sensors = getSensors(equipment.Devices[0].DeviceID);
-
-        getRecordsByDate();
+        getRecords();
         showFilterRecords();
         getActivities(equipment.EquipmentID);
-      });
+      }
 
       function deleteActivity(activity) {
         let url = server + "/api/activities/" + activity.ActivityID;
@@ -449,7 +483,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $("#end").val(end);
       }
 
-      function getRecordsByDate() {
+      function getRecords() {
         let url =
           server +
           "/api/records/" +
@@ -509,8 +543,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         data.forEach(function (item, i) {
           let timeLabel = $('<div class="time-label">');
           let date = $('<span class="bg-success"></span>');
-          let d = new Date(item.CreateDate);
-          date.html(d.toISOString().slice(0, 10));
+          date.html(item.Date.substring(0, 10));
           timeLabel.append(date);
           container.append(timeLabel);
 
@@ -744,7 +777,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           var data = [];
           for (var i = 0; i < data1.length; i++) {
             var date = new Date(labels1[i]);
-            console.log(date.getDate());
 
             data.push({
               date: date,

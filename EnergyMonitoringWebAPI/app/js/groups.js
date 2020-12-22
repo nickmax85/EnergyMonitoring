@@ -1,5 +1,4 @@
-﻿
-function postGroup(group) {
+﻿function postGroup(group) {
 
     let url = '/api/Groups';
 
@@ -176,8 +175,6 @@ function showGroups(data) {
 
                 localStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
                 localStorage.setItem('Group', JSON.stringify(item));
-
-
 
                 window.location.href = "devices.html";
             });
