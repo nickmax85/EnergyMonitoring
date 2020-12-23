@@ -37,6 +37,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="js/highcharts/8.0/highcharts.js"></script>
     <script src="js/highcharts/8.0/highcharts-more.js"></script>
 
+    <script src="js/amcharts/core.js"></script>
+    <script src="js/amcharts/charts.js"></script>
+    <script src="js/amcharts/animated.js"></script>
+
     <script src="js/environment.js"></script>
     <script src="js/groups.js"></script>
     <script src="js/equipments.js"></script>
@@ -180,7 +184,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main content -->
         <div class="content">
           <div class="container-fluid">
-            <!--  -->
+            <!-- Kennzahlen  -->
             <div class="row">
               <div class="col-md-4">
                 <div class="info-box">
@@ -218,12 +222,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
               </div>
             </div>
-
+            <!-- Maximalverbraucher -->
             <div class="row">
               <div id="info" class="col-md-12">
                 <div class="card card-warning collapsed-card">
                   <div class="card-header">
-                    <h3 class="card-title">Maximalwerte</h3>
+                    <h3 class="card-title">Maximalverbraucher</h3>
                     <div class="card-tools">
                       <button
                         type="button"
@@ -233,96 +237,95 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <i class="fas fa-plus"></i>
                       </button>
                     </div>
-                    <!-- /.card-tools -->
                   </div>
-                  <!-- /.card-header -->
                   <div class="card-body" style="display: none">
-                    <div class="form-group">
-                      <div class="row">
-                        <div
-                          class="table-wrapper-scroll-y my-custom-scrollbar col-lg-9"
-                        >
-                          <!--<div class="loading"></div>-->
-                          <table
-                            id="table"
-                            class="table table-bordered table-striped mb-0"
-                          >
-                            <thead>
-                              <tr>
-                                <th scope="col">Bereich</th>
-                                <th scope="col">Equipment</th>
-                                <th scope="col">Durchfluss</th>
-                                <th scope="col">Zeitstempel</th>
-                              </tr>
-                            </thead>
-                            <tbody id="sensor-row"></tbody>
-                          </table>
-                        </div>
-
-                        <div class="col-lg-3">
-                          <div class="card mb-3">
-                            <div class="card-header">
-                              <i class="fas fa-calendar-day"></i>
-                              Datum
+                    <div class="form-group"></div>
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div id="barchartchartdiv"></div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="card mb-3">
+                          <div class="card-header">
+                            <i class="fas fa-calendar-day"></i>
+                            Datum
+                          </div>
+                          <div class="card-body">
+                            <div class="form-group">
+                              <!-- Date input -->
+                              <div class="row">
+                                <div class="col">
+                                  <label class="control-label" for="start"
+                                    >Start</label
+                                  >
+                                  <input
+                                    type="date"
+                                    data-format="yyyy-MM-dd"
+                                    id="startMaxValue"
+                                    class="form-control"
+                                    value="2019-12-01"
+                                  />
+                                </div>
+                              </div>
                             </div>
-                            <div class="card-body">
-                              <div class="form-group">
-                                <!-- Date input -->
-                                <div class="row">
-                                  <div class="col">
-                                    <label class="control-label" for="start"
-                                      >Start</label
-                                    >
-                                    <input
-                                      type="date"
-                                      data-format="yyyy-MM-dd"
-                                      id="startMaxValue"
-                                      class="form-control"
-                                      value="2019-12-01"
-                                    />
-                                  </div>
+
+                            <div class="form-group">
+                              <!-- Date input -->
+                              <div class="row">
+                                <div class="col">
+                                  <label class="control-label" for="end"
+                                    >Ende</label
+                                  >
+                                  <input
+                                    type="date"
+                                    data-format="yyyy-MM-dd"
+                                    id="endMaxValue"
+                                    class="form-control"
+                                  />
                                 </div>
                               </div>
+                            </div>
 
-                              <div class="form-group">
-                                <!-- Date input -->
-                                <div class="row">
-                                  <div class="col">
-                                    <label class="control-label" for="end"
-                                      >Ende</label
-                                    >
-                                    <input
-                                      type="date"
-                                      data-format="yyyy-MM-dd"
-                                      id="endMaxValue"
-                                      class="form-control"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <!-- Submit button -->
-                                <button
-                                  class="btn btn-primary btn-block"
-                                  name="submit"
-                                  type="submit"
-                                  onclick="getJQueryMaxValues()"
-                                >
-                                  Suche
-                                </button>
-                              </div>
+                            <div class="form-group">
+                              <!-- Submit button -->
+                              <button
+                                class="btn btn-primary btn-block"
+                                name="submit"
+                                type="submit"
+                                onclick="getJQueryMaxValues(); getJQueryMaxValuesDistinct();"
+                              >
+                                Suche
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    <div class="row">
+                      <div
+                        class="table-wrapper-scroll-y my-custom-scrollbar col-lg-12 border"
+                      >
+                        <table
+                          id="table"
+                          class="table table-bordered table-striped mb-0"
+                        >
+                          <thead>
+                            <tr>
+                              <th scope="col">Bereich</th>
+                              <th scope="col">Equipment</th>
+                              <th scope="col">Durchfluss</th>
+                              <th scope="col">Zeitstempel</th>
+                            </tr>
+                          </thead>
+                          <tbody id="sensor-row"></tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <!-- /.card-body -->
               </div>
+              <!-- /.card-body -->
             </div>
-
             <!-- Groups -->
             <div class="row">
               <div class="col-md-12">
@@ -359,14 +362,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
               </div>
             </div>
-
-            <!-- /.row -->
-            <!-- Info  -->
           </div>
-          <!-- /.container-fluid -->
+
+          <!-- /.row -->
+          <!-- Info  -->
         </div>
-        <!-- /.content -->
+        <!-- /.container-fluid -->
       </div>
+      <!-- /.content -->
+
       <!-- /.content-wrapper -->
       <!-- Control Sidebar -->
       <aside class="control-sidebar control-sidebar-dark">
@@ -408,6 +412,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         showInfo();
 
         getJQueryMaxValues();
+        getJQueryMaxValuesDistinct();
       });
 
       function getConfig() {
@@ -541,6 +546,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
           });
       }
 
+      function getJQueryMaxValuesDistinct() {
+        let url =
+          server +
+          "/api/records/maxvaluesdistinct" +
+          "/" +
+          $("#startMaxValue").val() +
+          "/" +
+          $("#endMaxValue").val();
+
+        $.ajax({
+          url: url,
+          dataType: "json",
+          beforeSend: function () {
+            $(".loading").show();
+            $("#table").hide();
+          },
+          success: function (data) {},
+          complete: function () {
+            $(".loading").hide();
+            $("#table").show();
+          },
+        })
+          .done(function (data) {
+            showMaxValuesChart(data);
+          })
+          .fail(function (data) {
+            alert("ERROR: " + data.status + " " + data.statusText);
+          });
+      }
+
       function showMaxValues(data) {
         let container = $("#sensor-row");
         container.empty();
@@ -553,7 +588,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             "<td>" +
             item.Area +
             "</td>" +
-            "<td>" +
+            "<td><a href='charts.html?equipmentnumber=" +
+            item.Number +
+            "'>" +
             item.Number +
             " - " +
             item.Name +
@@ -575,6 +612,59 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           //});
         });
+      }
+
+      function showMaxValuesChart(data) {
+        am4core.ready(function () {
+          // Themes begin
+          am4core.useTheme(am4themes_animated);
+          // Themes end
+
+          var chart = am4core.create("barchartchartdiv", am4charts.XYChart);
+          chart.padding(40, 40, 40, 40);
+
+          var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+          categoryAxis.renderer.grid.template.location = 0;
+          categoryAxis.dataFields.category = "equipment";
+          categoryAxis.renderer.minGridDistance = 1;
+          categoryAxis.renderer.inversed = true;
+          categoryAxis.renderer.grid.template.disabled = true;
+
+          var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+          valueAxis.min = 0;
+
+          var series = chart.series.push(new am4charts.ColumnSeries());
+          series.dataFields.categoryY = "equipment";
+          series.dataFields.valueX = "value";
+          series.tooltipText = "{valueX.value}";
+          series.columns.template.strokeOpacity = 0;
+          series.columns.template.column.cornerRadiusBottomRight = 5;
+          series.columns.template.column.cornerRadiusTopRight = 5;
+
+          var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+          labelBullet.label.horizontalCenter = "left";
+          labelBullet.label.dx = 10;
+          labelBullet.label.text =
+            "{values.valueX.workingValue.formatNumber('#.0as l/min')}";
+          labelBullet.locationX = 1;
+
+          // as by default columns of the same series are of the same color, we add adapter which takes colors from chart.colors color set
+          series.columns.template.adapter.add("fill", function (fill, target) {
+            return chart.colors.getIndex(target.dataItem.index);
+          });
+
+          categoryAxis.sortBySeries = series;
+
+          var items = [];
+          for (var i = 0; i < data.length; i++) {
+            items.push({
+              equipment: data[i].Number + " - " + data[i].Name,
+              value: data[i].Value,
+            });
+          }
+
+          chart.data = items;
+        }); // end am4core.ready()
       }
     </script>
   </body>

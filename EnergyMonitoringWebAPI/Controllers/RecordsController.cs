@@ -72,11 +72,51 @@ namespace EnergyMonitoringWebAPI.Controllers
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
                 var item = db.spGetMaxValues(startDate, endDate).ToList();
-
+          
                 return item;
-
             }
+        }
 
+        // GET: api/records/2
+        [Route("api/records/maxvaluesdistinct/{startDate}/{endDate}")]
+        public IEnumerable<object> GetMaxValuesDistinct(DateTime startDate, DateTime endDate)
+        {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                var item = db.spGetMaxValues(startDate, endDate).ToList();
+
+                // doppelte Eintraege suchen
+                List<spGetMaxValues_Result> list = new List<spGetMaxValues_Result>();
+                Boolean exist = false;
+
+                for (int i = 0; i < item.Count; i++)
+                {
+                    if (i == 0)
+                        list.Add(item[i]);
+
+                   
+
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        if (item[i].EquipmentID == list[j].EquipmentID)
+                        {
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if (exist == false)
+                    {
+                        list.Add(item[i]);
+                        if (list.Count >= 10)
+                            break;
+                    }
+                    else
+                    {
+                        exist = false;
+                    }
+                }
+                return list;
+            }
         }
 
         //GET: api/records/count
