@@ -18,17 +18,15 @@ namespace EnergyMonitoringWebAPI
         public Group()
         {
             this.Equipments = new HashSet<Equipment>();
-            this.MailGroups = new HashSet<MailGroup>();
         }
     
         public int GroupID { get; set; }
         public string Name { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public Nullable<bool> Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Equipment> Equipments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MailGroup> MailGroups { get; set; }
     }
 }

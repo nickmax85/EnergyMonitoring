@@ -10,7 +10,7 @@
             <PropertyRef Name="ActivityID" />
           </Key>
           <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Date" Type="date" />
+          <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="Comment" Type="text" Nullable="false" />
           <Property Name="EquipmentID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
@@ -60,6 +60,7 @@
           <Property Name="EquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Number" Type="nvarchar" MaxLength="10" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" />
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -70,16 +71,7 @@
           </Key>
           <Property Name="GroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="UpdateDate" Type="datetime" />
-        </EntityType>
-        <EntityType Name="MailGroup">
-          <Key>
-            <PropertyRef Name="MailDistributionID" />
-          </Key>
-          <Property Name="MailDistributionID" Type="int" Nullable="false" />
-          <Property Name="GroupID" Type="int" Nullable="false" />
-          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
@@ -114,15 +106,6 @@
           <Property Name="UnitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Sign" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="UpdateDate" Type="datetime" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Mail" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
@@ -170,18 +153,6 @@
               <PropertyRef Name="GroupID" />
             </Principal>
             <Dependent Role="Equipment">
-              <PropertyRef Name="GroupID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Group_MailDistribution">
-          <End Role="Group" Type="Self.Group" Multiplicity="1" />
-          <End Role="MailGroup" Type="Self.MailGroup" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Group">
-              <PropertyRef Name="GroupID" />
-            </Principal>
-            <Dependent Role="MailGroup">
               <PropertyRef Name="GroupID" />
             </Dependent>
           </ReferentialConstraint>
@@ -246,18 +217,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_MailDistribution">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="MailGroup" Type="Self.MailGroup" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="MailGroup">
-              <PropertyRef Name="MailDistributionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <Function Name="spGetAvgFlow" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="int" Mode="In" />
+          <Parameter Name="week" Type="int" Mode="In" />
+          <Parameter Name="weekday" Type="int" Mode="In" />
+          <Parameter Name="timeStart" Type="time" Mode="In" />
+          <Parameter Name="timeEnd" Type="time" Mode="In" />
+        </Function>
         <Function Name="spGetFilterAlarms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="start" Type="date" Mode="In" />
           <Parameter Name="end" Type="date" Mode="In" />
@@ -280,11 +246,9 @@
           <EntitySet Name="Device" EntityType="Self.Device" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MailGroup" EntityType="Self.MailGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Record" EntityType="Self.Record" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sensor" EntityType="Self.Sensor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Activity_Equipment" Association="Self.FK_Activity_Equipment">
             <End Role="Equipment" EntitySet="Equipment" />
             <End Role="Activity" EntitySet="Activity" />
@@ -300,10 +264,6 @@
           <AssociationSet Name="FK_Equipment_Area" Association="Self.FK_Equipment_Area">
             <End Role="Group" EntitySet="Group" />
             <End Role="Equipment" EntitySet="Equipment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Group_MailDistribution" Association="Self.FK_Group_MailDistribution">
-            <End Role="Group" EntitySet="Group" />
-            <End Role="MailGroup" EntitySet="MailGroup" />
           </AssociationSet>
           <AssociationSet Name="FK_Record_Equipment" Association="Self.FK_Record_Equipment">
             <End Role="Equipment" EntitySet="Equipment" />
@@ -324,10 +284,6 @@
           <AssociationSet Name="FK_Sensor_Unit" Association="Self.FK_Sensor_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="Sensor" EntitySet="Sensor" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_MailDistribution" Association="Self.FK_User_MailDistribution">
-            <End Role="User" EntitySet="User" />
-            <End Role="MailGroup" EntitySet="MailGroup" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -387,6 +343,7 @@
           <NavigationProperty Name="Group" Relationship="Self.FK_Equipment_Area" FromRole="Equipment" ToRole="Group" />
           <NavigationProperty Name="Records" Relationship="Self.FK_Record_Equipment" FromRole="Equipment" ToRole="Record" />
           <NavigationProperty Name="Activity" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Equipment" ToRole="Activity" />
+          <Property Name="Active" Type="Boolean" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -397,19 +354,7 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Equipments" Relationship="Self.FK_Equipment_Area" FromRole="Group" ToRole="Equipment" />
-          <NavigationProperty Name="MailGroups" Relationship="Self.FK_Group_MailDistribution" FromRole="Group" ToRole="MailGroup" />
-        </EntityType>
-        <EntityType Name="MailGroup">
-          <Key>
-            <PropertyRef Name="MailDistributionID" />
-          </Key>
-          <Property Name="MailDistributionID" Type="Int32" Nullable="false" />
-          <Property Name="GroupID" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Group" Relationship="Self.FK_Group_MailDistribution" FromRole="MailGroup" ToRole="Group" />
-          <NavigationProperty Name="User" Relationship="Self.FK_User_MailDistribution" FromRole="MailGroup" ToRole="User" />
+          <Property Name="Active" Type="Boolean" />
         </EntityType>
         <EntityType Name="Record">
           <Key>
@@ -453,16 +398,6 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Sensors" Relationship="Self.FK_Sensor_Unit" FromRole="Unit" ToRole="Sensor" />
           <NavigationProperty Name="Record" Relationship="EnergyMonitoringModel.FK_Record_Unit" FromRole="Unit" ToRole="Record" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Mail" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="MailGroup" Relationship="Self.FK_User_MailDistribution" FromRole="User" ToRole="MailGroup" />
         </EntityType>
         <Association Name="FK_Alarm_Record">
           <End Role="Record" Type="Self.Record" Multiplicity="1" />
@@ -524,30 +459,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Group_MailDistribution">
-          <End Role="Group" Type="Self.Group" Multiplicity="1" />
-          <End Role="MailGroup" Type="Self.MailGroup" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Group">
-              <PropertyRef Name="GroupID" />
-            </Principal>
-            <Dependent Role="MailGroup">
-              <PropertyRef Name="GroupID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_MailDistribution">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="MailGroup" Type="Self.MailGroup" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="MailGroup">
-              <PropertyRef Name="MailDistributionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Record_Sensor">
           <End Role="Sensor" Type="Self.Sensor" Multiplicity="1" />
           <End Role="Record" Type="Self.Record" Multiplicity="*" />
@@ -578,11 +489,9 @@
           <EntitySet Name="Devices" EntityType="Self.Device" />
           <EntitySet Name="Equipments" EntityType="Self.Equipment" />
           <EntitySet Name="Groups" EntityType="Self.Group" />
-          <EntitySet Name="MailGroups" EntityType="Self.MailGroup" />
           <EntitySet Name="Records" EntityType="Self.Record" />
           <EntitySet Name="Sensors" EntityType="Self.Sensor" />
           <EntitySet Name="Units" EntityType="Self.Unit" />
-          <EntitySet Name="Users" EntityType="Self.User" />
           <AssociationSet Name="FK_Alarm_Record" Association="Self.FK_Alarm_Record">
             <End Role="Record" EntitySet="Records" />
             <End Role="Alarm" EntitySet="Alarms" />
@@ -602,14 +511,6 @@
           <AssociationSet Name="FK_Record_Equipment" Association="Self.FK_Record_Equipment">
             <End Role="Equipment" EntitySet="Equipments" />
             <End Role="Record" EntitySet="Records" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Group_MailDistribution" Association="Self.FK_Group_MailDistribution">
-            <End Role="Group" EntitySet="Groups" />
-            <End Role="MailGroup" EntitySet="MailGroups" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_MailDistribution" Association="Self.FK_User_MailDistribution">
-            <End Role="User" EntitySet="Users" />
-            <End Role="MailGroup" EntitySet="MailGroups" />
           </AssociationSet>
           <AssociationSet Name="FK_Record_Sensor" Association="Self.FK_Record_Sensor">
             <End Role="Sensor" EntitySet="Sensors" />
@@ -646,6 +547,13 @@
             <End Role="Equipment" EntitySet="Equipments" />
             <End Role="Activity" EntitySet="Activity" />
           </AssociationSet>
+          <FunctionImport Name="spGetAvgFlow" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlow_Result)">
+            <Parameter Name="year" Mode="In" Type="Int32" />
+            <Parameter Name="week" Mode="In" Type="Int32" />
+            <Parameter Name="weekday" Mode="In" Type="Int32" />
+            <Parameter Name="timeStart" Mode="In" Type="Time" />
+            <Parameter Name="timeEnd" Mode="In" Type="Time" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetSensors_Result">
           <Property Type="Int32" Name="SensorID" Nullable="false" />
@@ -704,7 +612,7 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Activity" ToRole="Equipment" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Date" Type="DateTime" Precision="0" Nullable="false" />
         </EntityType>
         <Association Name="FK_Activity_Equipment">
           <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="1" />
@@ -718,6 +626,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="spGetAvgFlow_Result">
+          <Property Type="Int32" Name="Week" Nullable="true" />
+          <Property Type="Decimal" Name="Average" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -766,6 +680,7 @@
           <EntitySetMapping Name="Equipments">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Equipment">
               <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -778,19 +693,9 @@
           <EntitySetMapping Name="Groups">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Group">
               <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MailGroups">
-            <EntityTypeMapping TypeName="EnergyMonitoringModel.MailGroup">
-              <MappingFragment StoreEntitySet="MailGroup">
-                <ScalarProperty Name="MailDistributionID" ColumnName="MailDistributionID" />
-                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
@@ -828,16 +733,6 @@
                 <ScalarProperty Name="UnitID" ColumnName="UnitID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Sign" ColumnName="Sign" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="EnergyMonitoringModel.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Mail" ColumnName="Mail" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
@@ -906,6 +801,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetAvgFlow" FunctionName="EnergyMonitoringModel.Store.spGetAvgFlow">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetAvgFlow_Result">
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="Average" ColumnName="Average" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Sign" ColumnName="Sign" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

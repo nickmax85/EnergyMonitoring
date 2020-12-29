@@ -10,17 +10,12 @@
 namespace EnergyMonitoringWebAPI
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class MailGroup
+    public partial class spGetAvgFlow_Result
     {
-        public int MailDistributionID { get; set; }
-        public int GroupID { get; set; }
-        public int UserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-    
-        public virtual Group Group { get; set; }
-        public virtual User User { get; set; }
+        public Nullable<int> Week { get; set; }
+        public Nullable<decimal> Average { get; set; }
+        public string Name { get; set; }
+        public string Sign { get; set; }
     }
 }

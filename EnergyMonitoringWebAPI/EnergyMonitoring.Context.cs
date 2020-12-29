@@ -32,11 +32,9 @@ namespace EnergyMonitoringWebAPI
         public virtual DbSet<Device> Devices { get; set; }
         public virtual DbSet<Equipment> Equipments { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<MailGroup> MailGroups { get; set; }
         public virtual DbSet<Record> Records { get; set; }
         public virtual DbSet<Sensor> Sensors { get; set; }
         public virtual DbSet<Unit> Units { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Activity> Activity { get; set; }
     
         public virtual int spGetLastDaysAvgRecords(Nullable<int> days)
@@ -98,6 +96,31 @@ namespace EnergyMonitoringWebAPI
                 new ObjectParameter("end", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMaxValues_Result>("spGetMaxValues", startParameter, endParameter);
+        }
+    
+        public virtual ObjectResult<spGetAvgFlow_Result> spGetAvgFlow(Nullable<int> year, Nullable<int> week, Nullable<int> weekday, Nullable<System.TimeSpan> timeStart, Nullable<System.TimeSpan> timeEnd)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            var weekParameter = week.HasValue ?
+                new ObjectParameter("week", week) :
+                new ObjectParameter("week", typeof(int));
+    
+            var weekdayParameter = weekday.HasValue ?
+                new ObjectParameter("weekday", weekday) :
+                new ObjectParameter("weekday", typeof(int));
+    
+            var timeStartParameter = timeStart.HasValue ?
+                new ObjectParameter("timeStart", timeStart) :
+                new ObjectParameter("timeStart", typeof(System.TimeSpan));
+    
+            var timeEndParameter = timeEnd.HasValue ?
+                new ObjectParameter("timeEnd", timeEnd) :
+                new ObjectParameter("timeEnd", typeof(System.TimeSpan));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAvgFlow_Result>("spGetAvgFlow", yearParameter, weekParameter, weekdayParameter, timeStartParameter, timeEndParameter);
         }
     }
 }

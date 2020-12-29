@@ -72,7 +72,7 @@ namespace EnergyMonitoringWebAPI.Controllers
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
                 var item = db.spGetMaxValues(startDate, endDate).ToList();
-          
+
                 return item;
             }
         }
@@ -94,7 +94,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                     if (i == 0)
                         list.Add(item[i]);
 
-                   
+
 
                     for (int j = 0; j < list.Count; j++)
                     {
@@ -144,6 +144,26 @@ namespace EnergyMonitoringWebAPI.Controllers
                 var item = db.spGetFilterRecordsAvg(startDate, endDate, groupId, equipmentId).ToList();
 
                 return item;
+
+            }
+
+        }
+
+        // GET:
+        [Route("api/records/avg/flow/{year}/{weekday}/{startTime}/{endTime}")]
+        public List<object> GetAvgFlow(int year, int weekday, TimeSpan startTime, TimeSpan endTime)
+        {
+            List<object> list = new List<object>();
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                for (int i = 1; i < 54; i++)
+                {
+                    var item = db.spGetAvgFlow(year, i, weekday, startTime, endTime).FirstOrDefault();
+                    list.Add(item);
+                }
+
+                return list;
 
             }
 
