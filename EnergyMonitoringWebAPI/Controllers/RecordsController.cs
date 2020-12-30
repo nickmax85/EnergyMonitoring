@@ -150,8 +150,8 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
         // GET:
-        [Route("api/records/avg/flow/{year}/{weekday}/{startTime}/{endTime}")]
-        public List<object> GetAvgFlow(int year, int weekday, TimeSpan startTime, TimeSpan endTime)
+        [Route("api/records/avg/flow/sum/{year}/{weekday}/{startTime}/{endTime}")]
+        public List<object> GetAvgFlowSum(int year, int weekday, TimeSpan startTime, TimeSpan endTime)
         {
             List<object> list = new List<object>();
 
@@ -159,11 +159,27 @@ namespace EnergyMonitoringWebAPI.Controllers
             {
                 for (int i = 1; i < 54; i++)
                 {
-                    var item = db.spGetAvgFlow(year, i, weekday, startTime, endTime).FirstOrDefault();
+                    var item = db.spGetAvgFlowSum(year, i, weekday, startTime, endTime).FirstOrDefault();
                     list.Add(item);
                 }
 
                 return list;
+
+            }
+
+        }
+
+        // GET:
+        [Route("api/records/avg/flow/equipments/{year}/{week}/{weekday}/{startTime}/{endTime}")]
+        public IEnumerable<object> GetAvgFlowEquipments(int year, int week, int weekday, TimeSpan startTime, TimeSpan endTime)
+        {
+
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                var item = db.spGetAvgFlowEquipments(year, week, weekday, startTime, endTime).ToList();
+                return item;
 
             }
 

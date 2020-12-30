@@ -25,7 +25,9 @@ function showSelectGroups(data) {
 
     });
 
-    let group = JSON.parse(localStorage.getItem('Group')); 
+    let group = JSON.parse(sessionStorage.getItem('Group'));
+    if (group == null)
+    return;
     let id = group.GroupID;
 
     if ($("#selectGroup").prop('selectedIndex') > 0 || id > 0) {
@@ -49,7 +51,7 @@ function groupSelectionChange(Group) {
 
 
     let sel = $("#selectGroup option:selected").val();
-    localStorage.setItem('Group', sel);
+    sessionStorage.setItem('Group', sel);
 
     if ($("#selectGroup").prop('selectedIndex') != 0) {
         $('#background').hide();
@@ -153,7 +155,7 @@ function showGroups(data) {
 
         let header = $('<div class="card-header">header</div>').html(item.Name);
         header.click(function () {
-            localStorage.setItem('Group', JSON.stringify(item));
+            sessionStorage.setItem('Group', JSON.stringify(item));
             window.location.href = "equipments.html";
         });
         header.hover(function () {
@@ -173,8 +175,8 @@ function showGroups(data) {
             let li = $('<li class="list-group-item">').attr('id', i);
             li.click(function () {
 
-                localStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
-                localStorage.setItem('Group', JSON.stringify(item));
+                sessionStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
+                sessionStorage.setItem('Group', JSON.stringify(item));
 
                 window.location.href = "devices.html";
             });

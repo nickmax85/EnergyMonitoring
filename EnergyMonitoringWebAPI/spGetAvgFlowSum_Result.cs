@@ -11,7 +11,7 @@ namespace EnergyMonitoringWebAPI
 {
     using System;
     
-    public partial class spGetAvgFlow_Result
+    public partial class spGetAvgFlowSum_Result
     {
         public Nullable<int> Week { get; set; }
         public Nullable<decimal> Average { get; set; }

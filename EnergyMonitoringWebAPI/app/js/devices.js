@@ -118,7 +118,7 @@ function showDevices(data) {
 
         let button = $('<button class="btn btn-info">').click(function () {
 
-            localStorage.setItem("DeviceID", item.DeviceID);
+            sessionStorage.setItem("DeviceID", item.DeviceID);
 
             window.location.href = "records.html";
 

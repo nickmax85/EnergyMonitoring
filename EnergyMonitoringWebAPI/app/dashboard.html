@@ -331,7 +331,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div id="info" class="col-md-12">
                 <div class="card card-info collapsed-card">
                   <div class="card-header">
-                    <h3 class="card-title">Durchschnittsberechnung</h3>
+                    <h3 class="card-title">Durchfluss - Jahreschart</h3>
                     <div class="card-tools">
                       <button
                         type="button"
@@ -343,15 +343,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                   </div>
                   <div class="card-body" style="display: none">
-                    <h5>Berechnung</h5>
-                    <span>
-                      Durchschnitt Durchfluss Equipment 1 + Durchschnitt
-                      Durchfluss Equipment 2, ...</span
-                    >
                     <div class="form-group"></div>
                     <div class="row">
                       <div class="col-md-9">
-                        <div id="loader" style="display: none"></div>
+                        <div class="loader" style="display: none"></div>
                         <div id="avgvalueschartdiv"></div>
                       </div>
                       <div class="col-lg-3">
@@ -383,13 +378,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     >Tag</label
                                   >
                                   <select class="form-control" id="weekday">
-                                    <option value="1">Sonntags</option>
-                                    <option value="2">Montags</option>
-                                    <option value="3">Dienstags</option>
-                                    <option value="4">Mittwochs</option>
-                                    <option value="5">Donnerstags</option>
-                                    <option value="6">Freitags</option>
-                                    <option value="7">Samstags</option>
+                                    <option value="1">Sonntag</option>
+                                    <option value="2">Montag</option>
+                                    <option value="3">Dienstag</option>
+                                    <option value="4">Mittwoch</option>
+                                    <option value="5">Donnerstag</option>
+                                    <option value="6">Freitag</option>
+                                    <option value="7">Samstag</option>
                                   </select>
                                 </div>
                               </div>
@@ -458,6 +453,64 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <br />
                       <div id="equipments" class="row"></div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal -->
+            <div
+              class="modal fade bd-example-modal-lg"
+              id="myModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="myLargeModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                      Durchschnittlicher Durchfluss je Equipment
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" id="modalText">
+                    <div class="row">
+                      <div
+                        class="table-wrapper-scroll-y my-custom-scrollbar col-lg-12 border"
+                      >
+                        <table
+                          id="table"
+                          class="table table-bordered table-striped mb-0"
+                        >
+                          <thead>
+                            <tr>
+                              <th scope="col">Bereich</th>
+                              <th scope="col">Equipment</th>
+                              <th scope="col">Durchfluss</th>
+                            </tr>
+                          </thead>
+                          <tbody id="data-row"></tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
                   </div>
                 </div>
               </div>
@@ -612,6 +665,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $("#end").val(end);
         $("#startMaxValue").val(start);
         $("#endMaxValue").val(end);
+
+        $("#year").val(today.getFullYear());
       }
 
       function getJQueryMaxValues() {
@@ -677,7 +732,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       function getJQueryAvgValues() {
         let url =
           server +
-          "/api/records/avg/flow" +
+          "/api/records/avg/flow/sum" +
           "/" +
           $("#year").val() +
           "/" +
@@ -686,17 +741,81 @@ scratch. This page gets rid of all links and provides the needed markup only.
           $("#startTime").val() +
           "/" +
           $("#endTime").val();
+
         $("#avgvalueschartdiv").hide();
-        $("#loader").show();
+        $(".loader").show();
+
         $.getJSON(url)
           .done(function (data) {
-            $("#loader").hide();
+            $(".loader").hide();
             $("#avgvalueschartdiv").show();
+
             showAvgValuesChart(data);
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
           });
+      }
+
+      function getJQueryAvgFlowEquipments(week) {
+        let url =
+          server +
+          "/api/records/avg/flow/equipments" +
+          "/" +
+          $("#year").val() +
+          "/" +
+          week +
+          "/" +
+          $("#weekday").val() +
+          "/" +
+          $("#startTime").val() +
+          "/" +
+          $("#endTime").val();
+
+        $.getJSON(url)
+          .done(function (data) {
+            showModal(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function showModal(data) {
+        $("#myModal").modal("show");
+
+        let container = $("#data-row");
+        container.empty();
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          let tr =
+            "<tr>" +
+            "<td>" +
+            item.Group +
+            "</td>" +
+            "<td><a href='charts.html?equipmentnumber=" +
+            item.Number +
+            "'>" +
+            item.Number +
+            " - " +
+            item.Name +
+            "</td>" +
+            "<td>" +
+            item.Average +
+            " l/min" +
+            "</td>" +
+            "</tr>";
+
+          container.append(tr);
+
+          //let btn = $('#btn' + item.EquipmentID).click(function () {
+          //    localStorage.setItem('equipmentID', JSON.stringify(item));
+          //    window.location.href = "sensor.html";
+
+          //});
+        });
       }
 
       function showMaxValues(data) {
@@ -813,9 +932,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
               // let date = new Date();
               // date.setMonth(i, 1);
               var value1 = 0;
-              // value1 -= Math.round(
-              //   (Math.random() < 0.5 ? 1 : -1) * Math.random() * 50
-              // );
+              value1 -= Math.round(
+                (Math.random() < 0.5 ? 1 : -1) * Math.random() * 50
+              );
 
               // items.push({ week: i, value1: value1 });
             }
@@ -826,6 +945,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           // Create axes
           var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+          categoryAxis.title.text = "Woche";
+          categoryAxis.title.dy = +20;
+
+          // chart.cursor = new am4charts.XYCursor();
           categoryAxis.dataFields.category = "week";
           categoryAxis.renderer.grid.template.location = 0;
           categoryAxis.renderer.minGridDistance = 30;
@@ -841,21 +964,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
           );
 
           var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+          valueAxis.title.text = "l/min";
 
           // Create series
           var series = chart.series.push(new am4charts.ColumnSeries());
+          series.columns.template.events.on(
+            "hit",
+            function (ev) {
+              console.log(ev.target.dataItem.dataContext);
+              getJQueryAvgFlowEquipments(ev.target.dataItem.dataContext.week);
+            },
+            this
+          );
           series.dataFields.valueY = "value1";
           series.dataFields.categoryX = "week";
-          series.name = "Durchfluss l/min";
           series.columns.template.tooltipText =
-            "Kalenderwoche {categoryX}: [bold]{valueY} l/min[/]";
+            "Woche {categoryX}: [bold]{valueY} l/min[/]";
+
           series.columns.template.fillOpacity = 0.8;
 
           var columnTemplate = series.columns.template;
           columnTemplate.strokeWidth = 2;
           columnTemplate.strokeOpacity = 1;
 
-          chart.legend = new am4charts.Legend();
+          // chart.legend = new am4charts.Legend();
         }); // end am4core.ready()
       }
     </script>
