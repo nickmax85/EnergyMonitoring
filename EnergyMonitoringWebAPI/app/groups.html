@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="css/custom.css" rel="stylesheet" />
+
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/environment.js"></script>
+
+    <title>Groups</title>
+  </head>
+
+  <body>
+    <h1>Groups</h1>
+
+    <h2>Add Group</h2>
+    <label>Id</label>
+    <input id="id" />
+    <br />
+    <label>Name</label>
+    <input id="name" />
+    <br />
+    <label>Active</label>
+    <input id="active" type="checkbox" />
+    <br />
+    <label>CreateDate</label>
+    <input id="createDate" type="date" />
+    <br />
+    <label>UpdateDate</label>
+    <input id="updateDate" type="date" />
+    <br />
+    <button id="add">Add</button>
+
+    <h1>List</h1>
+    <ul id="groups" class="list-group"></ul>
+
+    <script>
+      let server = env.server;
+
+      $(document).ready(function () {
+        console.log("ready");
+
+        $("#addButton").click(function () {
+          getJQuery2();
+        });
+
+        getGroups();
+      });
+
+      function getGroups() {
+        let url = server + "/api/Groups";
+
+        $.getJSON(url)
+          .done(function (data) {
+            console.log(data);
+            showList(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+      function postGroup() {
+        let url = "/api/trainings";
+
+        let training = { Title: "NEW", Room: "C" };
+
+        $.post(url, training)
+          .done(function (data) {
+            //let data = JSON.parse(ddata.d);
+            showData(data);
+            //alert(ddata);
+            //debugger;
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function deleteGroup(id) {
+        let url = "/api/trainings/" + id;
+        //$.getJSON(url, { user: "name", password: "123456" })
+        $.ajax({
+          url: url,
+          type: "DELETE",
+          //crossDomain: true,
+          //dataType: 'jsonp',
+          user: "xx",
+          password: "yy",
+        })
+          .done(function (data) {
+            //let data = JSON.parse(ddata.d);
+
+            showList(data);
+
+            //alert(ddata);
+            //debugger;
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function showData(data) {
+        console.log(data);
+        $("#id").val(data.GroupID);
+        $("#name").val(data.Name);
+        $("#active").attr("checked", data.Active);
+        let dt = new Date();
+        $("#createDate").val(dt);
+        console.log(dt);
+        $("#updateDate").val(data.UpdateDate);
+      }
+
+      function showList(data) {
+        let container = $("#groups");
+        container.empty();
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          //<input type="checkbox" id="1" />abc
+          let li = $('<li class="list-group-item">');
+          let label = $("<label>").html(
+            item.GroupID + ". " + item.Name + " (" + item.Room + ")"
+          );
+          let cbx = $('<input type="checkbox">').attr("active", item.Active);
+          label.prepend(cbx);
+          let editButton = $('<button type="submit">').attr(
+            "group",
+            JSON.stringify(item)
+          );
+          editButton.html("edit");
+          editButton.click(function () {
+            let item = $(this).attr("group");
+
+            showData(JSON.parse(item));
+          });
+          label.append(editButton);
+          li.append(label);
+          container.append(li);
+        });
+      }
+    </script>
+  </body>
+</html>
