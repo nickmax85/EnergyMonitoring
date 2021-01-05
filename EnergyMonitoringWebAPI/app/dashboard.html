@@ -567,7 +567,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       });
 
       function getConfig() {
-        let url = server + "/api/configs";
+        let url = server + "/api/configs/Get";
         $.getJSON(url)
           .done(function (data) {
             config = data[0];
@@ -578,7 +578,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function getGroups() {
-        let url = server + "/api/Groups";
+        let url = server + "/api/Groups/GetGroup";
 
         $.getJSON(url)
           .done(function (data) {
@@ -971,7 +971,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           series.columns.template.events.on(
             "hit",
             function (ev) {
-              console.log(ev.target.dataItem.dataContext);
               getJQueryAvgFlowEquipments(ev.target.dataItem.dataContext.week);
             },
             this

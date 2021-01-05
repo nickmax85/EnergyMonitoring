@@ -18,14 +18,14 @@ namespace EnergyMonitoringWebAPI.Controllers
         private EnergyMonitoringContext db = new EnergyMonitoringContext();
 
         // GET: api/Equipments
-        public IQueryable<Equipment> GetEquipment()
+        public IEnumerable<Equipment> GetEquipment()
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
 
                 db.Configuration.LazyLoadingEnabled = false;
 
-                return db.Equipments;
+                return db.Equipments.ToList();
 
             }
         }
@@ -100,37 +100,53 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         }
 
-
-        // PUT: api/Sensors/5
-        [HttpPut()]
-        public IHttpActionResult Put(int id, Equipment value)
+        // PUT: api/Equipments/5
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutEquipment(int id, Equipment equipment)
         {
-            IHttpActionResult ret = null;
-            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+
+            equipment.UpdateDate = DateTime.Now;
+
+            if (!ModelState.IsValid)
             {
-                db.Configuration.LazyLoadingEnabled = false;
-                var item = db.Equipments.Find(id);
-
-                item.Activity = value.Activity;
-
-                item.UpdateDate = DateTime.Now;
-
-                db.SaveChanges();
-
-                ret = Ok(item);
-
-
+                return BadRequest(ModelState);
             }
 
+            if (id != equipment.EquipmentID)
+            {
+                return BadRequest();
+            }
 
-            return ret;
+            db.Entry(equipment).State = EntityState.Modified;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EquipmentExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
 
         // POST: api/Equipments
-        [ResponseType(typeof(Equipment))]
+        [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> PostEquipment(Equipment equipment)
         {
+     
+            equipment.CreateDate = DateTime.Now;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

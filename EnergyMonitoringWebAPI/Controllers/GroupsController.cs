@@ -56,6 +56,9 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutGroup(int id, Group group)
         {
+
+            group.UpdateDate = DateTime.Now;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -91,6 +94,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> PostGroup(Group group)
         {
+            group.CreateDate = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

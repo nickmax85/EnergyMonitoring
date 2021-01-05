@@ -417,15 +417,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
         getDate();
 
         if (equipmentnumber == null) {
-          equipment = JSON.parse(localStorage.getItem("Equipment"));
+          equipment = JSON.parse(sessionStorage.getItem("Equipment"));
           show();
         } else {
           getEquipment(equipmentnumber);
         }
 
         $("#newBtn").click(function () {
-          localStorage.setItem("Equipment", JSON.stringify(equipment));
-          localStorage.removeItem("activity");
+          sessionStorage.setItem("Equipment", JSON.stringify(equipment));
+          sessionStorage.removeItem("activity");
           window.location.href = "activity.html";
         });
       });
@@ -444,6 +444,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function show() {
+        console.log(equipment);
         $("#group").html(equipment.Group.Name);
         $("#equipment").html(equipment.Number + " - " + equipment.Name);
         sensors = getSensors(equipment.Devices[0].DeviceID);
@@ -591,7 +592,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function getConfig() {
-        let url = server + "/api/configs";
+        let url = server + "/api/configs/Get";
         $.getJSON(url)
           .done(function (data) {
             config = data[0];

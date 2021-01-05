@@ -298,8 +298,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
       let activity;
 
       $(document).ready(function () {
-        equipment = JSON.parse(localStorage.getItem("Equipment"));
-        activity = JSON.parse(localStorage.getItem("activity"));
+        equipment = JSON.parse(sessionStorage.getItem("Equipment"));
+        activity = JSON.parse(sessionStorage.getItem("activity"));
         if (activity != null) getActivity(activity.ActivityID);
         else getDate();
 
@@ -338,7 +338,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function postActivity() {
-        let url = server + "/api/activities";
+        let url = server + "/api/activities/Post";
 
         if ($("#textArea").val() === "" || $("#modifiedBy").val() === "") {
           alert("Eingabe unvollständig ... ");

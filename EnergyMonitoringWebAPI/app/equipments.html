@@ -12,13 +12,13 @@
 
     <script src="js/environment.js"></script>
 
-    <title>Groups</title>
+    <title>Equipments</title>
   </head>
 
   <body class="container">
-    <h1>Groups</h1>
+    <h1>Equipments</h1>
 
-    <h2>Group</h2>
+    <h2>Equipment</h2>
     <form>
       <div class="form-row">
         <div class="form-group col-sm-1">
@@ -26,10 +26,17 @@
           <input class="form-control form-control-sm" disabled id="id" />
         </div>
         <div class="form-group">
+          <label for="number">Number</label>
+          <input class="form-control form-control-sm" id="number" />
+        </div>
+        <div class="form-group">
           <label for="name">Name</label>
           <input class="form-control form-control-sm" id="name" />
         </div>
-
+        <div class="form-group">
+          <label for="group">Group</label>
+          <input class="form-control form-control-sm" id="group" />
+        </div>
         <div class="form-check">
           <label for="active">Active</label>
           <br />
@@ -68,26 +75,26 @@
     <script>
       let server = env.server;
 
-      let group;
+      let equipment;
 
       $(document).ready(function () {
-        getGroups();
+        getEquipments();
 
         $("#newButton").click(function () {
-          group = new Object();
-          group.GroupID = 0;
-          group.Active = true;
+          equipment = new Object();
+          equipment.EquipmentID = 0;
+          equipment.Active = true;
           showData();
         });
 
         $("#saveButton").click(function () {
-          if (group.GroupID == 0) postGroup();
-          else putGroup();
+          if (equipment.EquipmentID == 0) postEquipment();
+          else putEquimpment();
         });
       });
 
-      function getGroups() {
-        let url = server + "/api/Groups";
+      function getEquipments() {
+        let url = server + "/api/equipments";
 
         $.getJSON(url)
           .done(function (data) {
@@ -98,41 +105,46 @@
           });
       }
 
-      function postGroup() {
-        group.GroupID = $("#id").val();
-        group.Name = $("#name").val();
-        group.Active = $("#active").prop("checked");
-        group.CreateDate = $("#createDate").val();
-        group.UpdateDate = $("#updateDate").val();
+      function postEquipment() {
+        equipment.EquipmentID = $("#id").val();
+        equipment.Number = $("#number").val();
+        equipment.Name = $("#name").val();
+        equipment.Active = $("#active").prop("checked");
+        equipment.GroupID = $("#group").val();
+        equipment.CreateDate = $("#createDate").val();
+        equipment.UpdateDate = $("#updateDate").val();
 
-        let url = server + "/api/groups";
+        let url = server + "/api/equipments";
 
-        $.post(url, group)
+        $.post(url, equipment)
           .done(function (data) {
-            group = null;
+            equipment = null;
             showData();
-            getGroups();
+            getEquipments();
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
           });
       }
 
-      function putGroup() {
-        group.GroupID = $("#id").val();
-        group.Name = $("#name").val();
-        group.Active = $("#active").prop("checked");
-        group.CreateDate = $("#createDate").val();
-        group.UpdateDate = $("#updateDate").val();
+      function putEquimpment() {
+        equipment.EquipmentID = $("#id").val();
+        equipment.Number = $("#number").val();
+        equipment.Name = $("#name").val();
+        equipment.Active = $("#active").prop("checked");
+        equipment.GroupID = 1;
+        equipment.CreateDate = $("#createDate").val();
+        equipment.UpdateDate = $("#updateDate").val();
+        console.log(equipment.GroupID);
 
-        let url = server + "/api/groups/" + group.GroupID;
+        let url = server + "/api/equipments/" + equipment.EquipmentID;
 
         $.ajax({
           url: url,
           type: "PUT",
           contentType: "application/json;charset=utf-8",
-          data: JSON.stringify(group),
-          success: function (group) {
+          data: JSON.stringify(equipment),
+          success: function (equipment) {
             alert("Daten erfolgreich gespeichert.");
             getGroups();
           },
@@ -142,8 +154,8 @@
         });
       }
 
-      function deleteGroup(id) {
-        let url = server + "/api/groups/" + id;
+      function deleteEquipment(id) {
+        let url = server + "/api/equipments/" + id;
 
         $.ajax({
           url: url,
@@ -159,19 +171,23 @@
       }
 
       function showData() {
-        if (group == null) {
+        if (equipment == null) {
           $("#id").val(null);
+          $("#number").val(null);
           $("#name").val(null);
           $("#active").prop("checked", true);
+          $("#group").val(null);
           $("#createDate").val(null);
           $("#updateDate").val(null);
         } else {
-          $("#id").val(group.GroupID);
-          $("#name").val(group.Name);
-          if (group.Active) $("#active").prop("checked", true);
+          $("#id").val(equipment.EquipmentID);
+          $("#number").val(equipment.Number);
+          $("#name").val(equipment.Name);
+          if (equipment.Active) $("#active").prop("checked", true);
           else $("#active").prop("checked", false);
-          $("#createDate").val(formatDate(group.CreateDate));
-          $("#updateDate").val(formatDate(group.UpdateDate));
+          $("#group").val(equipment.GroupID);
+          $("#createDate").val(formatDate(equipment.CreateDate));
+          $("#updateDate").val(formatDate(equipment.UpdateDate));
         }
       }
 
@@ -184,26 +200,26 @@
         data.forEach(function (item, i) {
           let li = $('<li class="list-group-item">');
 
-          let label = $("<label>").html(item.Name);
+          let label = $("<label>").html(item.Number + " - " + item.Name);
 
           let editButton = $(
             '<button type="submit" class="btn-sm btn-warning" style="margin:5px;"">'
-          ).attr("group", JSON.stringify(item));
+          ).attr("equipment", JSON.stringify(item));
           editButton.html("Edit");
           editButton.click(function () {
-            let item = $(this).attr("group");
-            group = JSON.parse(item);
+            let item = $(this).attr("equipment");
+            equipment = JSON.parse(item);
             showData();
           });
 
           let deleteButton = $(
             '<button type="submit" class="btn-sm btn-danger">'
-          ).attr("group", JSON.stringify(item));
+          ).attr("equipment", JSON.stringify(item));
           deleteButton.html("Delete");
           deleteButton.click(function () {
-            let item = $(this).attr("group");
-            group = JSON.parse(item);
-            deleteGroup(group.GroupID);
+            let item = $(this).attr("equipment");
+            equipment = JSON.parse(item);
+            deleteEquipment(equipment.EquipmentID);
           });
 
           li.append(label);
