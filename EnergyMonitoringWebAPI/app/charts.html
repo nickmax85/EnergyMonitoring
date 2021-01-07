@@ -474,7 +474,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         let timeFormat = "YYYY-MM-DD";
         let now = window.moment();
 
-        let start = now.clone().add(-5, "d").format(timeFormat);
+        let start = now.clone().add(-1, "d").format(timeFormat);
         let end = now.format(timeFormat);
 
         //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
@@ -773,6 +773,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
           // Themes end
 
           var chart = am4core.create("chartdiv", am4charts.XYChart);
+          chart.colors.list = [
+            am4core.color("blue"),
+            am4core.color("FF9671"),
+            am4core.color("green"),
+            am4core.color("#FF9671"),
+            am4core.color("#FFC75F"),
+            am4core.color("#F9F871"),
+          ];
           // Increase contrast by taking evey second color
           chart.colors.step = 2;
 
