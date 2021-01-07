@@ -25,7 +25,7 @@ function showSelectGroups(data) {
 
     });
 
-    let group = JSON.parse(sessionStorage.getItem('Group'));
+    let group = JSON.parse(sessionStorage.getItem('group'));
     if (group == null)
     return;
     let id = group.GroupID;
@@ -51,7 +51,7 @@ function groupSelectionChange(Group) {
 
 
     let sel = $("#selectGroup option:selected").val();
-    sessionStorage.setItem('Group', sel);
+    sessionStorage.setItem('group', sel);
 
     if ($("#selectGroup").prop('selectedIndex') != 0) {
         $('#background').hide();
@@ -155,7 +155,7 @@ function showGroups(data) {
 
         let header = $('<div class="card-header">header</div>').html(item.Name);
         header.click(function () {
-            sessionStorage.setItem('Group', JSON.stringify(item));
+            sessionStorage.setItem('group', JSON.stringify(item));
             window.location.href = "equipments.html";
         });
         header.hover(function () {
@@ -175,8 +175,8 @@ function showGroups(data) {
             let li = $('<li class="list-group-item">').attr('id', i);
             li.click(function () {
 
-                sessionStorage.setItem('Equipment', JSON.stringify(item.Equipment[li.attr('id')]));
-                sessionStorage.setItem('Group', JSON.stringify(item));
+                sessionStorage.setItem('equipment', JSON.stringify(item.Equipment[li.attr('id')]));
+                sessionStorage.setItem('group', JSON.stringify(item));
 
                 window.location.href = "devices.html";
             });

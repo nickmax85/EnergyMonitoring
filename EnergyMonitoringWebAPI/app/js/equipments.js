@@ -124,8 +124,8 @@ function showCardCollapsable(data) {
         // Buttons         
         let buttonCharts = $('<a href="#" class="btn btn-primary col-sm-12 mb-0">Auswertung</a>').click(function () {
 
-            sessionStorage.setItem('Equipment', JSON.stringify(item));
-            sessionStorage.setItem('Group', JSON.stringify(item.Group));
+            sessionStorage.setItem('equipment', JSON.stringify(item));
+            sessionStorage.setItem('group', JSON.stringify(item.Group));
             window.location.href = "charts.html";
 
         });

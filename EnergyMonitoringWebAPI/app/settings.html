@@ -67,7 +67,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         with font-awesome or any other icon font library -->
                         <!-- Dashboard -->
                         <li class="nav-item">
-                            <a href="/app/dashboard.html" class="nav-link">
+                            <a href="/dashboard.html" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -297,7 +297,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         function getSettings() {
 
-            let url = server + '/api/configs';
+            let url = server + '/api/configs/get';
 
             $.getJSON(url)
                 .done(function (data) {
@@ -339,9 +339,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             if (!validateInput())
                 return;
-
-            //let item = JSON.parse(localStorage.getItem('sensor'));
-            let url = server + '/api/configs/' + config.ConfigID;
+         
+            let url = server + '/api/configs/put/' + config.ConfigID;
 
 
             item = new Object();

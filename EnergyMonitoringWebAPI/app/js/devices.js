@@ -101,51 +101,6 @@ function showDeviceState(img, labelStatus, labelSystemTime, item) {
 
 }
 
-function showDevices(data) {
-
-    let container = $('#devices');
-
-    container.empty();
-
-    if (!Array.isArray(data))
-        return;
-
-    data.forEach(function (item, i) {
-
-        let li = $('<li class="list-group-item">');
-        let label = $('<label>').html(item.Name + "; <br/>");
-        let ipLink = $('<a href="http://' + item.IP + '">&nbsp;' + item.IP + '</a> <br/>');
-
-        let button = $('<button class="btn btn-info">').click(function () {
-
-            sessionStorage.setItem("DeviceID", item.DeviceID);
-
-            window.location.href = "records.html";
-
-        }).html('Report');
-
-        let outer = $('<div class="outer">');
-
-        let gaugeChart1 = $('<div id="containerGauge1_' + i + '" class="chart-container"</div>');
-        let gaugeChart2 = $('<div id="containerGauge2_' + i + '" class="chart-container"</div>');
-
-        label.append(ipLink);
-        li.append(label);
-        li.append(outer);
-
-        outer.append(gaugeChart1, gaugeChart2);
-        outer.append(button);
-
-        container.append(li);
-
-        addGauge1(gaugeChart1.get(0).id, item);
-        addGauge2(gaugeChart2.get(0).id, item);
-
-
-    });
-
-}
-
 var solidGaugeOptions = {
     chart: {
         type: 'solidgauge'

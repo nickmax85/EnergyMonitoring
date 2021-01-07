@@ -321,7 +321,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       });
 
       function getSensor(SensorID) {
-        let url = server + "/api/Sensors/" + SensorID;
+        let url = server + "/api/Sensors/Get/" + SensorID;
 
         $.getJSON(url)
           .done(function (data) {
@@ -339,7 +339,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function getUnits(data) {
-        let url = server + "/api/units";
+        let url = server + "/api/units/GetUnit";
 
         $.getJSON(url)
           .done(function (data) {
@@ -351,7 +351,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function getDevices() {
-        let url = server + "/api/devices";
+        let url = server + "/api/devices/GetDevice";
 
         $.getJSON(url)
           .done(function (data) {
@@ -413,7 +413,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         if (!validateInput()) return;
 
         let item = JSON.parse(localStorage.getItem("sensor"));
-        let url = server + "/api/sensors/" + item.SensorID;
+        let url = server + "/api/sensors/Put/" + item.SensorID;
 
         Sensor = new Object();
         Sensor.LowerLimit = $("#lowerLimit").val();

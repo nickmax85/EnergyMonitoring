@@ -417,14 +417,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
         getDate();
 
         if (equipmentnumber == null) {
-          equipment = JSON.parse(sessionStorage.getItem("Equipment"));
+          equipment = JSON.parse(sessionStorage.getItem("equipment"));
           show();
         } else {
           getEquipment(equipmentnumber);
         }
 
         $("#newBtn").click(function () {
-          sessionStorage.setItem("Equipment", JSON.stringify(equipment));
+          sessionStorage.setItem("equipment", JSON.stringify(equipment));
           sessionStorage.removeItem("activity");
           window.location.href = "activity.html";
         });
@@ -436,6 +436,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $.getJSON(url)
           .done(function (data) {
             equipment = data;
+
             show();
           })
           .fail(function (error) {
@@ -444,7 +445,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function show() {
-        console.log(equipment);
         $("#group").html(equipment.Group.Name);
         $("#equipment").html(equipment.Number + " - " + equipment.Name);
         sensors = getSensors(equipment.Devices[0].DeviceID);
@@ -454,7 +454,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function deleteActivity(activity) {
-        let url = server + "/api/activities/" + activity.ActivityID;
+        let url = server + "/api/activities/delete/" + activity.ActivityID;
         dataType: "json",
           $.ajax({
             url: url,
@@ -573,7 +573,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           );
           btnEdit.val(item);
           btnEdit.click(function () {
-            localStorage.setItem("activity", JSON.stringify(item));
+            sessionStorage.setItem("equipment", JSON.stringify(equipment));
+            sessionStorage.setItem("activity", JSON.stringify(item));
             window.location.href = "activity.html";
           });
           footer.append(btnEdit);

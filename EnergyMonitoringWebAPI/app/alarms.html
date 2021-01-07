@@ -349,7 +349,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
       function getJQuery() {
         let url =
-          server + "/api/alarms/" + $("#start").val() + "/" + $("#end").val();
+          server +
+          "/api/alarms/filter/" +
+          $("#start").val() +
+          "/" +
+          $("#end").val();
 
         $.getJSON(url)
           .done(function (data) {
@@ -436,9 +440,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         data.Remark = $("#editModal #remark").val();
         data.Confirmed = $("#editModal #confirmed").prop("checked");
 
-        console.log(alarm.AlarmID);
-
-        let url = "/api/alarms/" + alarm.AlarmID;
+        let url = server + "/api/alarms/put/" + alarm.AlarmID;
         $.ajax({
           url: url,
           type: "PUT",

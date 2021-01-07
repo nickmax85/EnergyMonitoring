@@ -191,7 +191,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="row">
                           <div class="col-xs-3">
                             <label class="control-label" for="dateField"
-                              >Start</label
+                              >Datum</label
                             >
                             <input
                               type="date"
@@ -298,7 +298,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       let activity;
 
       $(document).ready(function () {
-        equipment = JSON.parse(sessionStorage.getItem("Equipment"));
+        equipment = JSON.parse(sessionStorage.getItem("equipment"));
         activity = JSON.parse(sessionStorage.getItem("activity"));
         if (activity != null) getActivity(activity.ActivityID);
         else getDate();
@@ -319,7 +319,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function getActivity(id) {
-        let url = server + "/api/activities/" + id;
+        let url = server + "/api/activities/Get/" + id;
         $.getJSON(url)
           .done(function (data) {
             showActivity(data);
@@ -338,7 +338,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
 
       function postActivity() {
-        let url = server + "/api/activities/Post";
+        let url;
 
         if ($("#textArea").val() === "" || $("#modifiedBy").val() === "") {
           alert("Eingabe unvollständig ... ");
@@ -352,6 +352,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           activity.ModifiedBy = $("#modifiedBy").val();
           activity.EquipmentID = equipment.EquipmentID;
 
+          url = server + "/api/activities/post";
           $.post(url, activity)
             .done(function (data) {
               window.location = "charts.html";
@@ -365,8 +366,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           activity.ModifiedBy = $("#modifiedBy").val();
           activity.EquipmentID = equipment.EquipmentID;
 
-          console.log($("#dateField").val());
-          url = server + "/api/activities/" + activity.ActivityID;
+          url = server + "/api/activities/put/" + activity.ActivityID;
           $.ajax({
             url: url,
             type: "PUT",
