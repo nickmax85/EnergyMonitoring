@@ -224,9 +224,15 @@
           <Parameter Name="timeStart" Type="time" Mode="In" />
           <Parameter Name="timeEnd" Type="time" Mode="In" />
         </Function>
-        <Function Name="spGetAvgFlowSum" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="spGetAvgFlowSum1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="year" Type="int" Mode="In" />
           <Parameter Name="week" Type="int" Mode="In" />
+          <Parameter Name="weekday" Type="int" Mode="In" />
+          <Parameter Name="timeStart" Type="time" Mode="In" />
+          <Parameter Name="timeEnd" Type="time" Mode="In" />
+        </Function>
+        <Function Name="spGetAvgFlowSum2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="int" Mode="In" />
           <Parameter Name="weekday" Type="int" Mode="In" />
           <Parameter Name="timeStart" Type="time" Mode="In" />
           <Parameter Name="timeEnd" Type="time" Mode="In" />
@@ -554,16 +560,22 @@
             <End Role="Equipment" EntitySet="Equipments" />
             <End Role="Activity" EntitySet="Activity" />
           </AssociationSet>
-          <FunctionImport Name="spGetAvgFlowSum" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowSum_Result)">
+          <FunctionImport Name="spGetAvgFlowEquipments" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowEquipments_Result)">
             <Parameter Name="year" Mode="In" Type="Int32" />
             <Parameter Name="week" Mode="In" Type="Int32" />
             <Parameter Name="weekday" Mode="In" Type="Int32" />
             <Parameter Name="timeStart" Mode="In" Type="Time" />
             <Parameter Name="timeEnd" Mode="In" Type="Time" />
           </FunctionImport>
-          <FunctionImport Name="spGetAvgFlowEquipments" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowEquipments_Result)">
+          <FunctionImport Name="spGetAvgFlowSum1" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowSum1_Result)">
             <Parameter Name="year" Mode="In" Type="Int32" />
             <Parameter Name="week" Mode="In" Type="Int32" />
+            <Parameter Name="weekday" Mode="In" Type="Int32" />
+            <Parameter Name="timeStart" Mode="In" Type="Time" />
+            <Parameter Name="timeEnd" Mode="In" Type="Time" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAvgFlowSum2" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowSum2_Result)">
+            <Parameter Name="year" Mode="In" Type="Int32" />
             <Parameter Name="weekday" Mode="In" Type="Int32" />
             <Parameter Name="timeStart" Mode="In" Type="Time" />
             <Parameter Name="timeEnd" Mode="In" Type="Time" />
@@ -640,12 +652,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="spGetAvgFlowSum_Result">
-          <Property Type="Int32" Name="Week" Nullable="true" />
-          <Property Type="Decimal" Name="Average" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
-        </ComplexType>
         <ComplexType Name="spGetAvgFlowEquipments_Result">
           <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="EquipmentID" Nullable="false" />
@@ -654,6 +660,17 @@
           <Property Type="String" Name="Unit" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="Average" Nullable="true" Precision="38" Scale="6" />
+        </ComplexType>
+        <ComplexType Name="spGetAvgFlowSum1_Result">
+          <Property Type="Int32" Name="Week" Nullable="true" />
+          <Property Type="Decimal" Name="Average" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="spGetAvgFlowSum2_Result">
+          <Property Type="Int32" Name="week" Nullable="true" />
+          <Property Type="Int32" Name="day" Nullable="true" />
+          <Property Type="Decimal" Name="sum" Nullable="true" Precision="38" Scale="6" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -824,16 +841,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetAvgFlowSum" FunctionName="EnergyMonitoringModel.Store.spGetAvgFlowSum">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetAvgFlowSum_Result">
-                <ScalarProperty Name="Week" ColumnName="Week" />
-                <ScalarProperty Name="Average" ColumnName="Average" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Sign" ColumnName="Sign" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetAvgFlowEquipments" FunctionName="EnergyMonitoringModel.Store.spGetAvgFlowEquipments">
             <ResultMapping>
               <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetAvgFlowEquipments_Result">
@@ -844,6 +851,25 @@
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="Sign" ColumnName="Sign" />
                 <ScalarProperty Name="Average" ColumnName="Average" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetAvgFlowSum1" FunctionName="EnergyMonitoringModel.Store.spGetAvgFlowSum1">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetAvgFlowSum1_Result">
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="Average" ColumnName="Average" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Sign" ColumnName="Sign" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetAvgFlowSum2" FunctionName="EnergyMonitoringModel.Store.spGetAvgFlowSum2">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetAvgFlowSum2_Result">
+                <ScalarProperty Name="week" ColumnName="week" />
+                <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="sum" ColumnName="sum" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

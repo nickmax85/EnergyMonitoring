@@ -732,7 +732,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       function getJQueryAvgValues() {
         let url =
           server +
-          "/api/records/avg/flow/sum" +
+          "/api/records/avg/flow/sum2" +
           "/" +
           $("#year").val() +
           "/" +
@@ -916,25 +916,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
           // Themes end
 
           var items = [];
+
           if (data != null) {
             for (var i = 0; i < 53; i++) {
               let d = new Object();
-              if (data[i] == null) {
-                d.Average = 0.0;
-              } else {
-                d = data[i];
+              // if (data[i] == null) {
+              //   d.sum = 0.0;
+              // } else {
+              //   d = data[i];
+              // }
+
+              for (let j = 0; j < data.length; j++) {
+                if (i + 1 == data[j].week) {
+                  d.sum = data[j].sum;
+                  d.week = data[j].week;
+                  break;
+                }
               }
 
-              items.push({ week: i + 1, value1: d.Average });
+              items.push({ week: i + 1, value1: d.sum });
             }
           } else {
             for (var i = 1; i < 53; i++) {
               // let date = new Date();
               // date.setMonth(i, 1);
               var value1 = 0;
-              value1 -= Math.round(
-                (Math.random() < 0.5 ? 1 : -1) * Math.random() * 50
-              );
 
               // items.push({ week: i, value1: value1 });
             }

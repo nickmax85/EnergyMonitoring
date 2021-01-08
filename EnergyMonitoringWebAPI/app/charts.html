@@ -431,7 +431,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       });
 
       function getEquipment(equipmentnumber) {
-        let url = server + "/api/equipments/" + equipmentnumber;
+        let url = server + "/api/equipments/number/" + equipmentnumber;
 
         $.getJSON(url)
           .done(function (data) {
@@ -806,10 +806,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
           var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
           valueAxis.title.text = "l/min";
           valueAxis.syncWithAxis = chart.yAxes.getIndex(0);
+          // valueAxis.min = 0;
+          // valueAxis.max = 5000;
 
           var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
           valueAxis2.title.text = "bar";
           valueAxis2.syncWithAxis = chart.yAxes.getIndex(0);
+          valueAxis2.renderer.opposite = true;
+          valueAxis2.min = 0;
+          valueAxis2.max = 8;
 
           // Create series
           var series = chart.series.push(new am4charts.LineSeries());

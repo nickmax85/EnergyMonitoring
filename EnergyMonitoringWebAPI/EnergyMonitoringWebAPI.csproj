@@ -115,6 +115,8 @@
     <Content Include="app\activity.html" />
     <Content Include="app\css\animate.css" />
     <Content Include="app\css\style.css" />
+    <Content Include="app\equipments.html" />
+    <Content Include="app\groups.html" />
     <Content Include="app\js\amcharts\animated.js" />
     <Content Include="app\js\amcharts\charts.js" />
     <Content Include="app\js\amcharts\core.js" />
@@ -1838,7 +1840,10 @@
     <Compile Include="spGetAvgFlowEquipments_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetAvgFlowSum_Result.cs">
+    <Compile Include="spGetAvgFlowSum1_Result.cs">
+      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetAvgFlowSum2_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="spGetFilterAlarms_Result.cs">

@@ -87,7 +87,7 @@
       });
 
       function getGroups() {
-        let url = server + "/api/Groups";
+        let url = server + "/api/Groups/GetGroup";
 
         $.getJSON(url)
           .done(function (data) {
@@ -105,7 +105,7 @@
         group.CreateDate = $("#createDate").val();
         group.UpdateDate = $("#updateDate").val();
 
-        let url = server + "/api/groups";
+        let url = server + "/api/groups/PostGroup";
 
         $.post(url, group)
           .done(function (data) {
@@ -125,7 +125,7 @@
         group.CreateDate = $("#createDate").val();
         group.UpdateDate = $("#updateDate").val();
 
-        let url = server + "/api/groups/" + group.GroupID;
+        let url = server + "/api/groups/PutGroup/" + group.GroupID;
 
         $.ajax({
           url: url,
@@ -143,7 +143,7 @@
       }
 
       function deleteGroup(id) {
-        let url = server + "/api/groups/" + id;
+        let url = server + "/api/groups/DeleteGroup/" + id;
 
         $.ajax({
           url: url,

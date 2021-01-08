@@ -1,5 +1,4 @@
-﻿using EnergyMonitoringWebAPI.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -30,6 +29,7 @@ namespace EnergyMonitoringWebAPI.Controllers
             }
         }
 
+        
         // GET: api/Groups/5
         [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> GetGroup(int id)

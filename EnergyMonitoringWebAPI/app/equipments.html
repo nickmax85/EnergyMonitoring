@@ -94,7 +94,7 @@
       });
 
       function getEquipments() {
-        let url = server + "/api/equipments";
+        let url = server + "/api/Equipments/GetEquipment";
 
         $.getJSON(url)
           .done(function (data) {
@@ -114,7 +114,7 @@
         equipment.CreateDate = $("#createDate").val();
         equipment.UpdateDate = $("#updateDate").val();
 
-        let url = server + "/api/equipments";
+        let url = server + "/api/equipments/PostEquipment";
 
         $.post(url, equipment)
           .done(function (data) {
@@ -135,9 +135,9 @@
         equipment.GroupID = 1;
         equipment.CreateDate = $("#createDate").val();
         equipment.UpdateDate = $("#updateDate").val();
-        console.log(equipment.GroupID);
 
-        let url = server + "/api/equipments/" + equipment.EquipmentID;
+        let url =
+          server + "/api/equipments/PutEquipment/" + equipment.EquipmentID;
 
         $.ajax({
           url: url,
@@ -146,7 +146,7 @@
           data: JSON.stringify(equipment),
           success: function (equipment) {
             alert("Daten erfolgreich gespeichert.");
-            getGroups();
+            getEquipments();
           },
           error: function (request, message, error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -155,7 +155,7 @@
       }
 
       function deleteEquipment(id) {
-        let url = server + "/api/equipments/" + id;
+        let url = server + "/api/equipments/DeleteEquipment/" + id;
 
         $.ajax({
           url: url,
@@ -163,7 +163,7 @@
         })
           .done(function (data) {
             alert("Daten wurden entfernt");
-            getGroups();
+            getEquipments();
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -200,7 +200,9 @@
         data.forEach(function (item, i) {
           let li = $('<li class="list-group-item">');
 
-          let label = $("<label>").html(item.Number + " - " + item.Name);
+          let label = $("<label>").html(
+            item.Number + " - " + item.Name + " [active=" + item.Active + "]"
+          );
 
           let editButton = $(
             '<button type="submit" class="btn-sm btn-warning" style="margin:5px;"">'

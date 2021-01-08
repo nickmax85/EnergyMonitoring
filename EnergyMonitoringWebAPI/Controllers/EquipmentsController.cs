@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 
-
 namespace EnergyMonitoringWebAPI.Controllers
 {
     public class EquipmentsController : ApiController
@@ -22,18 +21,38 @@ namespace EnergyMonitoringWebAPI.Controllers
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-
                 db.Configuration.LazyLoadingEnabled = false;
 
                 return db.Equipments.ToList();
+            }
+        }
+
+        // GET: api/Groups/5
+        [ResponseType(typeof(Equipment))]
+        public async Task<IHttpActionResult> GetEquipment(int id)
+        {
+
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                Equipment equipment = await db.Equipments.FindAsync(id);
+                if (equipment == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(equipment);
 
             }
+
         }
 
         // GET: api/Equipments/5
         [ResponseType(typeof(Equipment))]
-        [Route("api/equipments/{equipmentnumber}")]
-        public async Task<IHttpActionResult> GetEquipment(string equipmentnumber)
+        [Route("api/equipments/number/{equipmentnumber}")]
+        public async Task<IHttpActionResult> GetEquipmentByNumber(string equipmentnumber)
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
@@ -62,7 +81,6 @@ namespace EnergyMonitoringWebAPI.Controllers
         [Route("api/equipments/count")]
         public int GetEquipmentsCount()
         {
-
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
 
@@ -101,11 +119,9 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
         // PUT: api/Equipments/5
-        [HttpPut]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutEquipment(int id, Equipment equipment)
         {
-
             equipment.UpdateDate = DateTime.Now;
 
             if (!ModelState.IsValid)
@@ -141,7 +157,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
 
         // POST: api/Equipments
-        [ResponseType(typeof(Group))]
+        [ResponseType(typeof(Equipment))]
         public async Task<IHttpActionResult> PostEquipment(Equipment equipment)
         {
      

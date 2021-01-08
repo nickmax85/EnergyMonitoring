@@ -11,11 +11,10 @@ namespace EnergyMonitoringWebAPI
 {
     using System;
     
-    public partial class spGetAvgFlowSum_Result
+    public partial class spGetAvgFlowSum2_Result
     {
-        public Nullable<int> Week { get; set; }
-        public Nullable<decimal> Average { get; set; }
-        public string Name { get; set; }
-        public string Sign { get; set; }
+        public Nullable<int> week { get; set; }
+        public Nullable<int> day { get; set; }
+        public Nullable<decimal> sum { get; set; }
     }
 }
