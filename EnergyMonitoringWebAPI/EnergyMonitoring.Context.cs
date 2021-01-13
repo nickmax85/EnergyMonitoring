@@ -123,31 +123,6 @@ namespace EnergyMonitoringWebAPI
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAvgFlowEquipments_Result>("spGetAvgFlowEquipments", yearParameter, weekParameter, weekdayParameter, timeStartParameter, timeEndParameter);
         }
     
-        public virtual ObjectResult<spGetAvgFlowSum1_Result> spGetAvgFlowSum1(Nullable<int> year, Nullable<int> week, Nullable<int> weekday, Nullable<System.TimeSpan> timeStart, Nullable<System.TimeSpan> timeEnd)
-        {
-            var yearParameter = year.HasValue ?
-                new ObjectParameter("year", year) :
-                new ObjectParameter("year", typeof(int));
-    
-            var weekParameter = week.HasValue ?
-                new ObjectParameter("week", week) :
-                new ObjectParameter("week", typeof(int));
-    
-            var weekdayParameter = weekday.HasValue ?
-                new ObjectParameter("weekday", weekday) :
-                new ObjectParameter("weekday", typeof(int));
-    
-            var timeStartParameter = timeStart.HasValue ?
-                new ObjectParameter("timeStart", timeStart) :
-                new ObjectParameter("timeStart", typeof(System.TimeSpan));
-    
-            var timeEndParameter = timeEnd.HasValue ?
-                new ObjectParameter("timeEnd", timeEnd) :
-                new ObjectParameter("timeEnd", typeof(System.TimeSpan));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAvgFlowSum1_Result>("spGetAvgFlowSum1", yearParameter, weekParameter, weekdayParameter, timeStartParameter, timeEndParameter);
-        }
-    
         public virtual ObjectResult<spGetAvgFlowSum2_Result> spGetAvgFlowSum2(Nullable<int> year, Nullable<int> weekday, Nullable<System.TimeSpan> timeStart, Nullable<System.TimeSpan> timeEnd)
         {
             var yearParameter = year.HasValue ?

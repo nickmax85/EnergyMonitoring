@@ -16,7 +16,7 @@ namespace EnergyMonitoringWebAPI
     {
         public int AlarmID { get; set; }
         public long RecordID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public string Remark { get; set; }
         public Nullable<bool> Confirmed { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

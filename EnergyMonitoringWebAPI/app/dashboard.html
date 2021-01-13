@@ -617,7 +617,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         let url = server + "/api/equipments/count";
         $.getJSON(url)
           .done(function (data) {
-            $("#machinecount").html(data);
+            $("#machinecount").html(data.toLocaleString());
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -626,7 +626,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         url = server + "/api/sensors/count";
         $.getJSON(url)
           .done(function (data) {
-            $("#sensorcount").html(data);
+            $("#sensorcount").html(data.toLocaleString());
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -635,7 +635,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         url = server + "/api/records/count";
         $.getJSON(url)
           .done(function (data) {
-            $("#recordcount").html(data);
+            console.log(data.toLocaleString());
+            $("#recordcount").html(data.toLocaleString());
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -920,11 +921,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           if (data != null) {
             for (var i = 0; i < 53; i++) {
               let d = new Object();
-              // if (data[i] == null) {
-              //   d.sum = 0.0;
-              // } else {
-              //   d = data[i];
-              // }
 
               for (let j = 0; j < data.length; j++) {
                 if (i + 1 == data[j].week) {
@@ -935,14 +931,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
               }
 
               items.push({ week: i + 1, value1: d.sum });
-            }
-          } else {
-            for (var i = 1; i < 53; i++) {
-              // let date = new Date();
-              // date.setMonth(i, 1);
-              var value1 = 0;
-
-              // items.push({ week: i, value1: value1 });
             }
           }
 
@@ -991,6 +979,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
           var columnTemplate = series.columns.template;
           columnTemplate.strokeWidth = 2;
           columnTemplate.strokeOpacity = 1;
+
+          var lineSeries = chart.series.push(new am4charts.LineSeries());
+          lineSeries.name = "Expenses";
+          lineSeries.dataFields.valueY = "expenses";
+          lineSeries.dataFields.categoryX = "year";
+
+          lineSeries.stroke = am4core.color("#fdd400");
+          lineSeries.strokeWidth = 3;
+          lineSeries.propertyFields.strokeDasharray = "lineDash";
+          lineSeries.tooltip.label.textAlign = "middle";
+
+          var bullet = lineSeries.bullets.push(new am4charts.Bullet());
+          bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
+          bullet.tooltipText =
+            "[#fff font-size: 15px]{name} in {categoryX}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]";
+          var circle = bullet.createChild(am4core.Circle);
+          circle.radius = 4;
+          circle.fill = am4core.color("#fff");
+          circle.strokeWidth = 3;
 
           // chart.legend = new am4charts.Legend();
         }); // end am4core.ready()

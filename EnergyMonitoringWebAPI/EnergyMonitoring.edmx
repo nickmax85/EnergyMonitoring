@@ -10,7 +10,7 @@
             <PropertyRef Name="ActivityID" />
           </Key>
           <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Date" Type="date" />
           <Property Name="Comment" Type="text" Nullable="false" />
           <Property Name="EquipmentID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
@@ -22,10 +22,10 @@
             <PropertyRef Name="AlarmID" />
           </Key>
           <Property Name="AlarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Remark" Type="nvarchar" MaxLength="50" />
-          <Property Name="Confirmed" Type="bit" />
           <Property Name="RecordID" Type="bigint" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Confirmed" Type="bit" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Config">
@@ -61,6 +61,7 @@
           <Property Name="Number" Type="nvarchar" MaxLength="10" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Active" Type="bit" />
+          <Property Name="InactiveDate" Type="datetime" />
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -224,13 +225,6 @@
           <Parameter Name="timeStart" Type="time" Mode="In" />
           <Parameter Name="timeEnd" Type="time" Mode="In" />
         </Function>
-        <Function Name="spGetAvgFlowSum1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="year" Type="int" Mode="In" />
-          <Parameter Name="week" Type="int" Mode="In" />
-          <Parameter Name="weekday" Type="int" Mode="In" />
-          <Parameter Name="timeStart" Type="time" Mode="In" />
-          <Parameter Name="timeEnd" Type="time" Mode="In" />
-        </Function>
         <Function Name="spGetAvgFlowSum2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="year" Type="int" Mode="In" />
           <Parameter Name="weekday" Type="int" Mode="In" />
@@ -309,9 +303,9 @@
           </Key>
           <Property Name="AlarmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RecordID" Type="Int64" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" Nullable="false" />
           <NavigationProperty Name="Record" Relationship="Self.FK_Alarm_Record" FromRole="Alarm" ToRole="Record" />
-          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Confirmed" Type="Boolean" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
         </EntityType>
@@ -357,6 +351,7 @@
           <NavigationProperty Name="Records" Relationship="Self.FK_Record_Equipment" FromRole="Equipment" ToRole="Record" />
           <NavigationProperty Name="Activity" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Equipment" ToRole="Activity" />
           <Property Name="Active" Type="Boolean" />
+          <Property Name="InactiveDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -567,13 +562,6 @@
             <Parameter Name="timeStart" Mode="In" Type="Time" />
             <Parameter Name="timeEnd" Mode="In" Type="Time" />
           </FunctionImport>
-          <FunctionImport Name="spGetAvgFlowSum1" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowSum1_Result)">
-            <Parameter Name="year" Mode="In" Type="Int32" />
-            <Parameter Name="week" Mode="In" Type="Int32" />
-            <Parameter Name="weekday" Mode="In" Type="Int32" />
-            <Parameter Name="timeStart" Mode="In" Type="Time" />
-            <Parameter Name="timeEnd" Mode="In" Type="Time" />
-          </FunctionImport>
           <FunctionImport Name="spGetAvgFlowSum2" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowSum2_Result)">
             <Parameter Name="year" Mode="In" Type="Int32" />
             <Parameter Name="weekday" Mode="In" Type="Int32" />
@@ -638,7 +626,7 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Activity" ToRole="Equipment" />
-          <Property Name="Date" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_Activity_Equipment">
           <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="1" />
@@ -660,12 +648,6 @@
           <Property Type="String" Name="Unit" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="Average" Nullable="true" Precision="38" Scale="6" />
-        </ComplexType>
-        <ComplexType Name="spGetAvgFlowSum1_Result">
-          <Property Type="Int32" Name="Week" Nullable="true" />
-          <Property Type="Decimal" Name="Average" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="spGetAvgFlowSum2_Result">
           <Property Type="Int32" Name="week" Nullable="true" />
@@ -720,6 +702,7 @@
           <EntitySetMapping Name="Equipments">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Equipment">
               <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="InactiveDate" ColumnName="InactiveDate" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
@@ -851,16 +834,6 @@
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="Sign" ColumnName="Sign" />
                 <ScalarProperty Name="Average" ColumnName="Average" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetAvgFlowSum1" FunctionName="EnergyMonitoringModel.Store.spGetAvgFlowSum1">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetAvgFlowSum1_Result">
-                <ScalarProperty Name="Week" ColumnName="Week" />
-                <ScalarProperty Name="Average" ColumnName="Average" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Sign" ColumnName="Sign" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -37,6 +37,14 @@
           <label for="group">Group</label>
           <input class="form-control form-control-sm" id="group" />
         </div>
+        <div class="form-group">
+          <label>InactiveDate</label>
+          <input
+            class="form-control form-control-sm"
+            id="inactiveDate"
+            type="date"
+          />
+        </div>
         <div class="form-check">
           <label for="active">Active</label>
           <br />
@@ -110,6 +118,7 @@
         equipment.Number = $("#number").val();
         equipment.Name = $("#name").val();
         equipment.Active = $("#active").prop("checked");
+        equipment.InactiveDate = $("#inactiveDate").val();
         equipment.GroupID = $("#group").val();
         equipment.CreateDate = $("#createDate").val();
         equipment.UpdateDate = $("#updateDate").val();
@@ -132,7 +141,8 @@
         equipment.Number = $("#number").val();
         equipment.Name = $("#name").val();
         equipment.Active = $("#active").prop("checked");
-        equipment.GroupID = 1;
+        equipment.InactiveDate = $("#inactiveDate").val();
+        equipment.GroupID = $("#group").val();
         equipment.CreateDate = $("#createDate").val();
         equipment.UpdateDate = $("#updateDate").val();
 
@@ -176,6 +186,7 @@
           $("#number").val(null);
           $("#name").val(null);
           $("#active").prop("checked", true);
+          $("#inactiveDate").val(null);
           $("#group").val(null);
           $("#createDate").val(null);
           $("#updateDate").val(null);
@@ -185,6 +196,11 @@
           $("#name").val(equipment.Name);
           if (equipment.Active) $("#active").prop("checked", true);
           else $("#active").prop("checked", false);
+
+          if (equipment.InactiveDate != null)
+            $("#inactiveDate").val(formatDate(equipment.InactiveDate));
+          else $("#inactiveDate").val(null);
+
           $("#group").val(equipment.GroupID);
           $("#createDate").val(formatDate(equipment.CreateDate));
           $("#updateDate").val(formatDate(equipment.UpdateDate));

@@ -1840,9 +1840,6 @@
     <Compile Include="spGetAvgFlowEquipments_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetAvgFlowSum1_Result.cs">
-      <DependentUpon>EnergyMonitoring.tt</DependentUpon>
-    </Compile>
     <Compile Include="spGetAvgFlowSum2_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
