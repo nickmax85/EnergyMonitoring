@@ -218,7 +218,7 @@ function addGaugeChart2(container, item) {
     var flowGauge = Highcharts.chart(container, Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 5000,
+            max: 3000,
             title: {
                 text: 'Durchfluss'
             },
