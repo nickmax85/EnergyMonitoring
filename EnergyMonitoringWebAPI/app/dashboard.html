@@ -696,7 +696,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $("#startMaxValue").val(start);
         $("#endMaxValue").val(end);
 
-        $("#year").val(today.getFullYear()-1);
+        $("#year").val(today.getFullYear() - 1);
       }
 
       function getJQueryMaxValues() {
@@ -975,15 +975,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
           categoryAxis.renderer.grid.template.location = 0;
           categoryAxis.renderer.minGridDistance = 30;
 
-          categoryAxis.renderer.labels.template.adapter.add(
-            "dy",
-            function (dy, target) {
-              if (target.dataItem && target.dataItem.index & (2 == 2)) {
-                return dy + 25;
-              }
-              return dy;
+          categoryAxis.renderer.labels.template.adapter.add("dy", function (
+            dy,
+            target
+          ) {
+            if (target.dataItem && target.dataItem.index & (2 == 2)) {
+              return dy + 25;
             }
-          );
+            return dy;
+          });
 
           var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
           valueAxis.title.text = "l/min";
@@ -1027,7 +1027,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           var bullet = lineSeries.bullets.push(new am4charts.Bullet());
           bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
           bullet.tooltipText =
-            "[#fff font-size: 15px]{name} in {categoryX}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]";
+            "[#fff font-size: 15px]{name} in Woche {categoryX}:\n[/][#fff font-size: 20px]{valueY} Stück[/] [#fff]{additional}[/]";
           var circle = bullet.createChild(am4core.Circle);
           circle.radius = 4;
           circle.fill = am4core.color("#fff");
