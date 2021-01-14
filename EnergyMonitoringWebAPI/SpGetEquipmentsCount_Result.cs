@@ -10,17 +10,10 @@
 namespace EnergyMonitoringWebAPI
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Alarm
+    public partial class SpGetEquipmentsCount_Result
     {
-        public int AlarmID { get; set; }
-        public long RecordID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public string Remark { get; set; }
-        public Nullable<bool> Confirmed { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-    
-        public virtual Record Record { get; set; }
+        public Nullable<int> week { get; set; }
+        public Nullable<int> equipments { get; set; }
     }
 }

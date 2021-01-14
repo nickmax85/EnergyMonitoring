@@ -10,7 +10,7 @@
             <PropertyRef Name="ActivityID" />
           </Key>
           <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Date" Type="date" />
+          <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="Comment" Type="text" Nullable="false" />
           <Property Name="EquipmentID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
@@ -22,10 +22,10 @@
             <PropertyRef Name="AlarmID" />
           </Key>
           <Property Name="AlarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RecordID" Type="bigint" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="50" />
           <Property Name="Confirmed" Type="bit" />
-          <Property Name="Remark" Type="varchar" MaxLength="100" />
-          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="RecordID" Type="bigint" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Config">
@@ -231,6 +231,10 @@
           <Parameter Name="timeStart" Type="time" Mode="In" />
           <Parameter Name="timeEnd" Type="time" Mode="In" />
         </Function>
+        <Function Name="SpGetEquipmentsCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="int" Mode="In" />
+          <Parameter Name="weekday" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetFilterAlarms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="start" Type="date" Mode="In" />
           <Parameter Name="end" Type="date" Mode="In" />
@@ -303,9 +307,9 @@
           </Key>
           <Property Name="AlarmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RecordID" Type="Int64" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Record" Relationship="Self.FK_Alarm_Record" FromRole="Alarm" ToRole="Record" />
-          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Confirmed" Type="Boolean" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
         </EntityType>
@@ -568,6 +572,10 @@
             <Parameter Name="timeStart" Mode="In" Type="Time" />
             <Parameter Name="timeEnd" Mode="In" Type="Time" />
           </FunctionImport>
+          <FunctionImport Name="SpGetEquipmentsCount" ReturnType="Collection(EnergyMonitoringModel.SpGetEquipmentsCount_Result)">
+            <Parameter Name="year" Mode="In" Type="Int32" />
+            <Parameter Name="weekday" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetSensors_Result">
           <Property Type="Int32" Name="SensorID" Nullable="false" />
@@ -626,7 +634,7 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Activity" ToRole="Equipment" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Date" Type="DateTime" Precision="0" Nullable="false" />
         </EntityType>
         <Association Name="FK_Activity_Equipment">
           <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="1" />
@@ -653,6 +661,10 @@
           <Property Type="Int32" Name="week" Nullable="true" />
           <Property Type="Int32" Name="day" Nullable="true" />
           <Property Type="Decimal" Name="sum" Nullable="true" Precision="38" Scale="6" />
+        </ComplexType>
+        <ComplexType Name="SpGetEquipmentsCount_Result">
+          <Property Type="Int32" Name="week" Nullable="true" />
+          <Property Type="Int32" Name="equipments" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -843,6 +855,14 @@
                 <ScalarProperty Name="week" ColumnName="week" />
                 <ScalarProperty Name="day" ColumnName="day" />
                 <ScalarProperty Name="sum" ColumnName="sum" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpGetEquipmentsCount" FunctionName="EnergyMonitoringModel.Store.SpGetEquipmentsCount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetEquipmentsCount_Result">
+                <ScalarProperty Name="week" ColumnName="week" />
+                <ScalarProperty Name="equipments" ColumnName="equipments" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

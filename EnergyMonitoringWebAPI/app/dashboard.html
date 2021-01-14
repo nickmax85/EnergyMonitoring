@@ -407,7 +407,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 class="btn btn-primary btn-block"
                                 name="submit"
                                 type="submit"
-                                onclick="getJQueryAvgValues();"
+                                onclick="test();"
                               >
                                 Suche
                               </button>
@@ -601,6 +601,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
           });
       }
 
+      function getEquipmentsCountPerWeekday(callback) {
+        let url =
+          server +
+          "/api/equipments/count/" +
+          $("#year").val() +
+          "/" +
+          $("#weekday").val();
+
+        $.getJSON(url)
+          .done(function (data) {
+            res = data;
+            callback(res);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function test() {
+        $(".loader").hide();
+        $("#avgvalueschartdiv").show();
+
+        getJQueryAvgValues(function (res1) {
+          getEquipmentsCountPerWeekday(function (res2) {
+            $(".loader").hide();
+            $("#avgvalueschartdiv").show();
+            showAvgValuesChart(res1, res2);
+          });
+        });
+      }
       function postEquipment(equipment) {
         let url = server + "/api/equipments";
 
@@ -635,7 +665,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         url = server + "/api/records/count";
         $.getJSON(url)
           .done(function (data) {
-            console.log(data.toLocaleString());
             $("#recordcount").html(data.toLocaleString());
           })
           .fail(function (error) {
@@ -667,7 +696,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $("#startMaxValue").val(start);
         $("#endMaxValue").val(end);
 
-        $("#year").val(today.getFullYear());
+        $("#year").val(today.getFullYear()-1);
       }
 
       function getJQueryMaxValues() {
@@ -730,7 +759,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           });
       }
 
-      function getJQueryAvgValues() {
+      function getJQueryAvgValues(callback) {
         let url =
           server +
           "/api/records/avg/flow/sum2" +
@@ -743,15 +772,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
           "/" +
           $("#endTime").val();
 
-        $("#avgvalueschartdiv").hide();
-        $(".loader").show();
-
         $.getJSON(url)
           .done(function (data) {
-            $(".loader").hide();
-            $("#avgvalueschartdiv").show();
-
-            showAvgValuesChart(data);
+            res = data;
+            callback(res);
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -910,7 +934,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }); // end am4core.ready()
       }
 
-      function showAvgValuesChart(data) {
+      function showAvgValuesChart(data1, data2) {
         am4core.ready(function () {
           // Themes begin
           am4core.useTheme(am4themes_animated);
@@ -918,19 +942,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           var items = [];
 
-          if (data != null) {
+          console.log(data1);
+          console.log(data2);
+
+          if (data1 != null) {
             for (var i = 0; i < 53; i++) {
               let d = new Object();
 
-              for (let j = 0; j < data.length; j++) {
-                if (i + 1 == data[j].week) {
-                  d.sum = data[j].sum;
-                  d.week = data[j].week;
+              for (let j = 0; j < data1.length; j++) {
+                if (i + 1 == data1[j].week) {
+                  d.sum = data1[j].sum;
+                  d.week = data1[j].week;
+                  d.equipments = data2[i].equipments;
                   break;
                 }
               }
 
-              items.push({ week: i + 1, value1: d.sum });
+              items.push({ week: i + 1, value1: d.sum, value2: d.equipments });
             }
           }
 
@@ -960,6 +988,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
           var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
           valueAxis.title.text = "l/min";
 
+          var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
+          valueAxis2.title.text = "Equipments";
+          valueAxis2.syncWithAxis = chart.yAxes.getIndex(0);
+          valueAxis2.renderer.opposite = true;
+
           // Create series
           var series = chart.series.push(new am4charts.ColumnSeries());
           series.columns.template.events.on(
@@ -981,9 +1014,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
           columnTemplate.strokeOpacity = 1;
 
           var lineSeries = chart.series.push(new am4charts.LineSeries());
-          lineSeries.name = "Expenses";
-          lineSeries.dataFields.valueY = "expenses";
-          lineSeries.dataFields.categoryX = "year";
+          lineSeries.name = "Equipments";
+          lineSeries.dataFields.valueY = "value2";
+          lineSeries.dataFields.categoryX = "week";
+          lineSeries.yAxis = valueAxis2;
 
           lineSeries.stroke = am4core.color("#fdd400");
           lineSeries.strokeWidth = 3;

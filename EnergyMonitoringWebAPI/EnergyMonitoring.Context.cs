@@ -143,5 +143,18 @@ namespace EnergyMonitoringWebAPI
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAvgFlowSum2_Result>("spGetAvgFlowSum2", yearParameter, weekdayParameter, timeStartParameter, timeEndParameter);
         }
+    
+        public virtual ObjectResult<SpGetEquipmentsCount_Result> SpGetEquipmentsCount(Nullable<int> year, Nullable<int> weekday)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            var weekdayParameter = weekday.HasValue ?
+                new ObjectParameter("weekday", weekday) :
+                new ObjectParameter("weekday", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetEquipmentsCount_Result>("SpGetEquipmentsCount", yearParameter, weekdayParameter);
+        }
     }
 }

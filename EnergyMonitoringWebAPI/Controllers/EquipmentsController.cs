@@ -118,6 +118,20 @@ namespace EnergyMonitoringWebAPI.Controllers
 
         }
 
+        // GET: api/equipments/count/{year}/{weekday}
+        [Route("api/equipments/count/{year}/{weekday}")]
+        public IEnumerable<object> GetEquipmentsCountPerWeekday(int year, int weekday)
+        {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                var item = db.SpGetEquipmentsCount(year, weekday).ToList();
+
+                return item;
+
+            }
+
+        }
+
         // PUT: api/Equipments/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutEquipment(int id, Equipment equipment)
