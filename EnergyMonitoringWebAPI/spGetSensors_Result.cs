@@ -11,7 +11,7 @@ namespace EnergyMonitoringWebAPI
 {
     using System;
     
-    public partial class spGetSensors_Result
+    public partial class SpGetSensors_Result
     {
         public int SensorID { get; set; }
         public Nullable<decimal> LowerLimit { get; set; }

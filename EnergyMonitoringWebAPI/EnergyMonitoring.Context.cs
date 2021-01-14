@@ -37,68 +37,7 @@ namespace EnergyMonitoringWebAPI
         public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<Activity> Activity { get; set; }
     
-        public virtual int spGetLastDaysAvgRecords(Nullable<int> days)
-        {
-            var daysParameter = days.HasValue ?
-                new ObjectParameter("days", days) :
-                new ObjectParameter("days", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetLastDaysAvgRecords", daysParameter);
-        }
-    
-        public virtual ObjectResult<spGetSensors_Result> spGetSensors()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetSensors_Result>("spGetSensors");
-        }
-    
-        public virtual ObjectResult<spGetFilterAlarms_Result> spGetFilterAlarms(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
-        {
-            var startParameter = start.HasValue ?
-                new ObjectParameter("start", start) :
-                new ObjectParameter("start", typeof(System.DateTime));
-    
-            var endParameter = end.HasValue ?
-                new ObjectParameter("end", end) :
-                new ObjectParameter("end", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFilterAlarms_Result>("spGetFilterAlarms", startParameter, endParameter);
-        }
-    
-        public virtual ObjectResult<spGetFilterRecordsAvg_Result> spGetFilterRecordsAvg(Nullable<System.DateTime> start, Nullable<System.DateTime> end, Nullable<int> groupId, Nullable<int> equipmentId)
-        {
-            var startParameter = start.HasValue ?
-                new ObjectParameter("start", start) :
-                new ObjectParameter("start", typeof(System.DateTime));
-    
-            var endParameter = end.HasValue ?
-                new ObjectParameter("end", end) :
-                new ObjectParameter("end", typeof(System.DateTime));
-    
-            var groupIdParameter = groupId.HasValue ?
-                new ObjectParameter("groupId", groupId) :
-                new ObjectParameter("groupId", typeof(int));
-    
-            var equipmentIdParameter = equipmentId.HasValue ?
-                new ObjectParameter("equipmentId", equipmentId) :
-                new ObjectParameter("equipmentId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFilterRecordsAvg_Result>("spGetFilterRecordsAvg", startParameter, endParameter, groupIdParameter, equipmentIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetMaxValues_Result> spGetMaxValues(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
-        {
-            var startParameter = start.HasValue ?
-                new ObjectParameter("start", start) :
-                new ObjectParameter("start", typeof(System.DateTime));
-    
-            var endParameter = end.HasValue ?
-                new ObjectParameter("end", end) :
-                new ObjectParameter("end", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMaxValues_Result>("spGetMaxValues", startParameter, endParameter);
-        }
-    
-        public virtual ObjectResult<spGetAvgFlowEquipments_Result> spGetAvgFlowEquipments(Nullable<int> year, Nullable<int> week, Nullable<int> weekday, Nullable<System.TimeSpan> timeStart, Nullable<System.TimeSpan> timeEnd)
+        public virtual ObjectResult<SpGetAvgFlowEquipments_Result> SpGetAvgFlowEquipments(Nullable<int> year, Nullable<int> week, Nullable<int> weekday, Nullable<System.TimeSpan> timeStart, Nullable<System.TimeSpan> timeEnd)
         {
             var yearParameter = year.HasValue ?
                 new ObjectParameter("year", year) :
@@ -120,10 +59,10 @@ namespace EnergyMonitoringWebAPI
                 new ObjectParameter("timeEnd", timeEnd) :
                 new ObjectParameter("timeEnd", typeof(System.TimeSpan));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAvgFlowEquipments_Result>("spGetAvgFlowEquipments", yearParameter, weekParameter, weekdayParameter, timeStartParameter, timeEndParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetAvgFlowEquipments_Result>("SpGetAvgFlowEquipments", yearParameter, weekParameter, weekdayParameter, timeStartParameter, timeEndParameter);
         }
     
-        public virtual ObjectResult<spGetAvgFlowSum2_Result> spGetAvgFlowSum2(Nullable<int> year, Nullable<int> weekday, Nullable<System.TimeSpan> timeStart, Nullable<System.TimeSpan> timeEnd)
+        public virtual ObjectResult<SpGetAvgFlowSum2_Result> SpGetAvgFlowSum2(Nullable<int> year, Nullable<int> weekday, Nullable<System.TimeSpan> timeStart, Nullable<System.TimeSpan> timeEnd)
         {
             var yearParameter = year.HasValue ?
                 new ObjectParameter("year", year) :
@@ -141,7 +80,7 @@ namespace EnergyMonitoringWebAPI
                 new ObjectParameter("timeEnd", timeEnd) :
                 new ObjectParameter("timeEnd", typeof(System.TimeSpan));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAvgFlowSum2_Result>("spGetAvgFlowSum2", yearParameter, weekdayParameter, timeStartParameter, timeEndParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetAvgFlowSum2_Result>("SpGetAvgFlowSum2", yearParameter, weekdayParameter, timeStartParameter, timeEndParameter);
         }
     
         public virtual ObjectResult<SpGetEquipmentsCount_Result> SpGetEquipmentsCount(Nullable<int> year, Nullable<int> weekday)
@@ -155,6 +94,58 @@ namespace EnergyMonitoringWebAPI
                 new ObjectParameter("weekday", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetEquipmentsCount_Result>("SpGetEquipmentsCount", yearParameter, weekdayParameter);
+        }
+    
+        public virtual ObjectResult<SpGetFilterAlarms_Result> SpGetFilterAlarms(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
+        {
+            var startParameter = start.HasValue ?
+                new ObjectParameter("start", start) :
+                new ObjectParameter("start", typeof(System.DateTime));
+    
+            var endParameter = end.HasValue ?
+                new ObjectParameter("end", end) :
+                new ObjectParameter("end", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetFilterAlarms_Result>("SpGetFilterAlarms", startParameter, endParameter);
+        }
+    
+        public virtual ObjectResult<SpGetFilterRecordsAvg_Result> SpGetFilterRecordsAvg(Nullable<System.DateTime> start, Nullable<System.DateTime> end, Nullable<int> groupId, Nullable<int> equipmentId)
+        {
+            var startParameter = start.HasValue ?
+                new ObjectParameter("start", start) :
+                new ObjectParameter("start", typeof(System.DateTime));
+    
+            var endParameter = end.HasValue ?
+                new ObjectParameter("end", end) :
+                new ObjectParameter("end", typeof(System.DateTime));
+    
+            var groupIdParameter = groupId.HasValue ?
+                new ObjectParameter("groupId", groupId) :
+                new ObjectParameter("groupId", typeof(int));
+    
+            var equipmentIdParameter = equipmentId.HasValue ?
+                new ObjectParameter("equipmentId", equipmentId) :
+                new ObjectParameter("equipmentId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetFilterRecordsAvg_Result>("SpGetFilterRecordsAvg", startParameter, endParameter, groupIdParameter, equipmentIdParameter);
+        }
+    
+        public virtual ObjectResult<SpGetMaxValues_Result> SpGetMaxValues(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
+        {
+            var startParameter = start.HasValue ?
+                new ObjectParameter("start", start) :
+                new ObjectParameter("start", typeof(System.DateTime));
+    
+            var endParameter = end.HasValue ?
+                new ObjectParameter("end", end) :
+                new ObjectParameter("end", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetMaxValues_Result>("SpGetMaxValues", startParameter, endParameter);
+        }
+    
+        public virtual ObjectResult<SpGetSensors_Result> SpGetSensors()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetSensors_Result>("SpGetSensors");
         }
     }
 }

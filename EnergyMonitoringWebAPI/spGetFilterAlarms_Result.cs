@@ -11,12 +11,12 @@ namespace EnergyMonitoringWebAPI
 {
     using System;
     
-    public partial class spGetFilterAlarms_Result
+    public partial class SpGetFilterAlarms_Result
     {
         public int AlarmID { get; set; }
         public string Remark { get; set; }
         public Nullable<bool> Confirmed { get; set; }
-        public System.DateTime CreateDate { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
         public decimal Value { get; set; }
         public string Number { get; set; }
         public string Name { get; set; }

@@ -11,7 +11,7 @@ namespace EnergyMonitoringWebAPI
 {
     using System;
     
-    public partial class spGetAvgFlowEquipments_Result
+    public partial class SpGetAvgFlowEquipments_Result
     {
         public string Group { get; set; }
         public int EquipmentID { get; set; }

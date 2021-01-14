@@ -11,7 +11,7 @@ namespace EnergyMonitoringWebAPI
 {
     using System;
     
-    public partial class spGetFilterRecordsAvg_Result
+    public partial class SpGetFilterRecordsAvg_Result
     {
         public Nullable<decimal> average { get; set; }
         public int unitId { get; set; }

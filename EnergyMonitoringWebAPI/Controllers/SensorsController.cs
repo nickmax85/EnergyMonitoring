@@ -20,7 +20,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 //db.Configuration.ProxyCreationEnabled = false;
                 db.Configuration.LazyLoadingEnabled = false;
 
-                var items = db.spGetSensors().ToList();
+                var items = db.SpGetSensors().ToList();
 
 
                 return items;

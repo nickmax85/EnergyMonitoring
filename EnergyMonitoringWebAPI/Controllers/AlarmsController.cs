@@ -41,7 +41,7 @@ namespace EnergyMonitoringWebAPI.Controllers
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                var items = db.spGetFilterAlarms(startDate, endDate).ToList();
+                var items = db.SpGetFilterAlarms(startDate, endDate).ToList();
 
                 return items;
             }

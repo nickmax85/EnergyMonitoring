@@ -174,8 +174,9 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Equipment))]
         public async Task<IHttpActionResult> PostEquipment(Equipment equipment)
         {
-     
-            equipment.CreateDate = DateTime.Now;
+
+            if (equipment.CreateDate == null)
+                equipment.CreateDate = DateTime.Now;
 
             if (!ModelState.IsValid)
             {

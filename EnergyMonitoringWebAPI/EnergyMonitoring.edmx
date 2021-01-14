@@ -218,14 +218,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="spGetAvgFlowEquipments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="SpGetAvgFlowEquipments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="year" Type="int" Mode="In" />
           <Parameter Name="week" Type="int" Mode="In" />
           <Parameter Name="weekday" Type="int" Mode="In" />
           <Parameter Name="timeStart" Type="time" Mode="In" />
           <Parameter Name="timeEnd" Type="time" Mode="In" />
         </Function>
-        <Function Name="spGetAvgFlowSum2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="SpGetAvgFlowSum2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="year" Type="int" Mode="In" />
           <Parameter Name="weekday" Type="int" Mode="In" />
           <Parameter Name="timeStart" Type="time" Mode="In" />
@@ -235,21 +235,21 @@
           <Parameter Name="year" Type="int" Mode="In" />
           <Parameter Name="weekday" Type="int" Mode="In" />
         </Function>
-        <Function Name="spGetFilterAlarms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="SpGetFilterAlarms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="start" Type="date" Mode="In" />
           <Parameter Name="end" Type="date" Mode="In" />
         </Function>
-        <Function Name="spGetFilterRecordsAvg" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="SpGetFilterRecordsAvg" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="start" Type="date" Mode="In" />
           <Parameter Name="end" Type="date" Mode="In" />
           <Parameter Name="groupId" Type="int" Mode="In" />
           <Parameter Name="equipmentId" Type="int" Mode="In" />
         </Function>
-        <Function Name="spGetMaxValues" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="SpGetMaxValues" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="start" Type="date" Mode="In" />
           <Parameter Name="end" Type="date" Mode="In" />
         </Function>
-        <Function Name="spGetSensors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SpGetSensors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EnergyMonitoringModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Alarm" EntityType="Self.Alarm" Schema="dbo" store:Type="Tables" />
@@ -532,24 +532,6 @@
             <End Role="Unit" EntitySet="Units" />
             <End Role="Sensor" EntitySet="Sensors" />
           </AssociationSet>
-          <FunctionImport Name="spGetLastDaysAvgRecords">
-          <Parameter Name="days" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spGetSensors" ReturnType="Collection(EnergyMonitoringModel.spGetSensors_Result)" />
-          <FunctionImport Name="spGetFilterAlarms" ReturnType="Collection(EnergyMonitoringModel.spGetFilterAlarms_Result)">
-            <Parameter Name="start" Mode="In" Type="DateTime" />
-            <Parameter Name="end" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="spGetFilterRecordsAvg" ReturnType="Collection(EnergyMonitoringModel.spGetFilterRecordsAvg_Result)">
-            <Parameter Name="start" Mode="In" Type="DateTime" />
-            <Parameter Name="end" Mode="In" Type="DateTime" />
-            <Parameter Name="groupId" Mode="In" Type="Int32" />
-            <Parameter Name="equipmentId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spGetMaxValues" ReturnType="Collection(EnergyMonitoringModel.spGetMaxValues_Result)">
-            <Parameter Name="start" Mode="In" Type="DateTime" />
-            <Parameter Name="end" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <AssociationSet Name="FK_Record_Unit" Association="EnergyMonitoringModel.FK_Record_Unit">
             <End Role="Unit" EntitySet="Units" />
             <End Role="Record" EntitySet="Records" />
@@ -559,14 +541,14 @@
             <End Role="Equipment" EntitySet="Equipments" />
             <End Role="Activity" EntitySet="Activity" />
           </AssociationSet>
-          <FunctionImport Name="spGetAvgFlowEquipments" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowEquipments_Result)">
+          <FunctionImport Name="SpGetAvgFlowEquipments" ReturnType="Collection(EnergyMonitoringModel.SpGetAvgFlowEquipments_Result)">
             <Parameter Name="year" Mode="In" Type="Int32" />
             <Parameter Name="week" Mode="In" Type="Int32" />
             <Parameter Name="weekday" Mode="In" Type="Int32" />
             <Parameter Name="timeStart" Mode="In" Type="Time" />
             <Parameter Name="timeEnd" Mode="In" Type="Time" />
           </FunctionImport>
-          <FunctionImport Name="spGetAvgFlowSum2" ReturnType="Collection(EnergyMonitoringModel.spGetAvgFlowSum2_Result)">
+          <FunctionImport Name="SpGetAvgFlowSum2" ReturnType="Collection(EnergyMonitoringModel.SpGetAvgFlowSum2_Result)">
             <Parameter Name="year" Mode="In" Type="Int32" />
             <Parameter Name="weekday" Mode="In" Type="Int32" />
             <Parameter Name="timeStart" Mode="In" Type="Time" />
@@ -576,41 +558,22 @@
             <Parameter Name="year" Mode="In" Type="Int32" />
             <Parameter Name="weekday" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SpGetFilterAlarms" ReturnType="Collection(EnergyMonitoringModel.SpGetFilterAlarms_Result)">
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="end" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SpGetFilterRecordsAvg" ReturnType="Collection(EnergyMonitoringModel.SpGetFilterRecordsAvg_Result)">
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="end" Mode="In" Type="DateTime" />
+            <Parameter Name="groupId" Mode="In" Type="Int32" />
+            <Parameter Name="equipmentId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SpGetMaxValues" ReturnType="Collection(EnergyMonitoringModel.SpGetMaxValues_Result)">
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="end" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SpGetSensors" ReturnType="Collection(EnergyMonitoringModel.SpGetSensors_Result)" />
         </EntityContainer>
-        <ComplexType Name="spGetSensors_Result">
-          <Property Type="Int32" Name="SensorID" Nullable="false" />
-          <Property Type="Decimal" Name="LowerLimit" Nullable="true" Precision="18" Scale="1" />
-          <Property Type="Decimal" Name="UpperLimit" Nullable="true" Precision="18" Scale="1" />
-          <Property Type="String" Name="Unit" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Device" Nullable="true" MaxLength="101" />
-          <Property Type="String" Name="Equipment" Nullable="true" MaxLength="61" />
-          <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="spGetFilterAlarms_Result">
-          <Property Type="Int32" Name="AlarmID" Nullable="false" />
-          <Property Type="String" Name="Remark" Nullable="true" MaxLength="100" />
-          <Property Type="Boolean" Name="Confirmed" Nullable="true" />
-          <Property Type="DateTime" Name="CreateDate" Nullable="false" Precision="23" />
-          <Property Type="Decimal" Name="Value" Nullable="false" Precision="6" Scale="1" />
-          <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Unit" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="spGetFilterRecordsAvg_Result">
-          <Property Type="Decimal" Name="average" Nullable="true" Precision="38" Scale="6" />
-          <Property Type="Int32" Name="unitId" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="spGetMaxValues_Result">
-          <Property Type="Decimal" Name="Value" Nullable="false" Precision="6" Scale="1" />
-          <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Area" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="EquipmentID" Nullable="true" />
-          <Property Type="DateTime" Name="CreateDate" Nullable="true" Precision="23" />
-        </ComplexType>
         <Association Name="FK_Record_Unit">
           <End Type="EnergyMonitoringModel.Unit" Role="Unit" Multiplicity="0..1" />
           <End Type="EnergyMonitoringModel.Record" Role="Record" Multiplicity="*" />
@@ -648,7 +611,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="spGetAvgFlowEquipments_Result">
+        <ComplexType Name="SpGetAvgFlowEquipments_Result">
           <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="EquipmentID" Nullable="false" />
           <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
@@ -657,7 +620,7 @@
           <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="Average" Nullable="true" Precision="38" Scale="6" />
         </ComplexType>
-        <ComplexType Name="spGetAvgFlowSum2_Result">
+        <ComplexType Name="SpGetAvgFlowSum2_Result">
           <Property Type="Int32" Name="week" Nullable="true" />
           <Property Type="Int32" Name="day" Nullable="true" />
           <Property Type="Decimal" Name="sum" Nullable="true" Precision="38" Scale="6" />
@@ -665,6 +628,40 @@
         <ComplexType Name="SpGetEquipmentsCount_Result">
           <Property Type="Int32" Name="week" Nullable="true" />
           <Property Type="Int32" Name="equipments" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SpGetFilterAlarms_Result">
+          <Property Type="Int32" Name="AlarmID" Nullable="false" />
+          <Property Type="String" Name="Remark" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="Confirmed" Nullable="true" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="Value" Nullable="false" Precision="6" Scale="1" />
+          <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Unit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SpGetFilterRecordsAvg_Result">
+          <Property Type="Decimal" Name="average" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Int32" Name="unitId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpGetMaxValues_Result">
+          <Property Type="Decimal" Name="Value" Nullable="false" Precision="6" Scale="1" />
+          <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Area" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="EquipmentID" Nullable="true" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="SpGetSensors_Result">
+          <Property Type="Int32" Name="SensorID" Nullable="false" />
+          <Property Type="Decimal" Name="LowerLimit" Nullable="true" Precision="18" Scale="1" />
+          <Property Type="Decimal" Name="UpperLimit" Nullable="true" Precision="18" Scale="1" />
+          <Property Type="String" Name="Unit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Sign" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Device" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="Equipment" Nullable="true" MaxLength="61" />
+          <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -773,56 +770,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetSensors" FunctionName="EnergyMonitoringModel.Store.spGetSensors">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetSensors_Result">
-                <ScalarProperty Name="SensorID" ColumnName="SensorID" />
-                <ScalarProperty Name="LowerLimit" ColumnName="LowerLimit" />
-                <ScalarProperty Name="UpperLimit" ColumnName="UpperLimit" />
-                <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="Sign" ColumnName="Sign" />
-                <ScalarProperty Name="Device" ColumnName="Device" />
-                <ScalarProperty Name="Equipment" ColumnName="Equipment" />
-                <ScalarProperty Name="Group" ColumnName="Group" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetFilterAlarms" FunctionName="EnergyMonitoringModel.Store.spGetFilterAlarms">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetFilterAlarms_Result">
-                <ScalarProperty Name="AlarmID" ColumnName="AlarmID" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="Sign" ColumnName="Sign" />
-                <ScalarProperty Name="Group" ColumnName="Group" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetFilterRecordsAvg" FunctionName="EnergyMonitoringModel.Store.spGetFilterRecordsAvg">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetFilterRecordsAvg_Result">
-                <ScalarProperty Name="average" ColumnName="average" />
-                <ScalarProperty Name="unitId" ColumnName="unitId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetMaxValues" FunctionName="EnergyMonitoringModel.Store.spGetMaxValues">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetMaxValues_Result">
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Area" ColumnName="Area" />
-                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="Activity">
             <EntityTypeMapping TypeName="EnergyMonitoringModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
@@ -836,9 +783,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetAvgFlowEquipments" FunctionName="EnergyMonitoringModel.Store.spGetAvgFlowEquipments">
+          <FunctionImportMapping FunctionImportName="SpGetAvgFlowEquipments" FunctionName="EnergyMonitoringModel.Store.SpGetAvgFlowEquipments">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetAvgFlowEquipments_Result">
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetAvgFlowEquipments_Result">
                 <ScalarProperty Name="Group" ColumnName="Group" />
                 <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
@@ -849,9 +796,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetAvgFlowSum2" FunctionName="EnergyMonitoringModel.Store.spGetAvgFlowSum2">
+          <FunctionImportMapping FunctionImportName="SpGetAvgFlowSum2" FunctionName="EnergyMonitoringModel.Store.SpGetAvgFlowSum2">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.spGetAvgFlowSum2_Result">
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetAvgFlowSum2_Result">
                 <ScalarProperty Name="week" ColumnName="week" />
                 <ScalarProperty Name="day" ColumnName="day" />
                 <ScalarProperty Name="sum" ColumnName="sum" />
@@ -863,6 +810,56 @@
               <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetEquipmentsCount_Result">
                 <ScalarProperty Name="week" ColumnName="week" />
                 <ScalarProperty Name="equipments" ColumnName="equipments" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpGetFilterAlarms" FunctionName="EnergyMonitoringModel.Store.SpGetFilterAlarms">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetFilterAlarms_Result">
+                <ScalarProperty Name="AlarmID" ColumnName="AlarmID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Sign" ColumnName="Sign" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpGetFilterRecordsAvg" FunctionName="EnergyMonitoringModel.Store.SpGetFilterRecordsAvg">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetFilterRecordsAvg_Result">
+                <ScalarProperty Name="average" ColumnName="average" />
+                <ScalarProperty Name="unitId" ColumnName="unitId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpGetMaxValues" FunctionName="EnergyMonitoringModel.Store.SpGetMaxValues">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetMaxValues_Result">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpGetSensors" FunctionName="EnergyMonitoringModel.Store.SpGetSensors">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetSensors_Result">
+                <ScalarProperty Name="SensorID" ColumnName="SensorID" />
+                <ScalarProperty Name="LowerLimit" ColumnName="LowerLimit" />
+                <ScalarProperty Name="UpperLimit" ColumnName="UpperLimit" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Sign" ColumnName="Sign" />
+                <ScalarProperty Name="Device" ColumnName="Device" />
+                <ScalarProperty Name="Equipment" ColumnName="Equipment" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

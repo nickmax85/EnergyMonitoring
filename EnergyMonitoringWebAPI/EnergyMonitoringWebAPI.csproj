@@ -1837,25 +1837,25 @@
     <Compile Include="Sensor.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetAvgFlowEquipments_Result.cs">
+    <Compile Include="SpGetAvgFlowEquipments_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetAvgFlowSum2_Result.cs">
+    <Compile Include="SpGetAvgFlowSum2_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="SpGetEquipmentsCount_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetFilterAlarms_Result.cs">
+    <Compile Include="SpGetFilterAlarms_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetFilterRecordsAvg_Result.cs">
+    <Compile Include="SpGetFilterRecordsAvg_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetMaxValues_Result.cs">
+    <Compile Include="SpGetMaxValues_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
-    <Compile Include="spGetSensors_Result.cs">
+    <Compile Include="SpGetSensors_Result.cs">
       <DependentUpon>EnergyMonitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="Unit.cs">

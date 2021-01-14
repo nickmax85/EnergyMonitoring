@@ -71,7 +71,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                var item = db.spGetMaxValues(startDate, endDate).ToList();
+                var item = db.SpGetMaxValues(startDate, endDate).ToList();
 
                 return item;
             }
@@ -83,10 +83,10 @@ namespace EnergyMonitoringWebAPI.Controllers
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                var item = db.spGetMaxValues(startDate, endDate).ToList();
+                var item = db.SpGetMaxValues(startDate, endDate).ToList();
 
                 // doppelte Eintraege suchen
-                List<spGetMaxValues_Result> list = new List<spGetMaxValues_Result>();
+                List<SpGetMaxValues_Result> list = new List<SpGetMaxValues_Result>();
                 Boolean exist = false;
 
                 for (int i = 0; i < item.Count; i++)
@@ -141,7 +141,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                var item = db.spGetFilterRecordsAvg(startDate, endDate, groupId, equipmentId).ToList();
+                var item = db.SpGetFilterRecordsAvg(startDate, endDate, groupId, equipmentId).ToList();
 
                 return item;
 
@@ -156,7 +156,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
-                var item = db.spGetAvgFlowSum2(year, weekday, startTime, endTime).ToList();
+                var item = db.SpGetAvgFlowSum2(year, weekday, startTime, endTime).ToList();
                 return item;
             }
 
@@ -171,7 +171,7 @@ namespace EnergyMonitoringWebAPI.Controllers
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
 
-                var item = db.spGetAvgFlowEquipments(year, week, weekday, startTime, endTime).ToList();
+                var item = db.SpGetAvgFlowEquipments(year, week, weekday, startTime, endTime).ToList();
                 return item;
 
             }

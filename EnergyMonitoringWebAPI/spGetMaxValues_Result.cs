@@ -11,7 +11,7 @@ namespace EnergyMonitoringWebAPI
 {
     using System;
     
-    public partial class spGetMaxValues_Result
+    public partial class SpGetMaxValues_Result
     {
         public decimal Value { get; set; }
         public string Number { get; set; }
