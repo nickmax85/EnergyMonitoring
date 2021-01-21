@@ -696,7 +696,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $("#startMaxValue").val(start);
         $("#endMaxValue").val(end);
 
-        $("#year").val(today.getFullYear() - 1);
+        $("#year").val(today.getFullYear());
       }
 
       function getJQueryMaxValues() {
@@ -942,9 +942,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           var items = [];
 
-          console.log(data1);
-          console.log(data2);
-
           if (data1 != null) {
             for (var i = 0; i < 53; i++) {
               let d = new Object();
@@ -975,15 +972,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
           categoryAxis.renderer.grid.template.location = 0;
           categoryAxis.renderer.minGridDistance = 30;
 
-          categoryAxis.renderer.labels.template.adapter.add("dy", function (
-            dy,
-            target
-          ) {
-            if (target.dataItem && target.dataItem.index & (2 == 2)) {
-              return dy + 25;
+          categoryAxis.renderer.labels.template.adapter.add(
+            "dy",
+            function (dy, target) {
+              if (target.dataItem && target.dataItem.index & (2 == 2)) {
+                return dy + 25;
+              }
+              return dy;
             }
-            return dy;
-          });
+          );
 
           var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
           valueAxis.title.text = "l/min";
@@ -992,7 +989,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           valueAxis2.title.text = "Equipments";
           valueAxis2.syncWithAxis = chart.yAxes.getIndex(0);
           valueAxis2.renderer.opposite = true;
-
           // Create series
           var series = chart.series.push(new am4charts.ColumnSeries());
           series.columns.template.events.on(
