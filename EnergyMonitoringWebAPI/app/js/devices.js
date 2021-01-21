@@ -74,6 +74,9 @@ function showDeviceState(img, labelStatus, labelSystemTime, item) {
 
         url = 'http://' + item.IP + '/rest/json/system';
 
+        $.ajaxSetup({
+            timeout: 1000 //Time in milliseconds
+        });
 
         $.getJSON(url)
             .done(function (data) {
@@ -93,11 +96,11 @@ function showDeviceState(img, labelStatus, labelSystemTime, item) {
     }
 
 
-    setInterval(function () {
+    // setInterval(function () {
 
-        data();
+    //     data();
 
-    }, 4000);
+    // }, 4000);
 
 }
 
