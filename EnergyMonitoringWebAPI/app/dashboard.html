@@ -331,8 +331,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div id="info" class="col-md-12">
                 <div class="card card-info collapsed-card">
                   <div class="card-header">
-                    <h3 class="card-title">Durchfluss - Jahreschart</h3>
+                    <h3 class="card-title">Durchfluss</h3>
                     <div class="card-tools">
+                      <button
+                        type="button"
+                        class="btn btn-tool"
+                        data-toggle="tooltip"
+                        data-html="true"
+                        data-placement="bottom"
+                        title="Summe der berechneten Durchschnitte pro Woche nach ausgewähltem Tag/Uhrzeit für das gesamte Jahr.&#13;
+                        Die Woche 1 beginnt in jener Woche vom 01.01.YYYY."
+                      >
+                        <i class="fas fa-info"></i>
+                      </button>
                       <button
                         type="button"
                         class="btn btn-tool"
@@ -344,6 +355,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </div>
                   <div class="card-body" style="display: none">
                     <div class="form-group"></div>
+                    <div class="row">
+                      <button
+                        type="button"
+                        class="btn btn-outline-dark"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="Ergebnis pro Woche = Durchschnitt Durchfluss Equipment 1 + Durchschnitt Durchfluss Equipment 2 + ..."
+                      >
+                        Berechnungsformel
+                      </button>
+                    </div>
                     <div class="row">
                       <div class="col-md-9">
                         <div class="loader" style="display: none"></div>
@@ -457,7 +479,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
               </div>
             </div>
-
             <!-- Modal -->
             <div
               class="modal fade bd-example-modal-lg"
@@ -554,6 +575,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
       let config;
 
       $(document).ready(function () {
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip();
+        });
+
         getConfig();
 
         getDates();
