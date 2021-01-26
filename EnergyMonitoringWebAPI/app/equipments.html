@@ -35,7 +35,13 @@
         </div>
         <div class="form-group">
           <label for="group">Group</label>
-          <input class="form-control form-control-sm" id="group" />
+          <select
+            class="form-control"
+            id="selectGroup"
+            onchange="groupSelectionChange(this)"
+          >
+            <option value="0">auswählen</option>
+          </select>
         </div>
         <div class="form-group">
           <label>InactiveDate</label>
@@ -75,9 +81,10 @@
     <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
 
     <br />
-
     <h2>List</h2>
-    <ul id="groups" class="list-group"></ul>
+    <div class="row">
+      <ul id="groups" class="list-group"></ul>
+    </div>
 
     <script>
       let server = env.server;
@@ -86,6 +93,7 @@
 
       $(document).ready(function () {
         getEquipments();
+        getGroups();
 
         $("#newButton").click(function () {
           equipment = new Object();
@@ -95,6 +103,11 @@
         });
 
         $("#saveButton").click(function () {
+          if (!validateInput()) {
+            alert("Eingabe unvollständig");
+            return;
+          }
+
           if (equipment.EquipmentID == 0) postEquipment();
           else putEquimpment();
         });
@@ -112,13 +125,21 @@
           });
       }
 
+      function validateInput() {
+        if ($("#selectGroup").val() == 0) return false;
+
+        if ($("#number").val() == "") return false;
+
+        return true;
+      }
+
       function postEquipment() {
         equipment.EquipmentID = $("#id").val();
         equipment.Number = $("#number").val();
         equipment.Name = $("#name").val();
         equipment.Active = $("#active").prop("checked");
         equipment.InactiveDate = $("#inactiveDate").val();
-        equipment.GroupID = $("#group").val();
+        equipment.GroupID = $("#selectGroup").val();
         equipment.CreateDate = $("#createDate").val();
         equipment.UpdateDate = $("#updateDate").val();
 
@@ -141,7 +162,7 @@
         equipment.Name = $("#name").val();
         equipment.Active = $("#active").prop("checked");
         equipment.InactiveDate = $("#inactiveDate").val();
-        equipment.GroupID = $("#group").val();
+        equipment.GroupID = $("#selectGroup").val();
         equipment.CreateDate = $("#createDate").val();
         equipment.UpdateDate = $("#updateDate").val();
 
@@ -179,6 +200,34 @@
           });
       }
 
+      function getGroups() {
+        let url = server + "/api/Groups/GetGroup";
+
+        $.getJSON(url)
+          .done(function (data) {
+            showSelectGroups(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function groupSelectionChange() {
+        let sel = $("#selectGroup option:selected").val();
+      }
+
+      function showSelectGroups(data) {
+        let container = $("#selectGroup");
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          $("#selectGroup").append(
+            $("<option></option>").val(item.GroupID).html(item.Name)
+          );
+        });
+      }
+
       function showData() {
         if (equipment == null) {
           $("#id").val(null);
@@ -203,6 +252,8 @@
           $("#group").val(equipment.GroupID);
           $("#createDate").val(formatDate(equipment.CreateDate));
           $("#updateDate").val(formatDate(equipment.UpdateDate));
+
+          $("#selectGroup").val(equipment.GroupID);
         }
       }
 
@@ -213,7 +264,7 @@
         if (!Array.isArray(data)) return;
 
         data.forEach(function (item, i) {
-          let li = $('<li class="list-group-item">');
+          let li = $('<li class="list-group-item overflow-auto">');
 
           let label = $("<label>").html(
             item.Number + " - " + item.Name + " [active=" + item.Active + "]"
