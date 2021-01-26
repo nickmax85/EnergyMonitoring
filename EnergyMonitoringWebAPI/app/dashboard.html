@@ -409,7 +409,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 class="btn btn-primary btn-block"
                                 name="submit"
                                 type="submit"
-                                onclick="test();"
+                                onclick="getJQueryAvg();"
                               >
                                 Suche
                               </button>
@@ -563,7 +563,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         getDates();
         getGroups();
 
-        showInfo();
+        getJQueryInfo();
 
         getJQueryMaxValues();
 
@@ -605,72 +605,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
           });
       }
 
-      function getEquipmentsCountPerWeekday(callback) {
-        let url =
-          server +
-          "/api/equipments/count/" +
-          $("#year").val() +
-          "/" +
-          $("#weekday").val();
-
-        $.getJSON(url)
-          .done(function (data) {
-            res = data;
-            callback(res);
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
-      }
-
-      function test() {
-        $(".loader").hide();
-        $("#avgvalueschartdiv").show();
-
-        getJQueryAvgValues(function (res1) {
-          getEquipmentsCountPerWeekday(function (res2) {
-            $(".loader").hide();
-            $("#avgvalueschartdiv").show();
-            showAvgValuesChart(res1, res2);
-          });
-        });
-      }
-
       function postEquipment(equipment) {
         let url = server + "/api/equipments";
 
         $.post(url, area)
           .done(function (data) {
             showEquipments(data);
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
-      }
-
-      function showInfo(data) {
-        let url = server + "/api/equipments/count";
-        $.getJSON(url)
-          .done(function (data) {
-            $("#machinecount").html(data.toLocaleString());
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
-
-        url = server + "/api/sensors/count";
-        $.getJSON(url)
-          .done(function (data) {
-            $("#sensorcount").html(data.toLocaleString());
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
-
-        url = server + "/api/records/count";
-        $.getJSON(url)
-          .done(function (data) {
-            $("#recordcount").html(data.toLocaleString());
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -704,6 +644,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $("#year").val(today.getFullYear());
       }
 
+      function getJQueryInfo(data) {
+        let url = server + "/api/equipments/count";
+        $.getJSON(url)
+          .done(function (data) {
+            $("#machinecount").html(data.toLocaleString());
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+
+        url = server + "/api/sensors/count";
+        $.getJSON(url)
+          .done(function (data) {
+            $("#sensorcount").html(data.toLocaleString());
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+
+        url = server + "/api/records/count";
+        $.getJSON(url)
+          .done(function (data) {
+            $("#recordcount").html(data.toLocaleString());
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
       function getJQueryMaxValues() {
         let url =
           server +
@@ -734,34 +703,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
           });
       }
 
-      function getJQueryMaxValuesDistinct() {
-        let url =
-          server +
-          "/api/records/maxvaluesdistinct" +
-          "/" +
-          $("#startMaxValue").val() +
-          "/" +
-          $("#endMaxValue").val();
+      function getJQueryAvg() {
+        $(".loader").hide();
+        $("#avgvalueschartdiv").show();
 
-        $.ajax({
-          url: url,
-          dataType: "json",
-          beforeSend: function () {
-            $(".loading").show();
-            $("#table").hide();
-          },
-          success: function (data) {},
-          complete: function () {
-            $(".loading").hide();
-            $("#table").show();
-          },
-        })
-          .done(function (data) {
-            showMaxValuesChart(data);
-          })
-          .fail(function (data) {
-            alert("ERROR: " + data.status + " " + data.statusText);
+        getJQueryAvgValues(function (res1) {
+          getEquipmentsCountPerWeekday(function (res2) {
+            $(".loader").hide();
+            $("#avgvalueschartdiv").show();
+            showAvgValuesChart(res1, res2);
           });
+        });
       }
 
       function getJQueryAvgValues(callback) {
@@ -776,6 +728,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
           $("#startTime").val() +
           "/" +
           $("#endTime").val();
+
+        $.getJSON(url)
+          .done(function (data) {
+            res = data;
+            callback(res);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function getEquipmentsCountPerWeekday(callback) {
+        let url =
+          server +
+          "/api/equipments/count/" +
+          $("#year").val() +
+          "/" +
+          $("#weekday").val();
 
         $.getJSON(url)
           .done(function (data) {
@@ -848,44 +818,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
       }
 
-      function showMaxValuesTable(data) {
-        let container = $("#sensor-row");
-        container.empty();
-
-        if (!Array.isArray(data)) return;
-
-        data.forEach(function (item, i) {
-          let tr =
-            "<tr>" +
-            "<td>" +
-            item.Area +
-            "</td>" +
-            "<td><a href='charts.html?equipmentnumber=" +
-            item.Number +
-            "'>" +
-            item.Number +
-            " - " +
-            item.Name +
-            "</td>" +
-            "<td>" +
-            item.Value +
-            " l/min" +
-            "</td>" +
-            "<td>" +
-            item.CreateDate +
-            "</td>" +
-            "</tr>";
-
-          container.append(tr);
-
-          //let btn = $('#btn' + item.EquipmentID).click(function () {
-          //    localStorage.setItem('equipmentID', JSON.stringify(item));
-          //    window.location.href = "sensor.html";
-
-          //});
-        });
-      }
-
       function showMaxValuesChart(data) {
         am4core.ready(function () {
           // Themes begin
@@ -913,12 +845,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
           series.columns.template.strokeOpacity = 0;
           series.columns.template.column.cornerRadiusBottomRight = 5;
           series.columns.template.column.cornerRadiusTopRight = 5;
+          series.columns.template.events.on(
+            "hit",
+            function (ev) {
+              // console.log(ev.target.dataItem.dataContext);
+            },
+            this
+          );
 
           var labelBullet = series.bullets.push(new am4charts.LabelBullet());
           labelBullet.label.horizontalCenter = "left";
           labelBullet.label.dx = 10;
           labelBullet.label.text =
-            "{values.valueX.workingValue.formatNumber('#.0as l/min')}";
+            "{values.valueX.workingValue.formatNumber('#.0 l/min')}";
           labelBullet.locationX = 1;
 
           // as by default columns of the same series are of the same color, we add adapter which takes colors from chart.colors color set
@@ -931,7 +870,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
           var items = [];
           for (var i = 0; i < data.length; i++) {
             items.push({
-              equipment: data[i].Number + " - " + data[i].Name,
+              equipment:
+                data[i].Number +
+                " - " +
+                data[i].Name +
+                " (" +
+                data[i].Group +
+                ")",
               value: data[i].Value,
             });
           }
