@@ -568,11 +568,11 @@
             <Parameter Name="groupId" Mode="In" Type="Int32" />
             <Parameter Name="equipmentId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SpGetSensors" ReturnType="Collection(EnergyMonitoringModel.SpGetSensors_Result)" />
           <FunctionImport Name="SpGetMaxValues" ReturnType="Collection(EnergyMonitoringModel.SpGetMaxValues_Result)">
             <Parameter Name="start" Mode="In" Type="DateTime" />
             <Parameter Name="end" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="SpGetSensors" ReturnType="Collection(EnergyMonitoringModel.SpGetSensors_Result)" />
         </EntityContainer>
         <Association Name="FK_Record_Unit">
           <End Type="EnergyMonitoringModel.Unit" Role="Unit" Multiplicity="0..1" />
@@ -645,14 +645,6 @@
           <Property Type="Decimal" Name="average" Nullable="true" Precision="38" Scale="6" />
           <Property Type="Int32" Name="unitId" Nullable="false" />
         </ComplexType>
-        <ComplexType Name="SpGetMaxValues_Result">
-          <Property Type="Decimal" Name="Value" Nullable="false" Precision="6" Scale="1" />
-          <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Area" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="EquipmentID" Nullable="true" />
-          <Property Type="DateTime" Name="CreateDate" Nullable="true" Precision="23" />
-        </ComplexType>
         <ComplexType Name="SpGetSensors_Result">
           <Property Type="Int32" Name="SensorID" Nullable="false" />
           <Property Type="Decimal" Name="LowerLimit" Nullable="true" Precision="18" Scale="1" />
@@ -662,6 +654,13 @@
           <Property Type="String" Name="Device" Nullable="true" MaxLength="101" />
           <Property Type="String" Name="Equipment" Nullable="true" MaxLength="61" />
           <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SpGetMaxValues_Result">
+          <Property Type="String" Name="Group" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="EquipmentID" Nullable="false" />
+          <Property Type="String" Name="Number" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Value" Nullable="true" Precision="6" Scale="1" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -837,18 +836,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SpGetMaxValues" FunctionName="EnergyMonitoringModel.Store.SpGetMaxValues">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetMaxValues_Result">
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Area" ColumnName="Area" />
-                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SpGetSensors" FunctionName="EnergyMonitoringModel.Store.SpGetSensors">
             <ResultMapping>
               <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetSensors_Result">
@@ -860,6 +847,17 @@
                 <ScalarProperty Name="Device" ColumnName="Device" />
                 <ScalarProperty Name="Equipment" ColumnName="Equipment" />
                 <ScalarProperty Name="Group" ColumnName="Group" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpGetMaxValues" FunctionName="EnergyMonitoringModel.Store.SpGetMaxValues">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EnergyMonitoringModel.SpGetMaxValues_Result">
+                <ScalarProperty Name="Group" ColumnName="Group" />
+                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

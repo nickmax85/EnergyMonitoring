@@ -130,6 +130,11 @@ namespace EnergyMonitoringWebAPI
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetFilterRecordsAvg_Result>("SpGetFilterRecordsAvg", startParameter, endParameter, groupIdParameter, equipmentIdParameter);
         }
     
+        public virtual ObjectResult<SpGetSensors_Result> SpGetSensors()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetSensors_Result>("SpGetSensors");
+        }
+    
         public virtual ObjectResult<SpGetMaxValues_Result> SpGetMaxValues(Nullable<System.DateTime> start, Nullable<System.DateTime> end)
         {
             var startParameter = start.HasValue ?
@@ -141,11 +146,6 @@ namespace EnergyMonitoringWebAPI
                 new ObjectParameter("end", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetMaxValues_Result>("SpGetMaxValues", startParameter, endParameter);
-        }
-    
-        public virtual ObjectResult<SpGetSensors_Result> SpGetSensors()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetSensors_Result>("SpGetSensors");
         }
     }
 }

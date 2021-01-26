@@ -292,33 +292,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 class="btn btn-primary btn-block"
                                 name="submit"
                                 type="submit"
-                                onclick="getJQueryMaxValues(); getJQueryMaxValuesDistinct();"
+                                onclick="getJQueryMaxValues();"
                               >
                                 Suche
                               </button>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div
-                        class="table-wrapper-scroll-y my-custom-scrollbar col-lg-12 border"
-                      >
-                        <table
-                          id="table"
-                          class="table table-bordered table-striped mb-0"
-                        >
-                          <thead>
-                            <tr>
-                              <th scope="col">Bereich</th>
-                              <th scope="col">Equipment</th>
-                              <th scope="col">Durchfluss</th>
-                              <th scope="col">Zeitstempel</th>
-                            </tr>
-                          </thead>
-                          <tbody id="sensor-row"></tbody>
-                        </table>
                       </div>
                     </div>
                   </div>
@@ -580,14 +560,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
 
         getConfig();
-
         getDates();
         getGroups();
 
         showInfo();
 
         getJQueryMaxValues();
-        getJQueryMaxValuesDistinct();
+
         showAvgValuesChart();
       });
 
@@ -656,6 +635,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           });
         });
       }
+
       function postEquipment(equipment) {
         let url = server + "/api/equipments";
 
@@ -747,7 +727,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           },
         })
           .done(function (data) {
-            showMaxValues(data);
+            showMaxValuesChart(data);
           })
           .fail(function (data) {
             alert("ERROR: " + data.status + " " + data.statusText);
@@ -868,7 +848,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
       }
 
-      function showMaxValues(data) {
+      function showMaxValuesTable(data) {
         let container = $("#sensor-row");
         container.empty();
 
@@ -921,6 +901,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           categoryAxis.renderer.minGridDistance = 1;
           categoryAxis.renderer.inversed = true;
           categoryAxis.renderer.grid.template.disabled = true;
+          categoryAxis.renderer.labels.template.propertyFields.url = "url";
 
           var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
           valueAxis.min = 0;
