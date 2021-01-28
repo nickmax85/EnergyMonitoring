@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+
     <link href="css/custom.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
 
@@ -16,54 +22,88 @@
   </head>
 
   <body class="container">
-    <h1>Groups</h1>
-
-    <h2>Group</h2>
-    <form>
-      <div class="form-row">
-        <div class="form-group col-sm-1">
-          <label for="id">Id</label>
-          <input class="form-control form-control-sm" disabled id="id" />
-        </div>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input class="form-control form-control-sm" id="name" />
-        </div>
-
-        <div class="form-check">
-          <label for="active">Active</label>
-          <br />
-          <input type="checkbox" id="active" />
-        </div>
+    <div class="row">
+      <div class="col-12">
+        <h1>Group</h1>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>CreateDate</label>
-          <input
-            disabled
-            class="form-control form-control-sm"
-            id="createDate"
-            type="date"
-          />
-        </div>
-        <div class="form-group">
-          <label>UpdateDate</label>
-          <input
-            disabled
-            class="form-control form-control-sm"
-            id="updateDate"
-            type="date"
-          />
-        </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-sm-1">
+              <label for="id">GroupId</label>
+              <input class="form-control form-control-sm" disabled id="id" />
+            </div>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input class="form-control form-control-sm" id="name" />
+            </div>
+
+            <div class="form-check">
+              <label for="active">Active</label>
+              <br />
+              <input type="checkbox" id="active" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>CreateDate</label>
+              <input
+                disabled
+                class="form-control form-control-sm"
+                id="createDate"
+                type="date"
+              />
+            </div>
+            <div class="form-group">
+              <label>UpdateDate</label>
+              <input
+                disabled
+                class="form-control form-control-sm"
+                id="updateDate"
+                type="date"
+              />
+            </div>
+          </div>
+        </form>
       </div>
-    </form>
-    <button class="btn btn-success" id="newButton">New</button>
-    <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+    </div>
 
-    <br />
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-success" id="newButton">New</button>
+        <button type="submit" class="btn btn-primary" id="saveButton">
+          Save
+        </button>
+      </div>
+    </div>
 
-    <h2>List</h2>
-    <ul id="groups" class="list-group"></ul>
+    <div class="row">
+      <div class="col-12">
+        <h1>Groups</h1>
+        <div class="card-body table-responsive p-0">
+          <table
+            class="table table-hover table-bordered text-nowrap"
+            id="group-table"
+          >
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Active</th>
+                <th>CreateDate</th>
+                <th>UpdateDate</th>
+                <th>GroupId</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="data-table"></tbody>
+          </table>
+        </div>
+        <!-- <ul id="groups" class="list-group"></ul> -->
+      </div>
+    </div>
 
     <script>
       let server = env.server;
@@ -91,7 +131,7 @@
 
         $.getJSON(url)
           .done(function (data) {
-            showList(data);
+            showTable(data);
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -158,7 +198,7 @@
           });
       }
 
-      function showData() {
+      function showData(params) {
         if (group == null) {
           $("#id").val(null);
           $("#name").val(null);
@@ -175,43 +215,73 @@
         }
       }
 
-      function showList(data) {
-        let container = $("#groups");
+      function showTable(data) {
+        let container = $("#data-table");
         container.empty();
 
         if (!Array.isArray(data)) return;
 
         data.forEach(function (item, i) {
-          let li = $('<li class="list-group-item">');
+          let tr =
+            "<tr>" +
+            "<td>" +
+            item.Name +
+            "</td>" +
+            "<td>" +
+            item.Active +
+            "</td>" +
+            "<td>" +
+            item.CreateDate +
+            "</td>" +
+            "<td>" +
+            item.UpdateDate +
+            "</td>" +
+            "<td>" +
+            item.GroupID +
+            "</td>" +
+            "<td>" +
+            "<button type='button' id=" +
+            "editButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-success'><i class='fas fa-edit'></i></button>" +
+            "<button type='button' id=" +
+            "deleteButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-danger'><i class='far fa-trash-alt'></i></button>" +
+            "</td>" +
+            "</tr>";
 
-          let label = $("<label>").html(item.Name);
+          container.append(tr);
 
-          let editButton = $(
-            '<button type="submit" class="btn-sm btn-warning" style="margin:5px;"">'
-          ).attr("group", JSON.stringify(item));
-          editButton.html("Edit");
+          let editButton = $("#editButton_" + i);
+          editButton.attr("group", JSON.stringify(item));
           editButton.click(function () {
             let item = $(this).attr("group");
             group = JSON.parse(item);
             showData();
           });
 
-          let deleteButton = $(
-            '<button type="submit" class="btn-sm btn-danger">'
-          ).attr("group", JSON.stringify(item));
-          deleteButton.html("Delete");
+          let deleteButton = $("#deleteButton_" + i);
+          deleteButton.attr("group", JSON.stringify(item));
           deleteButton.click(function () {
             let item = $(this).attr("group");
             group = JSON.parse(item);
             deleteGroup(group.GroupID);
           });
-
-          li.append(label);
-          li.append(editButton);
-          li.append(deleteButton);
-
-          container.append(li);
         });
+      }
+
+      function productDisplay(params) {
+        _row = $(params).parents("tr");
+        var cols = _row.children("td");
+
+        console.log(cols[0]);
+        $("#Name").val($(cols[1]).text());
+        $("#introdate").val($(cols[2]).text());
+        $("#url").val($(cols[3]).text());
+
+        // Change Update Button Text
+        $("#updateButton").text("Update");
       }
     </script>
   </body>

@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+
     <link href="css/custom.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
 
@@ -16,84 +22,123 @@
   </head>
 
   <body class="container">
-    <h1>Equipments</h1>
-
-    <h2>Equipment</h2>
-    <form>
-      <div class="form-row">
-        <div class="form-group col-sm-1">
-          <label for="id">Id</label>
-          <input class="form-control form-control-sm" disabled id="id" />
-        </div>
-        <div class="form-group">
-          <label for="number">Number</label>
-          <input class="form-control form-control-sm" id="number" />
-        </div>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input class="form-control form-control-sm" id="name" />
-        </div>
-        <div class="form-group">
-          <label for="group">Group</label>
-          <select
-            class="form-control"
-            id="selectGroup"
-            onchange="groupSelectionChange(this)"
-          >
-            <option value="0">auswählen</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>InactiveDate</label>
-          <input
-            class="form-control form-control-sm"
-            id="inactiveDate"
-            type="date"
-          />
-        </div>
-        <div class="form-check">
-          <label for="active">Active</label>
-          <br />
-          <input type="checkbox" id="active" />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>CreateDate</label>
-          <input
-            class="form-control form-control-sm"
-            id="createDate"
-            type="date"
-          />
-        </div>
-        <div class="form-group">
-          <label>UpdateDate</label>
-          <input
-            disabled
-            class="form-control form-control-sm"
-            id="updateDate"
-            type="date"
-          />
-        </div>
-      </div>
-    </form>
-    <button class="btn btn-success" id="newButton">New</button>
-    <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-
-    <br />
-    <h2>List</h2>
     <div class="row">
-      <ul id="groups" class="list-group"></ul>
+      <div class="col-12">
+        <h1>Equipment</h1>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-row">
+              <div class="form-group col-sm-1">
+                <label for="id">Id</label>
+                <input class="form-control form-control-sm" disabled id="id" />
+              </div>
+              <div class="form-group">
+                <label for="number">Number</label>
+                <input class="form-control form-control-sm" id="number" />
+              </div>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input class="form-control form-control-sm" id="name" />
+              </div>
+              <div class="form-group">
+                <label for="group">Group</label>
+                <select
+                  class="form-control form-control-sm"
+                  id="selectGroup"
+                  onchange="groupSelectionChange(this)"
+                >
+                  <option value="0">auswählen</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>InactiveDate</label>
+                <input
+                  class="form-control form-control-sm"
+                  id="inactiveDate"
+                  type="date"
+                />
+              </div>
+              <div class="form-check">
+                <label for="active">Active</label>
+                <br />
+                <input type="checkbox" id="active" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="form-row">
+              <div class="form-group">
+                <label>CreateDate</label>
+                <input
+                  class="form-control form-control-sm"
+                  id="createDate"
+                  type="date"
+                />
+              </div>
+              <div class="form-group">
+                <label>UpdateDate</label>
+                <input
+                  disabled
+                  class="form-control form-control-sm"
+                  id="updateDate"
+                  type="date"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-success" id="newButton">New</button>
+            <button type="submit" class="btn btn-primary" id="saveButton">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="table-wrapper-scroll-y my-custom-scrollbar table-responsive"
+          style="min-height: 500px"
+        >
+          <table
+            class="table table-hover table-bordered mb-0"
+            id="equipment-table"
+          >
+            <thead>
+              <tr>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Active</th>
+                <th>CreateDate</th>
+                <th>UpdateDate</th>
+                <th>Group</th>
+                <th>EquipmentId</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="data-table"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <script>
       let server = env.server;
 
       let equipment;
+      let groups;
 
       $(document).ready(function () {
-        getEquipments();
         getGroups();
+        getEquipments();
 
         $("#newButton").click(function () {
           equipment = new Object();
@@ -118,7 +163,7 @@
 
         $.getJSON(url)
           .done(function (data) {
-            showList(data);
+            showTable(data);
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -205,6 +250,7 @@
 
         $.getJSON(url)
           .done(function (data) {
+            groups = data;
             showSelectGroups(data);
           })
           .fail(function (error) {
@@ -250,6 +296,7 @@
           else $("#inactiveDate").val(null);
 
           $("#group").val(equipment.GroupID);
+
           $("#createDate").val(formatDate(equipment.CreateDate));
           $("#updateDate").val(formatDate(equipment.UpdateDate));
 
@@ -257,44 +304,72 @@
         }
       }
 
-      function showList(data) {
-        let container = $("#groups");
+      function showTable(data) {
+        let container = $("#data-table");
         container.empty();
 
         if (!Array.isArray(data)) return;
 
+        let group;
         data.forEach(function (item, i) {
-          let li = $('<li class="list-group-item overflow-auto">');
+          for (let i = 0; i < groups.length; i++) {
+            if (groups[i].GroupID == item.GroupID) {
+              group = groups[i];
+            }
+          }
 
-          let label = $("<label>").html(
-            item.Number + " - " + item.Name + " [active=" + item.Active + "]"
-          );
+          let tr =
+            "<tr>" +
+            "<td>" +
+            item.Number +
+            "</td>" +
+            "<td>" +
+            item.Name +
+            "</td>" +
+            "<td>" +
+            item.Active +
+            "</td>" +
+            "<td>" +
+            item.CreateDate +
+            "</td>" +
+            "<td>" +
+            item.UpdateDate +
+            "</td>" +
+            "<td>" +
+            group.Name +
+            "</td>" +
+            "<td>" +
+            item.EquipmentID +
+            "</td>" +
+            "<td>" +
+            "<button type='button' id=" +
+            "editButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-success'><i class='fas fa-edit'></i></button>" +
+            "<button type='button' id=" +
+            "deleteButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-danger'><i class='far fa-trash-alt'></i></button>" +
+            "</td>" +
+            "</tr>";
 
-          let editButton = $(
-            '<button type="submit" class="btn-sm btn-warning" style="margin:5px;"">'
-          ).attr("equipment", JSON.stringify(item));
-          editButton.html("Edit");
+          container.append(tr);
+
+          let editButton = $("#editButton_" + i);
+          editButton.attr("equipment", JSON.stringify(item));
           editButton.click(function () {
             let item = $(this).attr("equipment");
             equipment = JSON.parse(item);
             showData();
           });
 
-          let deleteButton = $(
-            '<button type="submit" class="btn-sm btn-danger">'
-          ).attr("equipment", JSON.stringify(item));
-          deleteButton.html("Delete");
+          let deleteButton = $("#deleteButton_" + i);
+          deleteButton.attr("equipment", JSON.stringify(item));
           deleteButton.click(function () {
             let item = $(this).attr("equipment");
             equipment = JSON.parse(item);
-            deleteEquipment(equipment.EquipmentID);
+            deleteGroup(group.GroupID);
           });
-
-          li.append(label);
-          li.append(editButton);
-          li.append(deleteButton);
-
-          container.append(li);
         });
       }
     </script>
