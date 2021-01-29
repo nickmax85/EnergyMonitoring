@@ -96,13 +96,20 @@ function showCardCollapsable(data) {
 
     data.forEach(function (item, i) {
 
+        
+
         let col = $('<div class="col-md-6">');
 
         let card = $('<div class="card card-primary collapsed-card">');
         col.append(card);
 
         let header = $('<div class="card-header">');
-        header.append($('<h3 class="card-title">Expandable</h3>').html(item.Number + ' - ' + item.Name));
+
+        let state = '';
+        if (!item.Active)        
+            state = '[DEACTIVATED]'
+        header.append($('<h3 class="card-title">Expandable</h3>').html(item.Number + ' - ' + item.Name + ' ' + state));
+        
 
         let tools = ($('<div class="card-tools">'));
         tools.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>'));
@@ -133,12 +140,14 @@ function showCardCollapsable(data) {
         body.append(row, buttonCharts);
 
         card.append(header, body);
+        
         container.append(col);
-
+       
         if (item.Devices[0] != null) {
             addGaugeChart1(gaugeChart1.get(0).id, item.Devices[0]);
             addGaugeChart2(gaugeChart2.get(0).id, item.Devices[0]);
         }
+    
     });
 
 }
