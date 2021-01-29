@@ -12,6 +12,23 @@ namespace EnergyMonitoringWebAPI.Controllers
 {
     public class SensorsController : ApiController
     {
+
+
+        public IEnumerable<object> GetSensor()
+        {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                //db.Configuration.ProxyCreationEnabled = false;
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var items = db.Sensors.ToList();
+
+                return items;
+            }
+        }
+
+
+
         // GET: api/Sensors
         public IEnumerable<object> Get()
         {

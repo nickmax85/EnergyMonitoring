@@ -58,6 +58,9 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutUnit(int id, Unit unit)
         {
+
+            unit.UpdateDate = DateTime.Now;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -93,6 +96,8 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Unit))]
         public async Task<IHttpActionResult> PostUnit(Unit unit)
         {
+            unit.CreateDate = DateTime.Now;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+
+    <link href="../css/custom.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/environment.js"></script>
+
+    <title>Sensors</title>
+  </head>
+
+  <body class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Sensor</h1>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-row">
+              <div class="form-group col-sm-1">
+                <label for="id">SensorId</label>
+                <input class="form-control form-control-sm" disabled id="id" />
+              </div>
+              <div class="form-group">
+                <label for="lowerLimit">LowerLimit</label>
+                <input
+                  class="form-control form-control-sm"
+                  id="lowerLimit"
+                  type="text"
+                  pattern="[-+]?[0-9]*[.]?[0-9]+"
+                  style="width: 150px; text-align: right"
+                />
+              </div>
+              <div class="form-group">
+                <label for="upperLimit">UpperLimit</label>
+                <input
+                  class="form-control form-control-sm"
+                  id="upperLimit"
+                  type="text"
+                  pattern="[-+]?[0-9]*[.]?[0-9]+"
+                  style="width: 150px; text-align: right"
+                />
+              </div>
+              <div class="form-group">
+                <label for="selectUnit">Unit</label>
+                <select
+                  class="form-control form-control-sm"
+                  id="selectUnit"
+                  onchange="unitSelectionChange(this)"
+                >
+                  <option value="0">auswählen</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="selectDevice">Device</label>
+                <select
+                  class="form-control form-control-sm"
+                  id="selectDevice"
+                  onchange="deviceSelectionChange(this)"
+                >
+                  <option value="0">auswählen</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="form-row">
+              <div class="form-group">
+                <label>CreateDate</label>
+                <input
+                  disabled
+                  class="form-control form-control-sm"
+                  id="createDate"
+                  type="date"
+                />
+              </div>
+              <div class="form-group">
+                <label>UpdateDate</label>
+                <input
+                  disabled
+                  class="form-control form-control-sm"
+                  id="updateDate"
+                  type="date"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-success" id="newButton">New</button>
+            <button type="submit" class="btn btn-primary" id="saveButton">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="table-wrapper-scroll-y my-custom-scrollbar table-responsive"
+          style="min-height: 500px"
+        >
+          <table
+            class="table table-hover table-bordered mb-0"
+            id="sensor-table"
+          >
+            <thead>
+              <tr>
+                <th>LowerLimit</th>
+                <th>UpperLimit</th>
+                <th>Device</th>
+                <th>Unit</th>
+                <th>CreateDate</th>
+                <th>UpdateDate</th>
+                <th>SensorId</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="data-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let server = env.server;
+
+      let sensor;
+      let devices;
+      let units;
+
+      $(document).ready(function () {
+        getDevices();
+        getUnits();
+        getSensors();
+
+        $("#newButton").click(function () {
+          sensor = new Object();
+          sensor.SensorID = 0;
+
+          showData();
+        });
+
+        $("#saveButton").click(function () {
+          if (!validateInput()) {
+            alert("Eingabe unvollständig");
+            return;
+          }
+
+          if (sensor.SensorID == 0) postSensor();
+          else putSensor();
+        });
+      });
+
+      function getSensors() {
+        let url = server + "/api/sensors/GetSensor";
+
+        $.getJSON(url)
+          .done(function (data) {
+            showTable(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function validateInput() {
+        if ($("#selectDevice").val() == 0) return false;
+        if ($("#selectUnit").val() == 0) return false;
+
+        if ($("#lowerLimit").val() == "") return false;
+        if ($("#upperLimit").val() == "") return false;
+
+        return true;
+      }
+
+      function postSensor() {
+        sensor.SensorID = $("#id").val();
+        sensor.Number = $("#number").val();
+        sensor.Name = $("#name").val();
+        sensor.Active = $("#active").prop("checked");
+        sensor.DeviceID = $("#selectDevice").val();
+        sensor.UnitID = $("#selectUnit").val();
+        sensor.CreateDate = $("#createDate").val();
+        sensor.UpdateDate = $("#updateDate").val();
+
+        let url = server + "/api/sensors/PostSensor";
+
+        $.post(url, sensor)
+          .done(function (data) {
+            sensor = null;
+            showData();
+            getSensors();
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function putSensor() {
+        sensor.SensorID = $("#id").val();
+        sensor.Number = $("#number").val();
+        sensor.Name = $("#name").val();
+        sensor.Active = $("#active").prop("checked");
+        sensor.DeviceID = $("#selectDevice").val();
+        sensor.UnitID = $("#selectUnit").val();
+        sensor.CreateDate = $("#createDate").val();
+        sensor.UpdateDate = $("#updateDate").val();
+
+        let url = server + "/api/sensors/Put/" + sensor.SensorID;
+
+        $.ajax({
+          url: url,
+          type: "PUT",
+          contentType: "application/json;charset=utf-8",
+          data: JSON.stringify(sensor),
+          success: function (sensor) {
+            alert("Daten erfolgreich gespeichert.");
+            getSensors();
+          },
+          error: function (request, message, error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          },
+        });
+      }
+
+      function deleteSensor(id) {
+        let url = server + "/api/equipments/DeleteEquipment/" + id;
+
+        $.ajax({
+          url: url,
+          type: "DELETE",
+        })
+          .done(function (data) {
+            alert("Daten wurden entfernt");
+            getSensors();
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function getDevices() {
+        let url = server + "/api/devices/GetDevice";
+
+        $.getJSON(url)
+          .done(function (data) {
+            devices = data;
+            showSelectDevices(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function deviceSelectionChange() {
+        let sel = $("#selectDevice option:selected").val();
+      }
+
+      function showSelectDevices(data) {
+        let container = $("#selectDevice");
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          $("#selectDevice").append(
+            $("<option></option>")
+              .val(item.DeviceID)
+              .html(item.Name + " [" + item.IP + "]")
+          );
+        });
+      }
+
+      function getUnits() {
+        let url = server + "/api/units/GetUnit";
+
+        $.getJSON(url)
+          .done(function (data) {
+            units = data;
+            showSelectUnits(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function unitSelectionChange() {
+        let sel = $("#selectUnit option:selected").val();
+      }
+
+      function showSelectUnits(data) {
+        let container = $("#selectUnit");
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          $("#selectUnit").append(
+            $("<option></option>")
+              .val(item.UnitID)
+              .html(item.Name + " [" + item.Sign + "]")
+          );
+        });
+      }
+
+      function showData() {
+        if (sensor == null) {
+          $("#id").val(null);
+          $("#lowerLimit").val(null);
+          $("#upperLimit").val(null);
+
+          $("#selectUnit").val(null);
+          $("#selectDevice").val(null);
+
+          $("#createDate").val(null);
+          $("#updateDate").val(null);
+        } else {
+          $("#id").val(sensor.SensorID);
+          $("#lowerLimit").val(sensor.LowerLimit.toFixed(1));
+          $("#upperLimit").val(sensor.UpperLimit.toFixed(1));
+
+          $("#selectUnit").val(sensor.UnitID);
+          $("#selectDevice").val(sensor.DeviceID);
+
+          $("#createDate").val(formatDate(sensor.CreateDate));
+          $("#updateDate").val(formatDate(sensor.UpdateDate));
+        }
+      }
+
+      function showTable(data) {
+        let container = $("#data-table");
+        container.empty();
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          let device;
+          for (let i = 0; i < devices.length; i++) {
+            if (devices[i].DeviceID == item.DeviceID) {
+              device = devices[i];
+            }
+          }
+
+          let unit;
+          for (let i = 0; i < units.length; i++) {
+            if (units[i].UnitID == item.UnitID) {
+              unit = units[i];
+            }
+          }
+
+          let tr =
+            "<tr>" +
+            "<td>" +
+            item.LowerLimit.toFixed(1) +
+            "</td>" +
+            "<td>" +
+            item.UpperLimit.toFixed(1) +
+            "</td>" +
+            "<td>" +
+            device.Name +
+            "</td>" +
+            "<td>" +
+            unit.Name +
+            "</td>" +
+            "<td>" +
+            item.CreateDate +
+            "</td>" +
+            "<td>" +
+            item.UpdateDate +
+            "</td>" +
+            "<td>" +
+            item.SensorID +
+            "</td>" +
+            "<td>" +
+            "<button type='button' id=" +
+            "editButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-success'><i class='fas fa-edit'></i></button>" +
+            "<button type='button' id=" +
+            "deleteButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-danger'><i class='far fa-trash-alt'></i></button>" +
+            "</td>" +
+            "</tr>";
+
+          container.append(tr);
+
+          let editButton = $("#editButton_" + i);
+          editButton.attr("sensor", JSON.stringify(item));
+          editButton.click(function () {
+            let item = $(this).attr("sensor");
+            sensor = JSON.parse(item);
+            showData();
+          });
+
+          let deleteButton = $("#deleteButton_" + i);
+          deleteButton.attr("sensor", JSON.stringify(item));
+          deleteButton.click(function () {
+            let item = $(this).attr("sensor");
+            sensor = JSON.parse(item);
+            deleteSensor(sensor.SensorID);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

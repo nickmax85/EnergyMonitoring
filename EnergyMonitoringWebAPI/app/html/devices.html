@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+
+    <link href="../css/custom.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/environment.js"></script>
+
+    <title>Equipments</title>
+  </head>
+
+  <body class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Device</h1>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-row">
+              <div class="form-group col-sm-1">
+                <label for="id">Id</label>
+                <input class="form-control form-control-sm" disabled id="id" />
+              </div>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input class="form-control form-control-sm" id="name" />
+              </div>
+              <div class="form-group">
+                <label for="ip">IP</label>
+                <input class="form-control form-control-sm" id="ip" />
+              </div>
+              <div class="form-group">
+                <label for="group">Equipment</label>
+                <select
+                  class="form-control form-control-sm"
+                  id="selectEquipment"
+                  onchange="equipmentSelectionChange(this)"
+                >
+                  <option value="0">auswählen</option>
+                </select>
+              </div>
+
+              <div class="form-check">
+                <label for="active">Active</label>
+                <br />
+                <input type="checkbox" id="active" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="form-row">
+              <div class="form-group">
+                <label>CreateDate</label>
+                <input
+                  disabled
+                  class="form-control form-control-sm"
+                  id="createDate"
+                  type="date"
+                />
+              </div>
+              <div class="form-group">
+                <label>UpdateDate</label>
+                <input
+                  disabled
+                  class="form-control form-control-sm"
+                  id="updateDate"
+                  type="date"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-success" id="newButton">New</button>
+            <button type="submit" class="btn btn-primary" id="saveButton">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-12">
+        <div
+          class="table-wrapper-scroll-y my-custom-scrollbar table-responsive"
+          style="min-height: 500px"
+        >
+          <table
+            class="table table-hover table-bordered mb-0"
+            id="device-table"
+          >
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>IP</th>
+                <th>Active</th>
+                <th>CreateDate</th>
+                <th>UpdateDate</th>
+                <th>Equipment</th>
+                <th>DeviceId</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="data-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let server = env.server;
+
+      let device;
+      let equipments;
+
+      $(document).ready(function () {
+        getEquipments();
+        getDevices();
+
+        $("#newButton").click(function () {
+          device = new Object();
+          device.DeviceID = 0;
+          device.Active = true;
+          device.EquipmentID = 0;
+
+          showData();
+        });
+
+        $("#saveButton").click(function () {
+          if (!validateInput()) {
+            alert("Eingabe unvollständig");
+            return;
+          }
+
+          if (device.DeviceID == 0) postDevice();
+          else putDevice();
+        });
+      });
+
+      function getDevices() {
+        let url = server + "/api/devices/GetDevice";
+
+        $.getJSON(url)
+          .done(function (data) {
+            showTable(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function validateInput() {
+        if ($("#selectEquipment").val() == 0) return false;
+
+        if ($("#name").val() == "") return false;
+        if ($("#ip").val() == "") return false;
+
+        return true;
+      }
+
+      function postDevice() {
+        device.DeviceID = $("#id").val();
+        device.Name = $("#name").val();
+        device.IP = $("#ip").val();
+        device.Active = $("#active").prop("checked");
+        device.InactiveDate = $("#inactiveDate").val();
+        device.EquipmentID = $("#selectEquipment").val();
+        device.CreateDate = $("#createDate").val();
+        device.UpdateDate = $("#updateDate").val();
+
+        let url = server + "/api/devices/PostDevice";
+
+        $.post(url, device)
+          .done(function (data) {
+            device = null;
+            showData();
+            getDevices();
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function putDevice() {
+        device.DeviceID = $("#id").val();
+        device.Name = $("#name").val();
+        device.IP = $("#ip").val();
+        device.Active = $("#active").prop("checked");
+        device.InactiveDate = $("#inactiveDate").val();
+        device.EquipmentID = $("#selectEquipment").val();
+        device.CreateDate = $("#createDate").val();
+        device.UpdateDate = $("#updateDate").val();
+
+        let url = server + "/api/devices/PutDevice/" + device.DeviceID;
+
+        $.ajax({
+          url: url,
+          type: "PUT",
+          contentType: "application/json;charset=utf-8",
+          data: JSON.stringify(device),
+          success: function (device) {
+            alert("Daten erfolgreich gespeichert.");
+            getDevices();
+          },
+          error: function (request, message, error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          },
+        });
+      }
+
+      function deleteDevice(id) {
+        let url = server + "/api/devices/DeleteDevice/" + id;
+
+        $.ajax({
+          url: url,
+          type: "DELETE",
+        })
+          .done(function (data) {
+            alert("Daten wurden entfernt");
+            getDevices();
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function getEquipments() {
+        let url = server + "/api/equipments/GetEquipment";
+
+        $.getJSON(url)
+          .done(function (data) {
+            equipments = data;
+            showSelectEquipments(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function equipmentSelectionChange() {
+        let sel = $("#selectEquipment option:selected").val();
+      }
+
+      function showSelectEquipments(data) {
+        let container = $("#selectEquipment");
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          $("#selectEquipment").append(
+            $("<option></option>")
+              .val(item.EquipmentID)
+              .html(item.Number + " - " + item.Name)
+          );
+        });
+      }
+
+      function showData() {
+        if (device == null) {
+          $("#id").val(null);
+          $("#name").val(null);
+          $("#ip").val(null);
+          $("#active").prop("checked", true);
+          $("#inactiveDate").val(null);
+          $("#equipment").val(null);
+          $("#createDate").val(null);
+          $("#updateDate").val(null);
+        } else {
+          $("#id").val(device.DeviceID);
+          $("#name").val(device.Name);
+          $("#ip").val(device.IP);
+          if (device.Active) $("#active").prop("checked", true);
+          else $("#active").prop("checked", false);
+
+          $("#createDate").val(formatDate(device.CreateDate));
+          $("#updateDate").val(formatDate(device.UpdateDate));
+
+          $("#selectEquipment").val(device.EquipmentID);
+        }
+      }
+
+      function showTable(data) {
+        let container = $("#data-table");
+        container.empty();
+
+        if (!Array.isArray(data)) return;
+
+        let equipment;
+        data.forEach(function (item, i) {
+          for (let i = 0; i < equipments.length; i++) {
+            if (equipments[i].EquipmentID == item.EquipmentID) {
+              equipment = equipments[i];
+            }
+          }
+
+          let tr =
+            "<tr>" +
+            "<td>" +
+            item.Name +
+            "</td>" +
+            "<td>" +
+            item.IP +
+            "</td>" +
+            "<td>" +
+            item.Active +
+            "</td>" +
+            "<td>" +
+            item.CreateDate +
+            "</td>" +
+            "<td>" +
+            item.UpdateDate +
+            "</td>" +
+            "<td>" +
+            equipment.Number +
+            " - " +
+            equipment.Name +
+            "</td>" +
+            "<td>" +
+            item.DeviceID +
+            "</td>" +
+            "<td>" +
+            "<button type='button' id=" +
+            "editButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-success'><i class='fas fa-edit'></i></button>" +
+            "<button type='button' id=" +
+            "deleteButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-danger'><i class='far fa-trash-alt'></i></button>" +
+            "</td>" +
+            "</tr>";
+
+          container.append(tr);
+
+          let editButton = $("#editButton_" + i);
+          editButton.attr("device", JSON.stringify(item));
+          editButton.click(function () {
+            let item = $(this).attr("device");
+            device = JSON.parse(item);
+            showData();
+          });
+
+          let deleteButton = $("#deleteButton_" + i);
+          deleteButton.attr("device", JSON.stringify(item));
+          deleteButton.click(function () {
+            let item = $(this).attr("device");
+            device = JSON.parse(item);
+            deleteDevice(device.DeviceID);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

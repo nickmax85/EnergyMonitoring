@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+
+    <link href="../css/custom.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/environment.js"></script>
+
+    <title>Units</title>
+  </head>
+
+  <body class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Unit</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-sm-1">
+              <label for="id">UnitId</label>
+              <input class="form-control form-control-sm" disabled id="id" />
+            </div>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input class="form-control form-control-sm" id="name" />
+            </div>
+            <div class="form-group">
+              <label for="sign">Sign</label>
+              <input class="form-control form-control-sm" id="sign" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>CreateDate</label>
+              <input
+                disabled
+                class="form-control form-control-sm"
+                id="createDate"
+                type="date"
+              />
+            </div>
+            <div class="form-group">
+              <label>UpdateDate</label>
+              <input
+                disabled
+                class="form-control form-control-sm"
+                id="updateDate"
+                type="date"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-success" id="newButton">New</button>
+        <button type="submit" class="btn btn-primary" id="saveButton">
+          Save
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h1>Units</h1>
+        <div class="card-body table-responsive p-0">
+          <table
+            class="table table-hover table-bordered text-nowrap"
+            id="unit-table"
+          >
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Sign</th>
+                <th>CreateDate</th>
+                <th>UpdateDate</th>
+                <th>UnitId</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="data-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let server = env.server;
+
+      let unit;
+
+      $(document).ready(function () {
+        getUnits();
+
+        $("#newButton").click(function () {
+          unit = new Object();
+          unit.UnitID = 0;
+
+          showData();
+        });
+
+        $("#saveButton").click(function () {
+          if (unit.UnitID == 0) postUnit();
+          else putUnit();
+        });
+      });
+
+      function getUnits() {
+        let url = server + "/api/Units/GetUnit";
+
+        $.getJSON(url)
+          .done(function (data) {
+            showTable(data);
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function postUnit() {
+        unit.UnitID = $("#id").val();
+        unit.Name = $("#name").val();
+        unit.Sign = $("#sign").val();
+        unit.CreateDate = $("#createDate").val();
+        unit.UpdateDate = $("#updateDate").val();
+
+        let url = server + "/api/units/PostUnit";
+
+        $.post(url, unit)
+          .done(function (data) {
+            unit = null;
+            showData();
+            getUnits();
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function putUnit() {
+        unit.UnitID = $("#id").val();
+        unit.Name = $("#name").val();
+        unit.Sign = $("#sign").val();
+        unit.CreateDate = $("#createDate").val();
+        unit.UpdateDate = $("#updateDate").val();
+
+        let url = server + "/api/units/PutUnit/" + unit.UnitID;
+
+        $.ajax({
+          url: url,
+          type: "PUT",
+          contentType: "application/json;charset=utf-8",
+          data: JSON.stringify(unit),
+          success: function (unit) {
+            alert("Daten erfolgreich gespeichert.");
+            getUnits();
+          },
+          error: function (request, message, error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          },
+        });
+      }
+
+      function deleteUnit(id) {
+        let url = server + "/api/units/DeleteUnit/" + id;
+
+        $.ajax({
+          url: url,
+          type: "DELETE",
+        })
+          .done(function (data) {
+            alert("Daten wurden entfernt");
+            getUnits();
+          })
+          .fail(function (error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          });
+      }
+
+      function showData(params) {
+        if (unit == null) {
+          $("#id").val(null);
+          $("#name").val(null);
+          $("#sign").val(null);
+          $("#createDate").val(null);
+          $("#updateDate").val(null);
+        } else {
+          $("#id").val(unit.UnitID);
+          $("#name").val(unit.Name);
+          $("#sign").val(unit.Sign);
+          $("#createDate").val(formatDate(unit.CreateDate));
+          $("#updateDate").val(formatDate(unit.UpdateDate));
+        }
+      }
+
+      function showTable(data) {
+        let container = $("#data-table");
+        container.empty();
+
+        if (!Array.isArray(data)) return;
+
+        data.forEach(function (item, i) {
+          let tr =
+            "<tr>" +
+            "<td>" +
+            item.Name +
+            "</td>" +
+            "<td>" +
+            item.Sign +
+            "</td>" +
+            "<td>" +
+            item.CreateDate +
+            "</td>" +
+            "<td>" +
+            item.UpdateDate +
+            "</td>" +
+            "<td>" +
+            item.UnitID +
+            "</td>" +
+            "<td>" +
+            "<button type='button' id=" +
+            "editButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-success'><i class='fas fa-edit'></i></button>" +
+            "<button type='button' id=" +
+            "deleteButton_" +
+            i +
+            " style='margin:5px;'class='btn btn-danger'><i class='far fa-trash-alt'></i></button>" +
+            "</td>" +
+            "</tr>";
+
+          container.append(tr);
+
+          let editButton = $("#editButton_" + i);
+          editButton.attr("unit", JSON.stringify(item));
+          editButton.click(function () {
+            let item = $(this).attr("unit");
+            unit = JSON.parse(item);
+            showData();
+          });
+
+          let deleteButton = $("#deleteButton_" + i);
+          deleteButton.attr("unit", JSON.stringify(item));
+          deleteButton.click(function () {
+            let item = $(this).attr("unit");
+            unit = JSON.parse(item);
+            deleteUnit(unit.GroupID);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
