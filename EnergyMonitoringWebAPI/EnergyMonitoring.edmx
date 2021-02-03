@@ -92,7 +92,7 @@
           <Key>
             <PropertyRef Name="SensorID" />
           </Key>
-          <Property Name="SensorID" Type="int" Nullable="false" />
+          <Property Name="SensorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LowerLimit" Type="decimal" Precision="18" Scale="1" />
           <Property Name="UpperLimit" Type="decimal" Precision="18" Scale="1" />
           <Property Name="UnitID" Type="int" Nullable="false" />

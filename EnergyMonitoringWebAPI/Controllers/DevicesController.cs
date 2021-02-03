@@ -59,6 +59,9 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutDevice(int id, Device device)
         {
+
+            device.UpdateDate = DateTime.Now;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -94,6 +97,7 @@ namespace EnergyMonitoringWebAPI.Controllers
         [ResponseType(typeof(Device))]
         public async Task<IHttpActionResult> PostDevice(Device device)
         {
+            device.CreateDate = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

@@ -7,6 +7,8 @@ using System.Web.Http;
 using System.Data.Entity;
 using System.Data;
 using System.Data.Entity.Infrastructure;
+using System.Threading.Tasks;
+using System.Web.Http.Description;
 
 namespace EnergyMonitoringWebAPI.Controllers
 {
@@ -102,16 +104,20 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
         // POST: api/Sensors
-        public void Post([FromBody]string value)
+        public async Task<IHttpActionResult> PostSensor(Sensor sensor)
         {
-
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
+                sensor.CreateDate = DateTime.Now;
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-
+                db.Sensors.Add(sensor);
+                await db.SaveChangesAsync();
             }
-
-
+            return CreatedAtRoute("DefaultApi", new { id = sensor.SensorID }, sensor);
         }
 
         // PUT: api/Sensors/5
@@ -142,9 +148,23 @@ namespace EnergyMonitoringWebAPI.Controllers
             return ret;
         }
 
-        // DELETE: api/Sensors/5
-        public void Delete(int id)
+        // DELETE: api/Groups/5
+        [ResponseType(typeof(Sensor))]
+        public async Task<IHttpActionResult> DeleteSensor(int id)
         {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                Sensor sensor = await db.Sensors.FindAsync(id);
+                if (sensor == null)
+                {
+                    return NotFound();
+                }
+
+                db.Sensors.Remove(sensor);
+                await db.SaveChangesAsync();
+
+                return Ok(sensor);
+            }
         }
     }
 }
