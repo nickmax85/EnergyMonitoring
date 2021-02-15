@@ -43,3 +43,47 @@ Device: ip=10.187.136.15; name=WUT0276;
 Sensor: id=7; 
 Unit: name=Flow; sign=l/min; Input: 3,1; 
 
+2021-02-15 14:38:01,168 [1] INFO EnergyMonitoringService.Worker - Worker running at: 02/15/2021 14:38:01 +01:00
+2021-02-15 14:38:02,801 [1] INFO EnergyMonitoringService.Worker - RecordInterval=EnergyMonitoringService.Models.Config Minuten;
+2021-02-15 14:38:03,150 [1] INFO Microsoft.Hosting.Lifetime - Application started. Press Ctrl+C to shut down.
+2021-02-15 14:38:03,153 [1] INFO Microsoft.Hosting.Lifetime - Hosting environment: Production
+2021-02-15 14:38:03,156 [1] INFO Microsoft.Hosting.Lifetime - Content root path: C:\Users\thalerm\Source\Repos\nickmax85\EnergyMonitoring\EnergyMonitoringService
+2021-02-15 14:38:03,363 [6] INFO EnergyMonitoringService.Worker - WEBIO-087F68
+2021-02-15 14:38:03,368 [6] INFO EnergyMonitoringService.Worker - 
+Equipment: number=2342344; name=Montagelinie; 
+Device: ip=10.187.136.29; name=WEBIO-087F68; 
+Sensor: id=2; 
+Unit: name=Flow; sign=l/min; Input: 379,6; 
+
+2021-02-15 14:38:03,629 [4] INFO EnergyMonitoringService.Worker - 
+Equipment: number=2342344; name=Montagelinie; 
+Device: ip=10.187.136.29; name=WEBIO-087F68; 
+Sensor: id=3; 
+Unit: name=Pressure; sign=bar; Input: 6,7; 
+
+2021-02-15 14:38:03,717 [6] INFO EnergyMonitoringService.Worker - WEBIO-087F6B
+2021-02-15 14:38:03,719 [6] INFO EnergyMonitoringService.Worker - 
+Equipment: number=512868; name=EOL; 
+Device: ip=10.187.136.28; name=WEBIO-087F6B; 
+Sensor: id=4; 
+Unit: name=Pressure; sign=bar; Input: 6,7; 
+
+2021-02-15 14:38:03,734 [11] INFO EnergyMonitoringService.Worker - 
+Equipment: number=512868; name=EOL; 
+Device: ip=10.187.136.28; name=WEBIO-087F6B; 
+Sensor: id=5; 
+Unit: name=Flow; sign=l/min; Input: 0,8; 
+
+2021-02-15 14:38:03,811 [5] INFO EnergyMonitoringService.Worker - WUT0276
+2021-02-15 14:38:03,815 [5] INFO EnergyMonitoringService.Worker - 
+Equipment: number=510239; name=CNC Aussenrundschleifmaschine GST 9; 
+Device: ip=10.187.136.15; name=WUT0276; 
+Sensor: id=6; 
+Unit: name=Pressure; sign=bar; Input: 6,8; 
+
+2021-02-15 14:38:03,825 [4] INFO EnergyMonitoringService.Worker - 
+Equipment: number=510239; name=CNC Aussenrundschleifmaschine GST 9; 
+Device: ip=10.187.136.15; name=WUT0276; 
+Sensor: id=7; 
+Unit: name=Flow; sign=l/min; Input: 3,2; 
+

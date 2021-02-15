@@ -1,10 +1,9 @@
-sc create EnergyMonitoringService binPath="C:\Users\thalerm\Source\Repos\EnergyMonitoring\EnergyMonitoringService\bin\Release\netcoreapp3.0\publish\EnergyMonitoringService.exe"
+sc create EnergyMonitoringService binPath="C:\Users\thalerm\Source\Repos\nickmax85\EnergyMonitoring\EnergyMonitoringService\bin\Release\netcoreapp3.1\EnergyMonitoringService.exe"
 
-
-sc start Worker
-sc stop Worker
+sc start EnergyMonitoringService
+sc stop EnergyMonitoringService
 
 To check the state of your service use the following command.
-sc query Worker
+sc query EnergyMonitoringService
 
-sc delete Worker
+sc delete EnergyMonitoringService

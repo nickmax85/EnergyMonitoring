@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnergyMonitoringService", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnergyMonitoringWebAPI", "EnergyMonitoringWebAPI\EnergyMonitoringWebAPI.csproj", "{05B46242-AEE5-4158-ADE6-E837167AD755}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{4CECF050-8E53-4749-AD28-8C01C777A967}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{05B46242-AEE5-4158-ADE6-E837167AD755}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05B46242-AEE5-4158-ADE6-E837167AD755}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05B46242-AEE5-4158-ADE6-E837167AD755}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4CECF050-8E53-4749-AD28-8C01C777A967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CECF050-8E53-4749-AD28-8C01C777A967}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CECF050-8E53-4749-AD28-8C01C777A967}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CECF050-8E53-4749-AD28-8C01C777A967}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

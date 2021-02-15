@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace EnergyMonitoringService.Models
 {
@@ -8,11 +9,14 @@ namespace EnergyMonitoringService.Models
     {
         public EnergyMonitoringContext()
         {
+
         }
 
         public EnergyMonitoringContext(DbContextOptions<EnergyMonitoringContext> options)
             : base(options)
         {
+
+
         }
 
         public virtual DbSet<Alarm> Alarm { get; set; }
@@ -31,7 +35,16 @@ namespace EnergyMonitoringService.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=energymonitoring;Trusted_Connection=True;");
+
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+           .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+           .AddJsonFile("appsettings.json")
+           .Build();
+
+                string connectionString = configuration.GetConnectionString("db");
+                optionsBuilder.UseSqlServer(connectionString);
+
+                //optionsBuilder.UseSqlServer("Server=localhos;Database=energymonitoring;Trusted_Connection=True;");
                 //optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=energymonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
             }
         }
