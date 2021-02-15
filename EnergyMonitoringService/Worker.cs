@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
+
 namespace EnergyMonitoringService
 {
     public class Worker : BackgroundService
@@ -35,22 +36,226 @@ namespace EnergyMonitoringService
 
                 InitData();
 
+                // calculate ms in one second
+                int oneSecond = 1000 * 1;
+
+                // calculate ms in one minute
                 int oneMinute = 1000 * 60;
 
+                // record interval in minutes
                 int recordInterval = 10;
 
+                // wenn datenbankeintrag vorhanden diesen intervall nehmen
                 if (Config != null)
                     recordInterval = Config.RecordInterval;
 
-                await Task.Delay(oneMinute * recordInterval, stoppingToken);
+                await Task.Delay(oneSecond * 10, stoppingToken);
+                //await Task.Delay(oneMinute * recordInterval, stoppingToken);
 
             }
+        }
 
+        private void InitData()
+        {
+            GetDataParallel();
         }
 
 
+        private void GetDataParallel()
+        {
+            List<Device> devices;
 
-        private async void InitData()
+            // access database context with EF
+            using (var context = new EnergyMonitoringContext())
+            {
+                var config = context.Config.ToList().FirstOrDefault();
+                Config = config;
+                log.Info($"RecordInterval={config} Minuten;");
+
+                // read devices with relation entities from database
+                devices = context.Device.Include(device => device.Sensor)
+              .ThenInclude(sensor => sensor.Unit)
+              .Include(device => device.Equipment)
+              .Where(x => (bool)x.Active)
+              .ToList();
+
+                // iterate over device list
+                Parallel.ForEach(devices, async device =>
+                   {
+                       try
+                       {
+                           bool connected;
+
+                           // ping device
+                           Ping ping = new Ping();
+                           PingReply reply = ping.Send(device.Ip, 3000);
+
+                           if (reply.Status == IPStatus.Success)
+                           {
+                               connected = true;
+                           }
+                           else
+                           {
+                               connected = false;
+                               log.Error($"Fehler Verbindung: Status={device.Ip}; {reply.Status} DeviceName={device.Name};");
+                           }
+
+                           // get json
+                           if (connected)
+                           {
+                               var url = "http://" + device.Ip + "/rest/json";
+
+                               HttpClient request = new HttpClient();
+                               var json = await request.GetStringAsync(url);
+
+                               WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
+                               log.Info(device.Name);
+
+                               // iterate over sensor list                
+                               foreach (var sensor in device.Sensor)
+                               {
+                                   // iterate over inputs
+                                   foreach (var item in obj.iostate.input)
+                                   {
+                                       if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
+                                       {
+                                           StringBuilder sb = new StringBuilder();
+                                           sb.Append(Environment.NewLine);
+                                           sb.Append($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
+                                           sb.Append(Environment.NewLine);
+                                           sb.Append($"Device: ip={device.Ip}; name={device.Name}; ");
+                                           sb.Append(Environment.NewLine);
+                                           sb.Append($"Sensor: id={sensor.SensorId}; ");
+                                           sb.Append(Environment.NewLine);
+                                           sb.Append($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}; ");
+                                           sb.Append($"Input: {item.value}; ");
+                                           sb.Append(Environment.NewLine);
+
+                                           log.Info(sb);
+
+                                           using (var context = new EnergyMonitoringContext())
+                                           {
+                                               Record record = new Record();
+                                               record.EquipmentId = device.EquipmentId;
+                                               record.Sensor = sensor;
+                                               record.UnitId = sensor.UnitId;
+                                               record.Value = (decimal)Math.Round(item.value, 1);
+                                               record.CreateDate = DateTime.Now;
+
+                                               context.Record.Add(record);
+                                             await  context.SaveChanges();
+                                           }
+
+                                           //CheckAlarm(record);
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                       catch (JsonSerializationException ex)
+                       {
+                           log.Error(ex.StackTrace);
+                       }
+
+                       catch (HttpRequestException ex)
+                       {
+                           log.Error(ex.StackTrace);
+                       }
+                       catch (Exception ex)
+                       {
+                           log.Error(ex.StackTrace);
+                       }
+                   });
+
+
+                //foreach (var device in devices)
+                //{
+                //    bool connected;
+                //    try
+                //    {
+                //        // ping device
+                //        Ping ping = new Ping();
+                //        PingReply reply = ping.Send(device.Ip, 1000);
+
+                //        if (reply.Status == IPStatus.Success)
+                //        {
+                //            connected = true;
+                //        }
+                //        else
+                //        {
+                //            connected = false;
+                //            log.Error($"Fehler Verbindung: Status={device.Ip}; {reply.Status} DeviceName={device.Name};");
+                //        }
+
+                //        if (connected)
+                //        {
+                //            // read json
+                //            var url = "http://" + device.Ip + "/rest/json";
+
+                //            HttpClient request = new HttpClient();
+                //            var json = await request.GetStringAsync(url);
+
+                //            WebIO obj = JsonConvert.DeserializeObject<WebIO>(json);
+                //            log.Info(device.Name);
+                //            // iterate over sensor list                
+                //            foreach (var sensor in device.Sensor)
+                //            {
+                //                // iterate over inputs
+                //                foreach (var item in obj.iostate.input)
+                //                {
+                //                    if (sensor.Unit.Name.ToLower().Equals(item.name.ToLower()))
+                //                    {
+                //                        StringBuilder sb = new StringBuilder();
+
+                //                        sb.Append(Environment.NewLine);
+                //                        sb.Append($"Equipment: number={device.Equipment.Number}; name={device.Equipment.Name}; ");
+                //                        sb.Append(Environment.NewLine);
+                //                        sb.Append($"Device: ip={device.Ip}; name={device.Name}; ");
+                //                        sb.Append(Environment.NewLine);
+                //                        sb.Append($"Sensor: id={sensor.SensorId}; ");
+                //                        sb.Append(Environment.NewLine);
+                //                        sb.Append($"Unit: name={sensor.Unit.Name}; sign={sensor.Unit.Sign}; ");
+                //                        sb.Append($"Input: {item.value}; ");
+                //                        sb.Append(Environment.NewLine);
+
+                //                        log.Info(sb);
+
+                //                        Record record = new Record();
+                //                        record.Equipment = device.Equipment;
+                //                        record.Sensor = sensor;
+                //                        record.UnitId = sensor.UnitId;
+                //                        record.Value = (decimal)Math.Round(item.value, 1);
+                //                        record.CreateDate = DateTime.Now;
+
+                //                        context.Record.Add(record);
+
+                //                        await context.SaveChangesAsync();
+
+                //                        CheckAlarm(record);
+
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //    catch (JsonSerializationException ex)
+                //    {
+                //        log.Error(ex.StackTrace);
+                //    }
+
+                //    catch (HttpRequestException ex)
+                //    {
+                //        log.Error(ex.StackTrace);
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        log.Error(ex.StackTrace);
+                //    }
+                //}
+            }
+        }
+
+        private async void GetData()
         {
             // access database context with EF
             using (var context = new EnergyMonitoringContext())
@@ -156,6 +361,8 @@ namespace EnergyMonitoringService
                     }
                 }
             }
+
+
         }
 
         private async void CheckAlarm(Record record)
@@ -191,3 +398,4 @@ namespace EnergyMonitoringService
 
     }
 }
+
