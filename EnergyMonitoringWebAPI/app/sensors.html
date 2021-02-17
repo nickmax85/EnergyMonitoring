@@ -203,22 +203,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body">
-                    <div class="form-group">
-                      <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" onclick="getData()">
-                                            <i class="fas fa-plus"></i>
-                                            Neu
-                                        </button>-->
-
-                      <!--<button id="refreshButton" type="button" class="btn btn-primary" data-toggle="modal">
-                                            <i class="fas fa-sync"></i>
-                                            Aktualisieren
-                                        </button>-->
-                    </div>
-
-                    <p></p>
-
                     <!-- Modal -->
-                    <!-- New sensor -->
                     <div
                       class="modal fade"
                       id="editModal"
@@ -247,32 +232,39 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           </div>
                           <div class="modal-body">
                             <div class="form-group">
-                              <label for="device">Device</label>
-                              <select
-                                class="form-control"
-                                id="selectDevice"
-                              ></select>
+                              <label for="equipmentLabel">Equipment</label>
+                              <div id="equipmentLabel"></div>
                             </div>
                             <div class="form-group">
-                              <label for="device">Einheit</label>
-                              <select class="form-control" id="selectUnit">
-                                <option>auswählen</option>
-                              </select>
+                              <label for="unitLabel">Physikalische Größe</label>
+                              <div id="unitLabel"></div>
                             </div>
                             <div class="form-group">
-                              <label for="device">Untergrenze</label>
-                              <input type="number" name="name" value="" />
+                              <label for="lowerLimitInput">Untergrenze</label>
+                              <input
+                                id="lowerLimitInput"
+                                type="text"
+                                pattern="[-+]?[0-9]*[.]?[0-9]+"
+                                style="width: 50px; text-align: right"
+                              />
+                              <label class="signLabel">Sign</label>
                             </div>
                             <div class="form-group">
-                              <label for="device">Obergrenze</label>
-                              <input type="number" name="name" value="" />
+                              <label for="upperLimitInput">Obergrenze</label>
+                              <input
+                                id="upperLimitInput"
+                                type="text"
+                                pattern="[-+]?[0-9]*[.]?[0-9]+"
+                                style="width: 50px; text-align: right"
+                              />
+                              <label class="signLabel">Sign</label>
                             </div>
                           </div>
                           <div class="modal-footer">
                             <button
                               type="button"
                               class="btn btn-primary"
-                              onclick=""
+                              onclick="saveSensor()"
                             >
                               OK
                             </button>
@@ -287,24 +279,51 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div>
                       </div>
                     </div>
-
-                    <div class="loading"></div>
-
-                    <table id="table" class="table table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th scope="col">Equipment</th>
-                          <th scope="col">Bereich</th>
-                          <th scope="col">Device</th>
-                          <th scope="col">Physikalische Größe</th>
-                          <th scope="col">Untergrenze</th>
-                          <th scope="col">Obergrenze</th>
-                          <th scope="col">SensorId</th>
-                          <th scope="col">Bearbeiten</th>
-                        </tr>
-                      </thead>
-                      <tbody id="sensor-row"></tbody>
-                    </table>
+                    <div class="row m-2">
+                      <div class="col-md-9"></div>
+                      <div class="col-md-3">
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="searchInput"
+                            placeholder="Search"
+                          />
+                          <div class="input-group-append">
+                            <button
+                              class="btn btn-secondary"
+                              id="searchButton"
+                              type="button"
+                            >
+                              <i class="fa fa-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="loading"></div>
+                        <table
+                          id="table"
+                          class="table table-bordered table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th scope="col">Equipment</th>
+                              <th scope="col">Bereich</th>
+                              <th scope="col">Device</th>
+                              <th scope="col">Physikalische Größe</th>
+                              <th scope="col">Untergrenze</th>
+                              <th scope="col">Obergrenze</th>
+                              <th scope="col">SensorId</th>
+                              <th scope="col">Edit</th>
+                            </tr>
+                          </thead>
+                          <tbody id="sensor-row"></tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
                   <!-- /.card-body -->
                 </div>
@@ -349,31 +368,41 @@ scratch. This page gets rid of all links and provides the needed markup only.
       let server = env.server;
 
       $(document).ready(function () {
-        getJQuery1();
+        getSensors();
 
-        $("#refreshButton").click(function () {
-          getJQuery1();
+        $("#searchButton").click(function () {
+          getSensors();
         });
 
-        $("#addButton").click(function () {
-          postJQuery1();
+        $("#searchInput").keyup(function (event) {
+          // if (event.keyCode === 13) {
+          //   $("#searchButton").click();
+          // }
+
+          $("#searchButton").click();
         });
       });
 
-      function getJQuery1() {
-        let url = server + "/api/sensors/Get";
+      function getSensors() {
+        let searchInput = $("#searchInput").val();
+
+        if (searchInput == "undefined" || searchInput == "") {
+          searchInput = "*";
+        }
+
+        let url = server + "/api/sensors/filter/" + searchInput;
 
         $.ajax({
           url: url,
           dataType: "json",
           beforeSend: function () {
-            $(".loading").show();
             $("#table").hide();
+            $(".loading").show();
           },
           success: function (data) {},
           complete: function () {
-            $(".loading").hide();
             $("#table").show();
+            $(".loading").hide();
           },
         })
           .done(function (data) {
@@ -423,70 +452,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
             'id="btn' +
             item.SensorID +
             '"class="btn"><i class="fas fa-edit"></i></button>' +
-            '<button type="button" disabled class="btn"><i class="fas fa-trash"></i></button>' +
             "</td > " +
             "</tr>";
 
           container.append(tr);
 
+          // let btn = $("#btn" + item.SensorID).click(function () {
+          //   localStorage.setItem("sensor", JSON.stringify(item));
+          //   window.location.href = "sensor.html";
+          // });
+
           let btn = $("#btn" + item.SensorID).click(function () {
             localStorage.setItem("sensor", JSON.stringify(item));
-            window.location.href = "sensor.html";
+            $("#editModal").modal("show");
+
+            $("#equipmentLabel").text(item.Equipment);
+            $("#unitLabel").text(item.Unit);
+            $(".signLabel").text(item.Sign);
+            $("#lowerLimitInput").val(item.LowerLimit.toFixed(1));
+            $("#upperLimitInput").val(item.UpperLimit.toFixed(1));
           });
         });
-      }
-
-      function getData() {
-        getDevices();
-        getUnits();
-      }
-
-      function getDevices() {
-        let url = server + "/api/devices";
-
-        $.getJSON(url)
-          .done(function (data) {
-            let container = $("#selectDevice");
-            container.empty();
-
-            if (!Array.isArray(data)) return;
-
-            data.forEach(function (item, i) {
-              if (i == 0)
-                $("#selectDevice").append(
-                  $("<option></option>").html("auswählen")
-                );
-
-              $("#selectDevice").append($("<option></option>").html(item.Name));
-            });
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
-      }
-
-      function getUnits() {
-        let url = server + "/api/units";
-
-        $.getJSON(url)
-          .done(function (data) {
-            let container = $("#selectUnit");
-            container.empty();
-
-            if (!Array.isArray(data)) return;
-
-            data.forEach(function (item, i) {
-              if (i == 0)
-                $("#selectUnit").append(
-                  $("<option></option>").html("auswählen")
-                );
-
-              $("#selectUnit").append($("<option></option>").html(item.Name));
-            });
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
       }
 
       function getSensor(sensorId) {
@@ -499,6 +485,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
           });
+      }
+
+      function saveSensor() {
+        if (!validateInput()) return;
+
+        let item = JSON.parse(localStorage.getItem("sensor"));
+        let url = server + "/api/sensors/Put/" + item.SensorID;
+
+        item.LowerLimit = $("#lowerLimitInput").val();
+        item.UpperLimit = $("#upperLimitInput").val();
+
+        $.ajax({
+          url: url,
+          type: "PUT",
+          contentType: "application/json;charset=utf-8",
+          data: JSON.stringify(item),
+          success: function (item) {
+            // alert("Daten erfolgreich gespeichert.");
+            $("#editModal").modal("hide");
+            getSensors();
+          },
+          error: function (request, message, error) {
+            alert("ERROR: " + error.status + " " + error.statusText);
+          },
+        });
+      }
+
+      function validateInput() {
+        if (isNaN($("#lowerLimitInput").val())) return false;
+        if (isNaN($("#upperLimitInput").val())) return false;
+
+        return true;
       }
     </script>
   </body>

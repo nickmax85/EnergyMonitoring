@@ -14,9 +14,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 {
     public class SensorsController : ApiController
     {
-
-
-        public IEnumerable<object> GetSensor()
+        public IEnumerable<Sensor> GetSensor()
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
@@ -30,17 +28,26 @@ namespace EnergyMonitoringWebAPI.Controllers
         }
 
 
-
         // GET: api/Sensors
-        public IEnumerable<object> Get()
+        [ResponseType(typeof(Sensor))]
+        [Route("api/sensors/filter/{searchInput}")]
+        public IEnumerable<object> GetFilterSensor(string searchInput)
         {
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
                 //db.Configuration.ProxyCreationEnabled = false;
                 db.Configuration.LazyLoadingEnabled = false;
 
-                var items = db.SpGetSensors().ToList();
+                List<SpGetSensors_Result> items;
 
+                if (searchInput.Equals("*"))
+                    items = db.SpGetSensors().ToList();
+                else
+                    items = db.SpGetSensors()
+                        .Where(x => x.Equipment.ToLower().Contains(searchInput.ToLower())
+                        || x.Group.ToLower().Contains(searchInput.ToLower())
+                        || x.Unit.ToLower().Contains(searchInput.ToLower()))
+                        .ToList();
 
                 return items;
             }
@@ -132,8 +139,10 @@ namespace EnergyMonitoringWebAPI.Controllers
 
                 sensor.LowerLimit = value.LowerLimit;
                 sensor.UpperLimit = value.UpperLimit;
-                sensor.DeviceID = value.DeviceID;
-                sensor.UnitID = value.UnitID;
+                if (value.DeviceID != 0)
+                    sensor.DeviceID = value.DeviceID;
+                if (value.UnitID != 0)
+                    sensor.UnitID = value.UnitID;
 
                 sensor.UpdateDate = DateTime.Now;
 
