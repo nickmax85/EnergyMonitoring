@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\activity.html" />
+    <Content Include="app\activitys.html" />
     <Content Include="app\administration.html" />
     <Content Include="app\css\animate.css" />
     <Content Include="app\css\style.css" />
@@ -121,6 +122,7 @@
     <Content Include="app\html\groups.html" />
     <Content Include="app\html\sensors.html" />
     <Content Include="app\html\units.html" />
+    <Content Include="app\img\attention.jpeg" />
     <Content Include="app\js\amcharts\animated.js" />
     <Content Include="app\js\amcharts\charts.js" />
     <Content Include="app\js\amcharts\core.js" />

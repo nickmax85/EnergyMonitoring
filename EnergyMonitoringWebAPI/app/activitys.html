@@ -32,9 +32,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
       rel="stylesheet"
     />
 
-    <script src="js/environment.js"></script>
-
     <link href="css/custom.css" rel="stylesheet" />
+
+    <script src="js/highcharts/8.0/highcharts.js"></script>
+    <script src="js/highcharts/8.0/highcharts-more.js"></script>
+
+    <script src="js/moment/moment.min.js"></script>
+
+    <script src="js/groups.js"></script>
+    <script src="js/equipments.js"></script>
+    <script src="js/environment.js"></script>
   </head>
   <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -173,7 +180,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Sensor</h1>
+                <h1 class="m-0 text-dark">Aktivitäten</h1>
               </div>
               <!-- /.col -->
               <div class="col-sm-6">
@@ -181,7 +188,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <li class="breadcrumb-item">
                     <a href="/index.html">Home</a>
                   </li>
-                  <li class="breadcrumb-item active">Sensor</li>
+                  <li class="breadcrumb-item active">Alarme</li>
                 </ol>
               </div>
               <!-- /.col -->
@@ -194,93 +201,71 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main content -->
         <div class="content">
           <div class="container-fluid">
+            <!-- Aktivitäten -->
             <div class="row">
-              <div class="col-md-9 col-sm-12">
-                <div class="card card-primary">
+              <div class="col-md-12">
+                <div class="card">
                   <div class="card-header">
-                    <h3 id="sensorHeader" class="card-title">Sensor</h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <!-- form start -->
-                  <form role="form">
-                    <div class="card-body">
-                      <div class="form-group">
-                        <label for="lowerLimit">Untergrenze</label><br />
-                        <input
-                          id="lowerLimit"
-                          type="text"
-                          pattern="[-+]?[0-9]*[.]?[0-9]+"
-                          style="width: 50px; text-align: right"
-                        />
-                        <label id="sign1" style="font-weight: normal"></label>
-                      </div>
-                      <div class="form-group">
-                        <label for="upperLimit">Obergrenze</label><br />
-                        <input
-                          id="upperLimit"
-                          type="text"
-                          pattern="[-+]?[0-9]*[.]?[0-9]+"
-                          style="width: 50px; text-align: right"
-                        />
-                        <label id="sign2" style="font-weight: normal"></label>
-                      </div>
-                      <div class="form-group">
-                        <label for="selectUnit">Einheit</label>
-                        <select
-                          class="form-control"
-                          id="selectUnit"
-                          onchange="changeUnitOnClick(this)"
-                        >
-                          <option>auswählen</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="selectDevice">Device</label>
-                        <select class="form-control" id="selectDevice">
-                          <option>auswählen</option>
-                        </select>
-                      </div>
-                    </div>
-                    <!-- /.card-body -->
+                    <h3 class="card-title"></h3>
 
-                    <div class="card-footer">
-                      <div class="form-group float-right">
-                        <button
-                          class="btn bg-gradient-success btn-flat"
-                          id="addButton"
-                          disabled
-                        >
-                          <i class="fas fa-folder-plus"></i>
-                          Neu
-                        </button>
-                        <button
-                          type="button"
-                          class="btn bg-gradient-warning btn-flat"
-                          id="saveButton"
-                        >
-                          <i class="fas fa-save"></i>
-                          Speichern
-                        </button>
-                        <button
-                          type="button"
-                          class="btn bg-gradient-primary btn-flat"
-                          id="refreshButton"
-                        >
-                          <i class="fas fa-sync"></i>
-                          Aktualisieren
-                        </button>
+                    <div class="card-tools">
+                      <div class="row">
+                        <div class="col">
+                          <label class="control-label" for="start">Start</label>
+                          <input
+                            type="date"
+                            data-format="yyyy-MM-dd"
+                            id="start"
+                            class="form-control"
+                          />
+                        </div>
+                        <div class="col">
+                          <label class="control-label" for="end">Ende</label>
+                          <input
+                            type="date"
+                            data-format="yyyy-MM-dd"
+                            id="end"
+                            class="form-control"
+                          />
+                        </div>
+                        <div class="col">
+                          <button
+                            id="searchButton"
+                            class="btn btn-primary btn-block h-100"
+                            name="submit"
+                            type="submit"
+                          >
+                            Suche
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </form>
+                  </div>
+
+                  <!-- /.card-header -->
+                  <div class="card-body table-responsive p-0">
+                    <table id="activity-table" class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Zeitpunkt</th>
+                          <th>Equipment</th>
+                          <th>Kommentar</th>
+                          <th>Bearbeiter</th>
+                        </tr>
+                      </thead>
+                      <tbody id="activity-table-row"></tbody>
+                    </table>
+                  </div>
+                  <!-- /.card-body -->
                 </div>
+                <!-- /.card -->
               </div>
             </div>
-            <!-- /.row -->
           </div>
-          <!-- /.container-fluid -->
         </div>
-        <!-- /.content -->
+        <!-- /.container-fluid -->
       </div>
+      <!-- /.content -->
       <!-- /.content-wrapper -->
       <!-- Control Sidebar -->
       <aside class="control-sidebar control-sidebar-dark">
@@ -306,149 +291,103 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- SweetAlert2 -->
-    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
-    <!-- Toastr -->
-    <script src="plugins/toastr/toastr.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
 
     <script>
       let server = env.server;
-      let item;
-      let sensor;
+      let ddata;
+      let activity;
 
       $(document).ready(function () {
-        let item = JSON.parse(localStorage.getItem("sensor"));
+        getDate();
 
-        getSensor(item.SensorID);
-
-        $("#sensorHeader").html(
-          item.Group +
-            " - " +
-            item.Equipment +
-            " (SensorID=" +
-            item.SensorID +
-            ")"
-        );
-
-        $("#refreshButton").click(function () {
-          getSensor(item.SensorID);
-        });
+        getJQuery();
 
         $("#saveButton").click(function () {
-          saveSensor();
+          save();
+        });
+
+        $("#searchButton").click(function () {
+          getJQuery();
         });
       });
 
-      function getSensor(SensorID) {
-        let url = server + "/api/Sensors/Get/" + SensorID;
+      function getJQuery() {
+        let url =
+          server +
+          "/api/activities/filter/" +
+          $("#start").val() +
+          "/" +
+          $("#end").val();
 
         $.getJSON(url)
           .done(function (data) {
-            $("#lowerLimit").val(data.LowerLimit.toFixed(1));
-            $("#upperLimit").val(data.UpperLimit.toFixed(1));
+            showData(data);
 
-            sensor = data;
-
-            getUnits(data);
-            getDevices(data);
+            ddata = data;
           })
           .fail(function (error) {
             alert("ERROR: " + error.status + " " + error.statusText);
           });
       }
 
-      function getUnits(data) {
-        let url = server + "/api/units/GetUnit";
-
-        $.getJSON(url)
-          .done(function (data) {
-            showUnits(data);
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
-      }
-
-      function getDevices() {
-        let url = server + "/api/devices/GetDevice";
-
-        $.getJSON(url)
-          .done(function (data) {
-            showDevices(data);
-          })
-          .fail(function (error) {
-            alert("ERROR: " + error.status + " " + error.statusText);
-          });
-      }
-
-      function showUnits(data) {
-        let container = $("#selectUnit");
+      function showData(data) {
+        let container = $("#activity-table-row");
         container.empty();
 
         if (!Array.isArray(data)) return;
 
         data.forEach(function (item, i) {
-          $("#selectUnit").append(
-            $("<option></option>")
-              .val(item.UnitID)
-              .html(item.Name + " [" + item.Sign + "]")
-              .attr("unit", JSON.stringify(item))
-          );
+          let confirmedIcon;
+
+          if (item.Confirmed)
+            confirmedIcon =
+              '<span class="badge bg-success">&nbsp&nbspJa&nbsp&nbsp</span>';
+          else
+            confirmedIcon =
+              '<span class="badge bg-danger">&nbspNein&nbsp</span>';
+
+          let tr =
+            "<tr>" +
+            "<td style='white-space:  nowrap'>" +
+            item.Date.substring(0, 10) +
+            "</td>" +
+            "<td  style='white-space:  nowrap'><a href='charts.html?equipmentnumber=" +
+            item.Equipment.Number +
+            "'>" +
+            item.Equipment.Number +
+            " - " +
+            item.Equipment.Name +
+            "</a>" +
+            "</td>" +
+            "<td style='word-wrap: break-word'>" +
+            item.Comment +
+            "</td>" +
+            "<td>" +
+            item.ModifiedBy +
+            "</td>" +
+            "</tr>";
+
+          container.append(tr);
         });
-
-        $("#selectUnit").val(sensor.UnitID);
-
-        let attr = $("#selectUnit option:selected").attr("unit");
-
-        $("#sign1").text(JSON.parse(attr).Sign);
-        $("#sign2").text(JSON.parse(attr).Sign);
       }
 
-      function showDevices(data) {
-        let container = $("#selectDevice");
-        container.empty();
+      function save() {
+        data = new Object();
+        data.Remark = $("#editModal #remark").val();
+        data.Confirmed = $("#editModal #confirmed").prop("checked");
 
-        if (!Array.isArray(data)) return;
-
-        data.forEach(function (item, i) {
-          $("#selectDevice").append(
-            $("<option></option>")
-              .val(item.DeviceID)
-              .html(item.Name + "  [" + item.IP + "]")
-          );
-        });
-        $("#selectDevice").val(sensor.DeviceID);
-      }
-
-      function changeUnitOnClick() {
-        let sel = $("#selectUnit option:selected").val();
-        let attr = $("#selectUnit option:selected").attr("unit");
-
-        $("#sign1").text(JSON.parse(attr).Sign);
-        $("#sign2").text(JSON.parse(attr).Sign);
-      }
-
-      function saveSensor() {
-        if (!validateInput()) return;
-
-        let item = JSON.parse(localStorage.getItem("sensor"));
-        let url = server + "/api/sensors/Put/" + item.SensorID;
-
-        Sensor = new Object();
-        Sensor.LowerLimit = $("#lowerLimit").val();
-        Sensor.UpperLimit = $("#upperLimit").val();
-        Sensor.UnitID = $("#selectUnit").val();
-        Sensor.DeviceID = $("#selectDevice").val();
-
+        let url = server + "/api/activities/put/" + alarm.AlarmID;
         $.ajax({
           url: url,
           type: "PUT",
           contentType: "application/json;charset=utf-8",
-          data: JSON.stringify(Sensor),
-          success: function (Sensor) {
-            alert("Daten erfolgreich gespeichert.");
+          data: JSON.stringify(data),
+          success: function (data) {
+            $("#editModal").modal("toggle");
+
+            getJQuery();
           },
           error: function (request, message, error) {
             alert("ERROR: " + error.status + " " + error.statusText);
@@ -456,12 +395,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
       }
 
-      function validateInput() {
-        if (isNaN($("#lowerLimit").val())) return false;
+      function getDate() {
+        let today = new Date();
 
-        if (isNaN($("#lowerLimit").val())) return false;
+        let timeFormat = "YYYY-MM-DD";
+        let now = window.moment();
 
-        return true;
+        let start = now.clone().add(-120, "d").format(timeFormat);
+        let end = now.format(timeFormat);
+
+        //let start = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        //let end = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+        $("#start").val(start);
+        $("#end").val(end);
       }
     </script>
   </body>

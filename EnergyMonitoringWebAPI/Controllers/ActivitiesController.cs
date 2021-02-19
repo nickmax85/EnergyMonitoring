@@ -6,11 +6,43 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Data.Entity;
 
 namespace EnergyMonitoringWebAPI.Controllers
 {
     public class ActivitiesController : ApiController
-    {
+    {  
+        public IEnumerable<Activity> GetActivity()
+        {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+
+                db.Configuration.LazyLoadingEnabled = false;
+
+                return db.Activity.ToList();
+            }
+        }
+
+
+        // GET: api/alarms/2
+        [Route("api/activities/filter/{startDate}/{endDate}")]
+        public IEnumerable<object> GetFilterActivities(DateTime startDate, DateTime endDate)
+        {
+            using (EnergyMonitoringContext db = new EnergyMonitoringContext())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var items = db.Activity.Include(x=> x.Equipment)
+                    .Where(x => DbFunctions.TruncateTime(x.CreateDate) >= DbFunctions.TruncateTime(startDate)
+                    && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate))
+                    .OrderByDescending(x=> x.Date).ToList();
+
+                return items;
+            }
+
+        }
+
+
         // GET: api/activities/2
         [HttpGet]
         [Route("api/activities/equipment/{equipmentId}")]
