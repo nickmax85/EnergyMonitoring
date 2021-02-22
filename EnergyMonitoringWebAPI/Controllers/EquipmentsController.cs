@@ -88,7 +88,7 @@ namespace EnergyMonitoringWebAPI.Controllers
 
                 //int count = db.Equipments.Count();
 
-                var sql = "SELECT COUNT(*) FROM Equipment";
+                var sql = "SELECT COUNT(*) FROM Equipment where active = 1";
                 var item = db.Database.SqlQuery<int>(sql).Single();
 
                 return item;

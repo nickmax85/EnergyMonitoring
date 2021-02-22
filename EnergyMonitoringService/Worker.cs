@@ -131,7 +131,8 @@ namespace EnergyMonitoringService
                                             context.Record.Add(record);
                                             await context.SaveChangesAsync();
 
-                                            CheckAlarm(record);
+                                            if (device.Equipment.Active == true)
+                                                CheckAlarm(record);
                                         }
                                     }
                                 }

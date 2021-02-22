@@ -1,4 +1,23 @@
-﻿optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=energymonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
+﻿ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+           .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+           .AddJsonFile("appsettings.json")
+           .Build();
+
+                string connectionString = configuration.GetConnectionString("db");
+                optionsBuilder.UseSqlServer(connectionString);
+
+                //optionsBuilder.UseSqlServer("Server=localhos;Database=energymonitoring;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer(@"Server=ILZMSCLSQC5\INSTPUB;Database=energymonitoring;User Id=energy_rw;Password=yCkOMk6zkTQ2eUkpZgZg;");
+            }
+        }
+
+
 
 Scaffold-DbContext "Server=localhost;Database=energymonitoring;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -f
  

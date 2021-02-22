@@ -9,26 +9,22 @@ namespace EnergyMonitoringService.Models
     {
         public EnergyMonitoringContext()
         {
-
         }
 
         public EnergyMonitoringContext(DbContextOptions<EnergyMonitoringContext> options)
             : base(options)
         {
-
-
         }
 
+        public virtual DbSet<Activity> Activity { get; set; }
         public virtual DbSet<Alarm> Alarm { get; set; }
         public virtual DbSet<Config> Config { get; set; }
         public virtual DbSet<Device> Device { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<Group> Group { get; set; }
-        public virtual DbSet<MailGroup> MailGroup { get; set; }
         public virtual DbSet<Record> Record { get; set; }
         public virtual DbSet<Sensor> Sensor { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
-        public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -51,6 +47,33 @@ namespace EnergyMonitoringService.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Activity>(entity =>
+            {
+                entity.Property(e => e.ActivityId).HasColumnName("ActivityID");
+
+                entity.Property(e => e.Comment)
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Date).HasColumnType("date");
+
+                entity.Property(e => e.EquipmentId).HasColumnName("EquipmentID");
+
+                entity.Property(e => e.ModifiedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Equipment)
+                    .WithMany(p => p.Activity)
+                    .HasForeignKey(d => d.EquipmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Activity_Equipment");
+            });
+
             modelBuilder.Entity<Alarm>(entity =>
             {
                 entity.Property(e => e.AlarmId).HasColumnName("AlarmID");
@@ -118,6 +141,8 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.GroupId).HasColumnName("GroupID");
 
+                entity.Property(e => e.InactiveDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -146,38 +171,11 @@ namespace EnergyMonitoringService.Models
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<MailGroup>(entity =>
-            {
-                entity.HasKey(e => e.MailDistributionId)
-                    .HasName("PK_MailDistribution");
-
-                entity.Property(e => e.MailDistributionId)
-                    .HasColumnName("MailDistributionID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.GroupId).HasColumnName("GroupID");
-
-                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UserId).HasColumnName("UserID");
-
-                entity.HasOne(d => d.Group)
-                    .WithMany(p => p.MailGroup)
-                    .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Group_MailDistribution");
-
-                entity.HasOne(d => d.MailDistribution)
-                    .WithOne(p => p.MailGroup)
-                    .HasForeignKey<MailGroup>(d => d.MailDistributionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_MailDistribution");
-            });
-
             modelBuilder.Entity<Record>(entity =>
             {
+                entity.HasIndex(e => e.SensorId)
+                    .HasName("IX_Record");
+
                 entity.Property(e => e.RecordId).HasColumnName("RecordID");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
@@ -211,9 +209,7 @@ namespace EnergyMonitoringService.Models
 
             modelBuilder.Entity<Sensor>(entity =>
             {
-                entity.Property(e => e.SensorId)
-                    .HasColumnName("SensorID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.SensorId).HasColumnName("SensorID");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
@@ -251,20 +247,6 @@ namespace EnergyMonitoringService.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Sign).HasMaxLength(50);
-
-                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
-            });
-
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.Property(e => e.UserId).HasColumnName("UserID");
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Mail)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsFixedLength();
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });

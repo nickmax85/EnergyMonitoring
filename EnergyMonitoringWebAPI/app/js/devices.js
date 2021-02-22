@@ -13,8 +13,11 @@
         let card = $('<div class="card card-primary">');
         col.append(card);
 
+        let state = '';
+        if (!item.Active)        
+            state = '[DEACTIVATED]'
         let header = $('<div class="card-header">');
-        header.append($('<h3 class="card-title">Expandable</h3>').html(item.Name + '<br/>' + item.IP));
+        header.append($('<h3 class="card-title">Expandable</h3>').html(item.Name + '<br/>' + item.IP + ' ' + state));
 
         let tools = ($('<div class="card-tools">'));
         tools.append($('<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>'));
