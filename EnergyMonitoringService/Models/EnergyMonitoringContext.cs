@@ -45,6 +45,7 @@ namespace EnergyMonitoringService.Models
             }
         }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Activity>(entity =>
@@ -111,6 +112,10 @@ namespace EnergyMonitoringService.Models
 
             modelBuilder.Entity<Device>(entity =>
             {
+                entity.HasIndex(e => e.EquipmentId)
+                    .HasName("IX_Device")
+                    .IsUnique();
+
                 entity.Property(e => e.DeviceId).HasColumnName("DeviceID");
 
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
@@ -128,8 +133,8 @@ namespace EnergyMonitoringService.Models
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Equipment)
-                    .WithMany(p => p.Device)
-                    .HasForeignKey(d => d.EquipmentId)
+                    .WithOne(p => p.Device)
+                    .HasForeignKey<Device>(d => d.EquipmentId)
                     .HasConstraintName("FK_Device_Equipment");
             });
 
@@ -184,8 +189,6 @@ namespace EnergyMonitoringService.Models
 
                 entity.Property(e => e.SensorId).HasColumnName("SensorID");
 
-                entity.Property(e => e.UnitId).HasColumnName("UnitID");
-
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasColumnType("decimal(6, 1)");
@@ -200,11 +203,6 @@ namespace EnergyMonitoringService.Models
                     .HasForeignKey(d => d.SensorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Record_Sensor");
-
-                entity.HasOne(d => d.Unit)
-                    .WithMany(p => p.Record)
-                    .HasForeignKey(d => d.UnitId)
-                    .HasConstraintName("FK_Record_Unit");
             });
 
             modelBuilder.Entity<Sensor>(entity =>

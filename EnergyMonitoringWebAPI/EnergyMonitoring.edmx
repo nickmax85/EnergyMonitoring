@@ -10,7 +10,7 @@
             <PropertyRef Name="ActivityID" />
           </Key>
           <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Date" Type="date" />
           <Property Name="Comment" Type="text" Nullable="false" />
           <Property Name="EquipmentID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
@@ -22,10 +22,10 @@
             <PropertyRef Name="AlarmID" />
           </Key>
           <Property Name="AlarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Remark" Type="nvarchar" MaxLength="50" />
-          <Property Name="Confirmed" Type="bit" />
           <Property Name="RecordID" Type="bigint" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Confirmed" Type="bit" />
+          <Property Name="Remark" Type="varchar" MaxLength="100" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Config">
@@ -61,9 +61,9 @@
           <Property Name="Number" Type="nvarchar" MaxLength="10" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Active" Type="bit" />
-          <Property Name="InactiveDate" Type="datetime" />
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" />
+          <Property Name="InactiveDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Group">
@@ -84,7 +84,6 @@
           <Property Name="Value" Type="decimal" Precision="6" Scale="1" Nullable="false" />
           <Property Name="SensorID" Type="int" Nullable="false" />
           <Property Name="EquipmentID" Type="int" />
-          <Property Name="UnitID" Type="int" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
@@ -182,18 +181,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Record_Unit">
-          <End Role="Unit" Type="Self.Unit" Multiplicity="0..1" />
-          <End Role="Record" Type="Self.Record" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Unit">
-              <PropertyRef Name="UnitID" />
-            </Principal>
-            <Dependent Role="Record">
-              <PropertyRef Name="UnitID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Sensor_Device">
           <End Role="Device" Type="Self.Device" Multiplicity="1" />
           <End Role="Sensor" Type="Self.Sensor" Multiplicity="*" />
@@ -284,10 +271,6 @@
             <End Role="Sensor" EntitySet="Sensor" />
             <End Role="Record" EntitySet="Record" />
           </AssociationSet>
-          <AssociationSet Name="FK_Record_Unit" Association="Self.FK_Record_Unit">
-            <End Role="Unit" EntitySet="Unit" />
-            <End Role="Record" EntitySet="Record" />
-          </AssociationSet>
           <AssociationSet Name="FK_Sensor_Device" Association="Self.FK_Sensor_Device">
             <End Role="Device" EntitySet="Device" />
             <End Role="Sensor" EntitySet="Sensor" />
@@ -307,11 +290,11 @@
           </Key>
           <Property Name="AlarmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RecordID" Type="Int64" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Record" Relationship="Self.FK_Alarm_Record" FromRole="Alarm" ToRole="Record" />
-          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Confirmed" Type="Boolean" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Record" Relationship="EnergyMonitoringModel.FK_Alarm_Record" FromRole="Alarm" ToRole="Record" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
@@ -352,10 +335,10 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Devices" Relationship="Self.FK_Device_Equipment" FromRole="Equipment" ToRole="Device" />
           <NavigationProperty Name="Group" Relationship="Self.FK_Equipment_Area" FromRole="Equipment" ToRole="Group" />
-          <NavigationProperty Name="Records" Relationship="Self.FK_Record_Equipment" FromRole="Equipment" ToRole="Record" />
           <NavigationProperty Name="Activity" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Equipment" ToRole="Activity" />
           <Property Name="Active" Type="Boolean" />
           <Property Name="InactiveDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Record" Relationship="EnergyMonitoringModel.FK_Record_Equipment" FromRole="Equipment" ToRole="Record" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -367,22 +350,6 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Equipments" Relationship="Self.FK_Equipment_Area" FromRole="Group" ToRole="Equipment" />
           <Property Name="Active" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="Record">
-          <Key>
-            <PropertyRef Name="RecordID" />
-          </Key>
-          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Value" Type="Decimal" Precision="6" Scale="1" Nullable="false" />
-          <Property Name="SensorID" Type="Int32" Nullable="false" />
-          <Property Name="EquipmentID" Type="Int32" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Alarms" Relationship="Self.FK_Alarm_Record" FromRole="Record" ToRole="Alarm" />
-          <NavigationProperty Name="Equipment" Relationship="Self.FK_Record_Equipment" FromRole="Record" ToRole="Equipment" />
-          <NavigationProperty Name="Sensor" Relationship="Self.FK_Record_Sensor" FromRole="Record" ToRole="Sensor" />
-          <Property Name="UnitID" Type="Int32" />
-          <NavigationProperty Name="Unit" Relationship="EnergyMonitoringModel.FK_Record_Unit" FromRole="Record" ToRole="Unit" />
         </EntityType>
         <EntityType Name="Sensor">
           <Key>
@@ -396,8 +363,8 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Device" Relationship="Self.FK_Sensor_Device" FromRole="Sensor" ToRole="Device" />
-          <NavigationProperty Name="Records" Relationship="Self.FK_Record_Sensor" FromRole="Sensor" ToRole="Record" />
           <NavigationProperty Name="Unit" Relationship="Self.FK_Sensor_Unit" FromRole="Sensor" ToRole="Unit" />
+          <NavigationProperty Name="Record" Relationship="EnergyMonitoringModel.FK_Record_Sensor" FromRole="Sensor" ToRole="Record" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -409,20 +376,7 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Sensors" Relationship="Self.FK_Sensor_Unit" FromRole="Unit" ToRole="Sensor" />
-          <NavigationProperty Name="Record" Relationship="EnergyMonitoringModel.FK_Record_Unit" FromRole="Unit" ToRole="Record" />
         </EntityType>
-        <Association Name="FK_Alarm_Record">
-          <End Role="Record" Type="Self.Record" Multiplicity="1" />
-          <End Role="Alarm" Type="Self.Alarm" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Record">
-              <PropertyRef Name="RecordID" />
-            </Principal>
-            <Dependent Role="Alarm">
-              <PropertyRef Name="RecordID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Device_Equipment">
           <End Role="Equipment" Type="Self.Equipment" Multiplicity="0..1" />
           <End Role="Device" Type="Self.Device" Multiplicity="*" />
@@ -459,30 +413,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Record_Equipment">
-          <End Role="Equipment" Type="Self.Equipment" Multiplicity="0..1" />
-          <End Role="Record" Type="Self.Record" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Equipment">
-              <PropertyRef Name="EquipmentID" />
-            </Principal>
-            <Dependent Role="Record">
-              <PropertyRef Name="EquipmentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Record_Sensor">
-          <End Role="Sensor" Type="Self.Sensor" Multiplicity="1" />
-          <End Role="Record" Type="Self.Record" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sensor">
-              <PropertyRef Name="SensorID" />
-            </Principal>
-            <Dependent Role="Record">
-              <PropertyRef Name="SensorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Sensor_Unit">
           <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
           <End Role="Sensor" Type="Self.Sensor" Multiplicity="*" />
@@ -501,13 +431,8 @@
           <EntitySet Name="Devices" EntityType="Self.Device" />
           <EntitySet Name="Equipments" EntityType="Self.Equipment" />
           <EntitySet Name="Groups" EntityType="Self.Group" />
-          <EntitySet Name="Records" EntityType="Self.Record" />
           <EntitySet Name="Sensors" EntityType="Self.Sensor" />
           <EntitySet Name="Units" EntityType="Self.Unit" />
-          <AssociationSet Name="FK_Alarm_Record" Association="Self.FK_Alarm_Record">
-            <End Role="Record" EntitySet="Records" />
-            <End Role="Alarm" EntitySet="Alarms" />
-          </AssociationSet>
           <AssociationSet Name="FK_Device_Equipment" Association="Self.FK_Device_Equipment">
             <End Role="Equipment" EntitySet="Equipments" />
             <End Role="Device" EntitySet="Devices" />
@@ -520,21 +445,9 @@
             <End Role="Group" EntitySet="Groups" />
             <End Role="Equipment" EntitySet="Equipments" />
           </AssociationSet>
-          <AssociationSet Name="FK_Record_Equipment" Association="Self.FK_Record_Equipment">
-            <End Role="Equipment" EntitySet="Equipments" />
-            <End Role="Record" EntitySet="Records" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Record_Sensor" Association="Self.FK_Record_Sensor">
-            <End Role="Sensor" EntitySet="Sensors" />
-            <End Role="Record" EntitySet="Records" />
-          </AssociationSet>
           <AssociationSet Name="FK_Sensor_Unit" Association="Self.FK_Sensor_Unit">
             <End Role="Unit" EntitySet="Units" />
             <End Role="Sensor" EntitySet="Sensors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Record_Unit" Association="EnergyMonitoringModel.FK_Record_Unit">
-            <End Role="Unit" EntitySet="Units" />
-            <End Role="Record" EntitySet="Records" />
           </AssociationSet>
           <EntitySet Name="Activity" EntityType="EnergyMonitoringModel.Activity" />
           <AssociationSet Name="FK_Activity_Equipment" Association="EnergyMonitoringModel.FK_Activity_Equipment">
@@ -573,19 +486,20 @@
             <Parameter Name="start" Mode="In" Type="DateTime" />
             <Parameter Name="end" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <EntitySet Name="Record" EntityType="EnergyMonitoringModel.Record" />
+          <AssociationSet Name="FK_Alarm_Record" Association="EnergyMonitoringModel.FK_Alarm_Record">
+            <End Role="Record" EntitySet="Record" />
+            <End Role="Alarm" EntitySet="Alarms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Record_Equipment" Association="EnergyMonitoringModel.FK_Record_Equipment">
+            <End Role="Equipment" EntitySet="Equipments" />
+            <End Role="Record" EntitySet="Record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Record_Sensor" Association="EnergyMonitoringModel.FK_Record_Sensor">
+            <End Role="Sensor" EntitySet="Sensors" />
+            <End Role="Record" EntitySet="Record" />
+          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Record_Unit">
-          <End Type="EnergyMonitoringModel.Unit" Role="Unit" Multiplicity="0..1" />
-          <End Type="EnergyMonitoringModel.Record" Role="Record" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Unit">
-              <PropertyRef Name="UnitID" />
-            </Principal>
-            <Dependent Role="Record">
-              <PropertyRef Name="UnitID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="ActivityID" />
@@ -597,7 +511,7 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Activity_Equipment" FromRole="Activity" ToRole="Equipment" />
-          <Property Name="Date" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_Activity_Equipment">
           <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="1" />
@@ -662,6 +576,56 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
           <Property Type="Decimal" Name="Value" Nullable="true" Precision="6" Scale="1" />
         </ComplexType>
+        <EntityType Name="Record">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="Decimal" Nullable="false" Precision="6" Scale="1" />
+          <Property Name="SensorID" Type="Int32" Nullable="false" />
+          <Property Name="EquipmentID" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Alarm" Relationship="EnergyMonitoringModel.FK_Alarm_Record" FromRole="Record" ToRole="Alarm" />
+          <NavigationProperty Name="Equipment" Relationship="EnergyMonitoringModel.FK_Record_Equipment" FromRole="Record" ToRole="Equipment" />
+          <NavigationProperty Name="Sensor" Relationship="EnergyMonitoringModel.FK_Record_Sensor" FromRole="Record" ToRole="Sensor" />
+        </EntityType>
+        <Association Name="FK_Alarm_Record">
+          <End Type="EnergyMonitoringModel.Record" Role="Record" Multiplicity="1" />
+          <End Type="EnergyMonitoringModel.Alarm" Role="Alarm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Record">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Alarm">
+              <PropertyRef Name="RecordID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Record_Equipment">
+          <End Type="EnergyMonitoringModel.Equipment" Role="Equipment" Multiplicity="0..1" />
+          <End Type="EnergyMonitoringModel.Record" Role="Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="EquipmentID" />
+            </Principal>
+            <Dependent Role="Record">
+              <PropertyRef Name="EquipmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Record_Sensor">
+          <End Type="EnergyMonitoringModel.Sensor" Role="Sensor" Multiplicity="1" />
+          <End Type="EnergyMonitoringModel.Record" Role="Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sensor">
+              <PropertyRef Name="SensorID" />
+            </Principal>
+            <Dependent Role="Record">
+              <PropertyRef Name="SensorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -727,19 +691,6 @@
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Records">
-            <EntityTypeMapping TypeName="EnergyMonitoringModel.Record">
-              <MappingFragment StoreEntitySet="Record">
-                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
-                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="SensorID" ColumnName="SensorID" />
-                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
@@ -861,6 +812,18 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Record">
+            <EntityTypeMapping TypeName="EnergyMonitoringModel.Record">
+              <MappingFragment StoreEntitySet="Record">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+                <ScalarProperty Name="SensorID" ColumnName="SensorID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

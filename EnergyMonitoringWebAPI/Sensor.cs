@@ -17,7 +17,7 @@ namespace EnergyMonitoringWebAPI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Sensor()
         {
-            this.Records = new HashSet<Record>();
+            this.Record = new HashSet<Record>();
         }
     
         public int SensorID { get; set; }
@@ -29,8 +29,8 @@ namespace EnergyMonitoringWebAPI
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual Device Device { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Record> Records { get; set; }
         public virtual Unit Unit { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Record> Record { get; set; }
     }
 }

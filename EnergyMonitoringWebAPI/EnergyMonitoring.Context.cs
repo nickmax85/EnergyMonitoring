@@ -32,10 +32,10 @@ namespace EnergyMonitoringWebAPI
         public virtual DbSet<Device> Devices { get; set; }
         public virtual DbSet<Equipment> Equipments { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<Record> Records { get; set; }
         public virtual DbSet<Sensor> Sensors { get; set; }
         public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<Activity> Activity { get; set; }
+        public virtual DbSet<Record> Records { get; set; }
     
         public virtual ObjectResult<SpGetAvgFlowEquipments_Result> SpGetAvgFlowEquipments(Nullable<int> year, Nullable<int> week, Nullable<int> weekday, Nullable<System.TimeSpan> timeStart, Nullable<System.TimeSpan> timeEnd)
         {

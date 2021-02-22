@@ -31,12 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="log4net.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Manual\script.sql" />
   </ItemGroup>
 </Project>

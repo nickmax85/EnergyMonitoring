@@ -10,19 +10,18 @@
         <EntityTypeShape EntityType="EnergyMonitoringModel.Device" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="EnergyMonitoringModel.Equipment" Width="1.5" PointX="1.5" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="EnergyMonitoringModel.Group" Width="1.5" PointX="1.5" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnergyMonitoringModel.Record" Width="1.5" PointX="9.625" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="EnergyMonitoringModel.Sensor" Width="1.5" PointX="5.125" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="EnergyMonitoringModel.Unit" Width="1.5" PointX="2.375" PointY="0.625" IsExpanded="true" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Alarm_Record" ManuallyRouted="false" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Device_Equipment" ManuallyRouted="false" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Device" ManuallyRouted="false" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Equipment_Area" ManuallyRouted="false" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Equipment" ManuallyRouted="false" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Sensor" ManuallyRouted="false" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Sensor_Unit" ManuallyRouted="false" />
-        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Unit" />
         <EntityTypeShape EntityType="EnergyMonitoringModel.Activity" Width="1.5" PointX="3.75" PointY="9.25" />
         <AssociationConnector Association="EnergyMonitoringModel.FK_Activity_Equipment" />
+        <EntityTypeShape EntityType="EnergyMonitoringModel.Record" Width="1.5" PointX="7.375" PointY="5.25" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Alarm_Record" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Equipment" />
+        <AssociationConnector Association="EnergyMonitoringModel.FK_Record_Sensor" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

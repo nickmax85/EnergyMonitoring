@@ -18,8 +18,8 @@ namespace EnergyMonitoringWebAPI
         public Equipment()
         {
             this.Devices = new HashSet<Device>();
-            this.Records = new HashSet<Record>();
             this.Activity = new HashSet<Activity>();
+            this.Record = new HashSet<Record>();
         }
     
         public int EquipmentID { get; set; }
@@ -35,8 +35,8 @@ namespace EnergyMonitoringWebAPI
         public virtual ICollection<Device> Devices { get; set; }
         public virtual Group Group { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Record> Records { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Activity> Activity { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Record> Record { get; set; }
     }
 }

@@ -7,7 +7,6 @@ namespace EnergyMonitoringService.Models
     {
         public Unit()
         {
-            Record = new HashSet<Record>();
             Sensor = new HashSet<Sensor>();
         }
 
@@ -17,7 +16,6 @@ namespace EnergyMonitoringService.Models
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
 
-        public virtual ICollection<Record> Record { get; set; }
         public virtual ICollection<Sensor> Sensor { get; set; }
     }
 }
