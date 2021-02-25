@@ -845,6 +845,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           // Themes end
 
           var chart = am4core.create("barchartchartdiv", am4charts.XYChart);
+          chart.numberFormatter.numberFormat = "#.";
           chart.padding(40, 40, 40, 40);
 
           var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
