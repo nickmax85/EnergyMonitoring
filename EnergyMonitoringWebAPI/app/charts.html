@@ -849,6 +849,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           series.tooltip.pointerOrientation = "vertical";
 
+          var segment = series.segments.template;
+          segment.interactionsEnabled = true;
+
+          var hoverState = segment.states.create("hover");
+          hoverState.properties.strokeWidth = 3;
+
+          var dimmed = segment.states.create("dimmed");
+          dimmed.properties.stroke = am4core.color("#dadada");
+
+          segment.events.on("over", function (event) {
+            processOver(event.target.parent.parent.parent);
+          });
+
+          segment.events.on("out", function (event) {
+            processOut(event.target.parent.parent.parent);
+          });
+
           // var bullet = series.bullets.push(new am4charts.CircleBullet());
           // bullet.circle.stroke = interfaceColors.getFor("background");
           // bullet.circle.strokeWidth = 2;
@@ -864,6 +881,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
           series2.showOnInit = true;
 
           series2.tooltip.pointerOrientation = "vertical";
+
+          var segment2 = series2.segments.template;
+          segment2.interactionsEnabled = true;
+
+          var hoverState2 = segment2.states.create("hover");
+          hoverState2.properties.strokeWidth = 3;
+
+          var dimmed2 = segment2.states.create("dimmed");
+          dimmed2.properties.stroke = am4core.color("#dadada");
+
+          segment2.events.on("over", function (event) {
+            processOver(event.target.parent.parent.parent);
+          });
+
+          segment2.events.on("out", function (event) {
+            processOut(event.target.parent.parent.parent);
+          });
 
           // var bullet = series2.bullets.push(new am4charts.Bullet());
           // bullet.width = 10;
@@ -890,6 +924,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
           // valueAxis2.renderer.opposite = false;
 
           chart.legend = new am4charts.Legend();
+          chart.legend.scrollable = true;
+          chart.legend.itemContainers.template.events.on(
+            "over",
+            function (event) {
+              processOver(event.target.dataItem.dataContext);
+            }
+          );
+
+          chart.legend.itemContainers.template.events.on(
+            "out",
+            function (event) {
+              processOut(event.target.dataItem.dataContext);
+            }
+          );
 
           // Add cursor
           chart.cursor = new am4charts.XYCursor();
@@ -901,6 +949,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
           //chart.scrollbarY = new am4core.Scrollbar();
           chart.scrollbarX = new am4core.Scrollbar();
           chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+          function processOver(hoveredSeries) {
+            hoveredSeries.toFront();
+
+            hoveredSeries.segments.each(function (segment) {
+              segment.setState("hover");
+            });
+
+            chart.series.each(function (series) {
+              if (series != hoveredSeries) {
+                series.segments.each(function (segment) {
+                  segment.setState("dimmed");
+                });
+                series.bulletsContainer.setState("dimmed");
+              }
+            });
+          }
+
+          function processOut(hoveredSeries) {
+            chart.series.each(function (series) {
+              series.segments.each(function (segment) {
+                segment.setState("default");
+              });
+              series.bulletsContainer.setState("default");
+            });
+          }
         }); // end am4core.ready()
       }
     </script>
