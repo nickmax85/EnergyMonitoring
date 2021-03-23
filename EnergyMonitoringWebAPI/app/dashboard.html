@@ -973,7 +973,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           series.dataFields.valueY = "value1";
           series.dataFields.categoryX = "week";
           series.columns.template.tooltipText =
-            "Woche {categoryX}: [bold]{valueY} l/min[/]";
+            "Woche {categoryX}: [bold]{valueY.formatNumber('#.0 l/min[/]')}";
 
           series.columns.template.fillOpacity = 0.8;
 
