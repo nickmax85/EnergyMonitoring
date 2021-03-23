@@ -82,8 +82,7 @@ namespace EnergyMonitoringWebAPI.Controllers
                 var sql = "SELECT COUNT(*) FROM Sensor " +
                     "WHERE DeviceID IN " +
                     "(SELECT DeviceID " +
-                    "FROM Device " +
-                    "WHERE Active = 1)";
+                    "FROM Device)";
                 ;
                 var item = db.Database.SqlQuery<int>(sql).Single();
 
