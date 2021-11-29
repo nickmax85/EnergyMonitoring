@@ -16,6 +16,7 @@ namespace EnergyMonitoringWebAPI.Controllers
     {
         private EnergyMonitoringContext db = new EnergyMonitoringContext();
 
+
         // GET: api/Records
         public IEnumerable<Record> GetRecord()
         {
