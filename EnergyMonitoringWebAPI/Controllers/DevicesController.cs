@@ -60,6 +60,9 @@ namespace EnergyMonitoringWebAPI.Controllers
         public async Task<IHttpActionResult> PutDevice(int id, Device device)
         {
 
+            Equipment e = db.Equipments.Find(device.EquipmentID);
+
+            device.Equipment = e;
             device.UpdateDate = DateTime.Now;
 
             if (!ModelState.IsValid)

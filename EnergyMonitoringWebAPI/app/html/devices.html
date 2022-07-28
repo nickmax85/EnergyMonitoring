@@ -208,6 +208,8 @@
         device.CreateDate = $("#createDate").val();
         device.UpdateDate = $("#updateDate").val();
 
+        console.log(device.EquipmentID);
+
         let url = server + "/api/devices/PutDevice/" + device.DeviceID;
 
         $.ajax({
