@@ -75,18 +75,18 @@ namespace EnergyMonitoringWebAPI.Controllers
             using (EnergyMonitoringContext db = new EnergyMonitoringContext())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                //    int count = db.Sensors.Include(x => x.Device)
-                //        .Where(x => (bool)x.Device.Active)
-                //        .Count();
+                int count = db.Sensors.Include(x => x.Device)
+                    .Where(x => (bool)x.Device.Active)
+                    .Count();
 
-                var sql = "SELECT COUNT(*) FROM Sensor " +
-                    "WHERE DeviceID IN " +
-                    "(SELECT DeviceID " +
-                    "FROM Device)";
-                ;
-                var item = db.Database.SqlQuery<int>(sql).Single();
+                //var sql = "SELECT COUNT(*) FROM Sensor " +
+                //    "WHERE DeviceID IN " +
+                //    "(SELECT DeviceID " +
+                //    "FROM Device)";
+                //;
+               // var item = db.Database.SqlQuery<int>(sql).Single();
 
-                return item;
+                return count;
 
             }
         }
