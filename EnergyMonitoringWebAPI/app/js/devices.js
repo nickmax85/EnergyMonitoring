@@ -52,7 +52,9 @@ function showList(container, data) {
         item.Name);
        
         li.attr("href", "http://" + item.IP);
-        li.css("background-color", "");
+          li.css("background-color", "");
+
+          if (item.Active)
         ul.append(li);
       });
 
