@@ -37,7 +37,12 @@ namespace EnergyMonitoringWebAPI.Controllers
                     && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate))
                     .OrderByDescending(x=> x.Date).ToList();
 
-                return items;
+                var items2 = db.Activity
+                   .Where(x => DbFunctions.TruncateTime(x.CreateDate) >= DbFunctions.TruncateTime(startDate)
+                   && DbFunctions.TruncateTime(x.CreateDate) <= DbFunctions.TruncateTime(endDate))
+                   .OrderByDescending(x => x.Date).ToList();
+
+                return items2;
             }
 
         }
